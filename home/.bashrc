@@ -5,9 +5,6 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-alias ls='ls --color=auto'
-alias ll='ls -l'
-
 # Source any distro specific base shell
 # TODO: check why /etc/bash.bashrc is printing a new line...
 [ -f /etc/bash.bashrc ] && . /etc/bash.bashrc &> /dev/null
@@ -65,7 +62,7 @@ unset color_prompt color_prompt_when_supported
 #
 # Aliases
 #
-alias ls='ls --color=always'
+alias ls='ls --color=auto'
 alias ll='ls -l'
 
 #
