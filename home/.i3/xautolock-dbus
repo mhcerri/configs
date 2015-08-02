@@ -1,0 +1,37 @@
+#!/usr/bin/env python
+
+import os
+import sys
+from datetime import datetime
+import gi.repository
+from gi.repository import Gio, GLib
+
+def prepare_for_sleep(connection, sender_name, object_path, interface_name,
+                      signal_name, parameters, user_data):
+    out, = user_data
+    if parameters:
+        print(out, 'locking: %s, %s' % (sender_name, object_path))
+        os.system('xautolock -locknow')
+
+if __name__ == '__main__':
+    out = sys.stdout
+    try:
+        out = open('/tmp/xautolock-dbus.log', 'a')
+    except e:
+        print(out, "Error: " + str(e))
+
+    bus = Gio.bus_get_sync(Gio.BusType.SYSTEM, None)
+    print(bus.signal_subscribe.__doc__)
+    ret = bus.signal_subscribe(
+        None,                               # Sender
+        'org.freedesktop.login1.Manager',   # Interface name
+        'PrepareForSleep',                  # Member
+        None,                               # Object path
+        None,                               # arg0
+        Gio.DBusSignalFlags.NONE,           # flags
+        prepare_for_sleep,                  # Callback
+        (out,)                              # User data
+    )
+    if not ret:
+        exit(ret)
+    GLib.MainLoop().run()

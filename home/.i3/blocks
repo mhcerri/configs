@@ -1,0 +1,111 @@
+# i3blocks config file
+#
+# Please see man i3blocks for a complete reference!
+# The man page is also hosted at http://vivien.github.io/i3blocks
+#
+# List of valid properties:
+#
+# align
+# color
+# command
+# full_text
+# instance
+# interval
+# label
+# min_width
+# name
+# separator
+# separator_block_width
+# short_text
+# signal
+# urgent
+
+# Global properties
+separator_block_width=15
+
+[capslock]
+instance=CAPS
+command=$HOME/.i3/scripts/keyindicator
+interval=once
+signal=11
+separator=false
+
+[numlock]
+instance=NUM
+command=$HOME/.i3/scripts/keyindicator
+interval=once
+signal=11
+
+[volume]
+#label=VOL
+label=♪
+instance=Master
+#instance=PCM
+command=/usr/libexec/i3blocks/volume
+interval=once
+signal=10
+
+[memory]
+label=MEM
+command=/usr/libexec/i3blocks/memory
+separator=false
+interval=30
+
+[swap]
+label=SWAP
+instance=swap
+command=/usr/libexec/i3blocks/memory
+interval=30
+
+[disk-root]
+label=/
+instance=/
+command=/usr/libexec/i3blocks/disk
+interval=30
+
+[disk-home]
+label=/home
+#instance=$HOME
+instance=/home/
+command=/usr/libexec/i3blocks/disk
+interval=30
+
+[wireless]
+label=W
+instance=wlan0
+#command=/usr/libexec/i3blocks/network
+command=$HOME/.i3/scripts/network '#555555'
+color=#FFFFFF
+interval=10
+
+[ethernet]
+label=E
+instance=eth0
+#command=/usr/libexec/i3blocks/network
+command=$HOME/.i3/scripts/network '#555555'
+color=#FFFFFF
+interval=10
+
+[cpu]
+label=CPU
+command=$HOME/.i3/scripts/cpu_usage -f '% 6.2f%%'
+interval=10
+separator=false
+
+[load]
+command=/usr/libexec/i3blocks/load_average
+interval=10
+
+[battery]
+#label=BAT
+label=⚡
+command=/usr/libexec/i3blocks/battery
+interval=30
+
+[temperature]
+command=echo "$(sensors coretemp-isa-0000 | awk '/Physical/ { gsub(/^\+/, "", $4); print $4 }')"
+interval=30
+
+[time]
+command=date '+%Y-%m-%d %H:%M:%S'
+interval=5
