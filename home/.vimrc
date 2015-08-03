@@ -43,7 +43,8 @@ try
 catch
 endtry
 if has('gui_running')
-    set guifont=Consolas:h10
+    " Add gvim specific configs here:
+    "set guifont=Consolas:h10
 endif
 
 " Spell
