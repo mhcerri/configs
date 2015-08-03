@@ -60,6 +60,16 @@ PS1="$RC_PS1$JOBS_PS1$LOGIN_PS1$WINDOW_PS1 $PWD_PS1$GIT_PS1\$ "
 unset color_prompt color_prompt_when_supported
 
 #
+# Path
+#
+
+# Add user local bin/ directory to path
+PATH="~/bin:$PATH"
+
+# Add ruby gems to path
+PATH="$(ruby -e 'print Gem.user_dir')/bin:$PATH"
+
+#
 # Aliases
 #
 alias ls='ls --color=auto'
