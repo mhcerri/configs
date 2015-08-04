@@ -6,6 +6,11 @@ import shutil
 import os
 from os import path
 
+try:
+  input = raw_input
+except:
+  pass
+
 orig_dir = path.abspath('./home')
 dest_dir = path.expanduser('~')
 
