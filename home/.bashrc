@@ -8,6 +8,7 @@
 # Source any distro specific base shell
 # TODO: check why /etc/bash.bashrc is printing a new line...
 [ -f /etc/bash.bashrc ] && . /etc/bash.bashrc &> /dev/null
+[ -f /etc/bashrc ] && . /etc/bashrc &> /dev/null
 
 #
 # Set prompt
