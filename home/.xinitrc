@@ -1,7 +1,9 @@
 #
 # ~/.xinitrc
 #
-$HOME/.monicarc   #monitor calibration
+
+# Load X resources
+[[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
 
 # Load system scripts. This should handle D-Bus.
 if [ -d /etc/X11/xinit/xinitrc.d ]; then
@@ -11,16 +13,20 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
   unset f
 fi
 
+# Monitor calibration
+[[ -f ~/.monicarc ]] && source ~/.monicarc
+
 # Set environment
-#export TERMINAL=mate-terminal
-export TERMINAL=terminology
+if which terminology &> /dev/null; then
+    export TERMINAL=terminology
+elif which mate-terminal &> /dev/null; then
+    export TERMINAL=mate-terminal
+fi
 
 # Set X related settings
-xrdb -load "$HOME/.Xresources"
 xsetroot -solid '#555555'
 
 # Screensaver
-#xautolock -time 10 -locker 'i3lock -c 000000' &
 xautolock -detectsleep -time 10 -locker '~/.i3/lock -c 000000' &
 ~/.i3/xautolock-dbus &
 
