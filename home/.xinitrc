@@ -23,6 +23,9 @@ elif which mate-terminal &> /dev/null; then
     export TERMINAL=mate-terminal
 fi
 
+# Ensure that SSH will ask the passphase via console
+export SSH_ASKPASS=
+
 # Set X related settings
 xsetroot -solid '#555555'
 
