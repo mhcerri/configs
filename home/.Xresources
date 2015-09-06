@@ -1,0 +1,26 @@
+!
+! Xresources
+!
+
+! rofi
+rofi.quiet:             true
+rofi.key-run:           mod4-d
+rofi.key-window:        mod4-shift-w
+rofi.key-ssh:           mod4-shift-s
+rofi.terminal:          i3-sensible-terminal
+rofi.font:              mono 9
+rofi.separator-style:   solid
+rofi.padding:           1
+rofi.bg:                #222222
+rofi.bgalt:             #222222
+rofi.fg:                #888888
+rofi.hlbg:              #285577
+rofi.hlfg:              #ffffff
+rofi.bc:                #333333
+rofi.bw:                1
+rofi.width:             30
+rofi.lines:             10
+rofi.modi:              run,window,ssh
+rofi.sidebar-mode:      true
+rofi.fixed-num-lines:   true
+rofi.location:          0

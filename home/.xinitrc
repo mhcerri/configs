@@ -41,6 +41,7 @@ nm-applet &
 kalu &
 clipit &
 psensor &
+rofi &
 
 # Start window manager
 i3
