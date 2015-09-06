@@ -63,8 +63,8 @@ hi Spellbad
 
 " Reopen a file at the same position
 " State is saved in ~/.vim/view/
-au BufWinLeave * mkview
-au BufWinEnter * silent loadview
+au BufWinLeave *.* mkview!
+au BufWinEnter *.* silent loadview
 
 " Search tag files in parent directories
 set tags=tags;
