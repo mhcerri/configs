@@ -2,4 +2,4 @@
 	name = Marcelo Cerri
 	email = mhcerri@gmail.com
 [core]
-	editor = vim
+	editor = vim +:0
