@@ -3,3 +3,5 @@
 	email = mhcerri@gmail.com
 [core]
 	editor = vim +:0
+[alias]
+	list = log --oneline --decorate=full --graph --all
