@@ -96,7 +96,12 @@ fi
 #
 # Proxy settings
 #
-#_PROXY=proxy.nimbus.local:8080
+if [[ -z "$_PROXY" ]]; then
+    _PROXY_FILE="$HOME/.proxy"
+    if [[ -f "$_PROXY_FILE" ]]; then
+        _PROXY=$( cat "$_PROXY_FILE" )
+    fi
+fi
 if [[ -n "$_PROXY" ]]; then
     export http_proxy="$_PROXY"
     export https_proxy="$_PROXY"
