@@ -26,54 +26,32 @@ separator_block_width=15
 [capslock]
 instance=CAPS
 command=$HOME/.i3/scripts/keyindicator
-interval=once
+interval=1
 signal=11
 separator=false
 
 [numlock]
 instance=NUM
 command=$HOME/.i3/scripts/keyindicator
-interval=once
+interval=1
 signal=11
-
-[volume]
-#label=VOL
-label=♪
-instance=Master
-#instance=PCM
-command=/usr/libexec/i3blocks/volume
-interval=once
-signal=10
-
-[memory]
-label=MEM
-command=/usr/libexec/i3blocks/memory
-separator=false
-interval=30
-
-[swap]
-label=SWAP
-instance=swap
-command=/usr/libexec/i3blocks/memory
-interval=30
 
 [disk-root]
 label=/
 instance=/
-command=/usr/libexec/i3blocks/disk
+command=/usr/lib/i3blocks/disk
 interval=30
 
 [disk-home]
 label=/home
-#instance=$HOME
 instance=/home/
-command=/usr/libexec/i3blocks/disk
+command=/usr/lib/i3blocks/disk
 interval=30
 
 [wireless]
 label=W
 instance=wlan0
-#command=/usr/libexec/i3blocks/network
+#command=/usr/lib/i3blocks/network
 command=$HOME/.i3/scripts/network '#555555'
 color=#FFFFFF
 interval=10
@@ -81,10 +59,22 @@ interval=10
 [ethernet]
 label=E
 instance=eth0
-#command=/usr/libexec/i3blocks/network
+#command=/usr/lib/i3blocks/network
 command=$HOME/.i3/scripts/network '#555555'
 color=#FFFFFF
 interval=10
+
+[memory]
+label=MEM
+command=/usr/lib/i3blocks/memory
+interval=30
+separator=false
+
+[swap]
+label=SWAP
+instance=swap
+command=/usr/lib/i3blocks/memory
+interval=30
 
 [cpu]
 label=CPU
@@ -93,18 +83,25 @@ interval=10
 separator=false
 
 [load]
-command=/usr/libexec/i3blocks/load_average
+command=/usr/lib/i3blocks/load_average
 interval=10
-
-[battery]
-#label=BAT
-label=⚡
-command=/usr/libexec/i3blocks/battery
-interval=30
+separator=false
 
 [temperature]
 command=echo "$(sensors coretemp-isa-0000 | awk '/Physical/ { gsub(/^\+/, "", $4); print $4 }')"
 interval=30
+
+[battery]
+label=⚡
+command=/usr/lib/i3blocks/battery
+interval=30
+
+[volume]
+label=♪
+instance=Master
+command=/usr/lib/i3blocks/volume
+interval=once
+signal=10
 
 [time]
 command=date '+%Y-%m-%d %H:%M:%S'
