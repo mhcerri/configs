@@ -94,6 +94,15 @@ END
 fi
 
 #
+# Go
+#
+if which go &> /dev/null; then
+    export GOPATH="$HOME/go"
+    export PATH="$PATH:$GOPATH/bin"
+    [[ ! -e "$GOPATH" ]] && mkdir -p "$GOPATH"
+fi
+
+#
 # Proxy settings
 #
 if [[ -z "$_PROXY" ]]; then
