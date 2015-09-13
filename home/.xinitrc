@@ -17,6 +17,7 @@ fi
 [[ -f ~/.monicarc ]] && source ~/.monicarc
 
 # Set environment
+. ~/.bashrc
 if which terminology &> /dev/null; then
     export TERMINAL=terminology
 elif which mate-terminal &> /dev/null; then

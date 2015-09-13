@@ -2,13 +2,48 @@
 # ~/.bashrc
 #
 
-# If not running interactively, don't do anything
-[[ $- != *i* ]] && return
-
 # Source any distro specific base shell
 # TODO: check why /etc/bash.bashrc is printing a new line...
 [ -f /etc/bash.bashrc ] && . /etc/bash.bashrc &> /dev/null
 [ -f /etc/bashrc ] && . /etc/bashrc &> /dev/null
+
+#
+# Path
+#
+
+# Add user local bin/ directory to path
+if [[ -e "$HOME/bin" ]]; then
+    export PATH="$HOME/bin:$PATH"
+fi
+
+# Add ruby gems to path
+export PATH="$(ruby -e 'print Gem.user_dir')/bin:$PATH"
+
+# Add Go user dirs to path
+if which go &> /dev/null; then
+    export GOPATH="$HOME/go"
+    export PATH="$PATH:$GOPATH/bin"
+    [[ ! -e "$GOPATH" ]] && mkdir -p "$GOPATH"
+fi
+
+#
+# Proxy settings
+#
+if [[ -z "$_PROXY" ]]; then
+    _PROXY_FILE="$HOME/.proxy"
+    if [[ -f "$_PROXY_FILE" ]]; then
+        _PROXY=$( cat "$_PROXY_FILE" )
+    fi
+fi
+if [[ -n "$_PROXY" ]]; then
+    export http_proxy="$_PROXY"
+    export https_proxy="$_PROXY"
+fi
+
+###############################################################################
+# If not running interactively, the rest of the script is not executed.
+#
+[[ $- != *i* ]] && return
 
 #
 # Set prompt
@@ -61,18 +96,6 @@ export PS1="$RC_PS1$JOBS_PS1$LOGIN_PS1$WINDOW_PS1 $PWD_PS1$GIT_PS1\$ "
 unset color_prompt color_prompt_when_supported
 
 #
-# Path
-#
-
-# Add user local bin/ directory to path
-if [[ -e "$HOME/bin" ]]; then
-    export PATH="$HOME/bin:$PATH"
-fi
-
-# Add ruby gems to path
-export PATH="$(ruby -e 'print Gem.user_dir')/bin:$PATH"
-
-#
 # Aliases
 #
 alias ls='ls --color=auto'
@@ -93,28 +116,5 @@ else:
     import rlcompleter
     readline.parse_and_bind("tab: complete")
 END
-fi
-
-#
-# Go
-#
-if which go &> /dev/null; then
-    export GOPATH="$HOME/go"
-    export PATH="$PATH:$GOPATH/bin"
-    [[ ! -e "$GOPATH" ]] && mkdir -p "$GOPATH"
-fi
-
-#
-# Proxy settings
-#
-if [[ -z "$_PROXY" ]]; then
-    _PROXY_FILE="$HOME/.proxy"
-    if [[ -f "$_PROXY_FILE" ]]; then
-        _PROXY=$( cat "$_PROXY_FILE" )
-    fi
-fi
-if [[ -n "$_PROXY" ]]; then
-    export http_proxy="$_PROXY"
-    export https_proxy="$_PROXY"
 fi
 
