@@ -57,7 +57,7 @@ if [ "$color_prompt" = yes ]; then
 fi
 
 # Set prompt
-PS1="$RC_PS1$JOBS_PS1$LOGIN_PS1$WINDOW_PS1 $PWD_PS1$GIT_PS1\$ "
+export PS1="$RC_PS1$JOBS_PS1$LOGIN_PS1$WINDOW_PS1 $PWD_PS1$GIT_PS1\$ "
 unset color_prompt color_prompt_when_supported
 
 #
@@ -65,10 +65,12 @@ unset color_prompt color_prompt_when_supported
 #
 
 # Add user local bin/ directory to path
-PATH="~/bin:$PATH"
+if [[ -e "$HOME/bin" ]]; then
+    export PATH="$HOME/bin:$PATH"
+fi
 
 # Add ruby gems to path
-PATH="$(ruby -e 'print Gem.user_dir')/bin:$PATH"
+export PATH="$(ruby -e 'print Gem.user_dir')/bin:$PATH"
 
 #
 # Aliases

@@ -1,0 +1,24 @@
+#!/bin/sh
+case "$1" in
+    -h|--help)
+        echo "Usage: $(basename "$0") [<output>]"
+        echo ""
+        echo "If <output> is suppressed, the next available output is selected."
+        exit 0
+        ;;
+esac
+xsetwacom --list devices |
+sed -n '
+    # \1: device name; \2: device id; \3: device type
+    /^\(.*[^\s]\)\s\+id:\s\+\([0-9]\+\)\s\+type:\s\+\([^\s]\+\).*/ {
+        s//\3 \2/
+    }
+    # Ignore touch devices
+    /^TOUCH\s/ {
+        n
+    }
+    # Select just the device ID
+    /^[^\s]\+\s\+\([0-9]\+\)/ {
+        s//\1/p
+    }' |
+xargs -i xsetwacom --set '{}' 'MapToOutput' "${1:-next}"

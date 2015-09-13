@@ -1,0 +1,61 @@
+#!/usr/bin/perl
+use strict;
+
+# Get current output
+my $current_sink_name = undef;
+open(OUT, "pacmd stat |") or die;
+while (<OUT>) {
+    if (/^Default sink name:\s*([^\s]+)/) {
+        $current_sink_name = $1;
+        last;
+    }
+}
+close(OUT);
+defined $current_sink_name or die "Failed to get the default sink";
+
+# Get available outputs
+my $idx = 0;
+my @sink_names = ();
+my @sink_descs = ();
+open(OUT, "pacmd list-sinks |") or die;
+while (<OUT>) {
+    if (/^\s*name\s*:\s*<([^\s]+)>/) {
+        push @sink_names, $1;
+        $idx += 1
+    }
+    if (/^\s*device.description\s*=\s*"([^"]+)"/) {
+        if ($idx > 0) { $sink_descs[$idx - 1] = $1; }
+    }
+}
+close(OUT);
+
+# Get the current output index
+my $current_sink_idx = undef;
+for (my $i = 0; $i < @sink_names; $i++) {
+    if ($sink_names[$i] eq $current_sink_name) {
+        $current_sink_idx = $i;
+        last;
+    }
+}
+defined $current_sink_idx or die "Failed to get the default sink index";
+
+# Set next output
+my $next_sink_idx = ( $current_sink_idx + 1 ) % @sink_names;
+my $next_sink_name = $sink_names[$next_sink_idx];
+system("pacmd set-default-sink " . $next_sink_name);
+
+# Move all apps to new sink
+open(OUT, "pacmd list-sink-inputs |") or die;
+while (<OUT>) {
+    if (/^\s*index\s*:\s*([^\s]+)/) {
+        system("pacmd move-sink-input " . $1 . " " . $next_sink_name);
+    }
+}
+close(OUT);
+
+# Show notification
+my $message;
+$message = $sink_descs[$next_sink_idx];
+$message =~ s/'/"/g;
+system("notify-send '" . $message . "'");
+
