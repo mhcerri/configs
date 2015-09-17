@@ -18,8 +18,11 @@ fi
 
 # Set environment
 . ~/.bashrc
+# TODO use a loop instead
 if which terminology &> /dev/null; then
     export TERMINAL=terminology
+elif which urxvt256c &> /dev/null; then
+    export TERMINAL=urxvt256c
 elif which mate-terminal &> /dev/null; then
     export TERMINAL=mate-terminal
 fi
