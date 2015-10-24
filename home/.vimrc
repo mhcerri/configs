@@ -25,7 +25,7 @@ set softtabstop=4
 set shiftwidth=4
 set smartindent
 
-autocmd FileType python,html,htmldjango,css,javascript,scala set
+autocmd FileType javascript,scala set
     \ tabstop=2
     \ softtabstop=2
     \ shiftwidth=2
@@ -38,6 +38,7 @@ syntax on
 set number
 set hlsearch 
 try
+    " Inverse priority list of preferred color schemes:
     colorscheme desert
     colorscheme github
 catch
