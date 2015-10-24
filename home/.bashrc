@@ -117,4 +117,6 @@ else:
     readline.parse_and_bind("tab: complete")
 END
 fi
-
+if [ -e "/usr/bin/virtualenvwrapper.sh" ]; then
+    . /usr/bin/virtualenvwrapper.sh
+fi
