@@ -4,7 +4,7 @@
 
 if [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]]
 then
-	# There's a bug that does't allow redirecting the X output...
+	# There's a bug that doesn't allow redirecting the X output...
 	exec startx 
 	exit
 fi
