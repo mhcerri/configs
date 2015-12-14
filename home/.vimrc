@@ -79,3 +79,5 @@ set tags=tags;
 :nnoremap > :tabmove +1<CR>
 :nnoremap < :tabmove -1<CR>
 
+" Snippets
+au BufNewFile,BufRead *.md iabbrev ''' ```
