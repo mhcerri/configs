@@ -15,7 +15,7 @@ sed -n '
     }
     # Ignore touch devices
     /^TOUCH\s/ {
-        n
+        d
     }
     # Select just the device ID
     /^[^\s]\+\s\+\([0-9]\+\)/ {
