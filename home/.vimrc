@@ -12,6 +12,12 @@
 "       mkdir -p ~/.vim/{ftdetect,indent,syntax} && for d in ftdetect indent syntax ; do curl -o ~/.vim/$d/scala.vim https://raw.githubusercontent.com/derekwyatt/vim-scala/master/syntax/scala.vim; done
 "
 
+" Force default leader key
+let mapleader="\\"
+
+" Initialize Pathogen
+execute pathogen#infect()
+
 " File encoding
 set encoding=utf-8
 set fileencoding=utf-8
@@ -34,6 +40,7 @@ autocmd Filetype make set
     \ noexpandtab
 
 " Syntax, color and highlight
+filetype plugin indent on
 syntax on
 set number
 set hlsearch 
