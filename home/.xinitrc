@@ -49,6 +49,7 @@ kalu &
 clipit &
 psensor &
 rofi &
+syncthing-gtk &
 
 # Start window manager
 i3
