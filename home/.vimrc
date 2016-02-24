@@ -114,12 +114,21 @@ au BufNewFile,BufRead *.md iabbrev ''' ```
 
 " Pathogen bundles
 " ----------------
+" To install the bundles listed in this config file:
+"
+"   grep -E '^"\s*git clone' ~/.vimrc | sed -e 's/^"\s*//'
+"
+" Bundles configuration should start with "silent!" to avoid errors when
+" they are not installed.
 
 " Auto-pair - Include or remove matching bracket and parenthesis
 " git clone git://github.com/jiangmiao/auto-pairs.git ~/.vim/bundle/auto-pairs
 
 " CsApprox - Better support with colorschemes
 " git clone https://github.com/godlygeek/csapprox.git ~/.vim/bundle/csapprox
+
+" Vim bufferline - List buffer in the command line
+" git clone https://github.com/bling/vim-bufferline ~/.vim/bundle/vim-bufferline
 
 " Syntastic - Check syntax error
 " git clone https://github.com/scrooloose/syntastic.git ~/.vim/bundle/syntastic
@@ -156,7 +165,7 @@ silent! au FileType go nmap <Leader>gb <Plug>(go-doc-browser)
 silent! au FileType go nmap <Leader>s <Plug>(go-implements)
 silent! au FileType go nmap <Leader>i <Plug>(go-info)
 silent! au FileType go nmap <Leader>e <Plug>(go-rename)
-
+" Emulate tags:
 silent! au FileType go nmap <C-]> <Plug>(go-def)
 
 " Highlights:
