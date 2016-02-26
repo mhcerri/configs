@@ -138,9 +138,13 @@ silent! set statusline+=%#warningmsg#
 silent! set statusline+=%{SyntasticStatuslineFlag()}
 silent! set statusline+=%*
 silent! let g:syntastic_always_populate_loc_list = 1
-silent! let g:syntastic_auto_loc_list = 1
+silent! let g:syntastic_auto_loc_list = 0
 silent! let g:syntastic_check_on_open = 1
 silent! let g:syntastic_check_on_wq = 0
+silent! let g:syntastic_auto_jump = 0
+silent! let g:syntastic_java_checkers=['']
+" Cycle through errors
+nnoremap <F2> :try<CR>lnext<CR>catch /E42/<CR>catch /E553/<CR>lfirst<CR>endtry<CR><CR>
 
 " Neocomplete - Code completion
 " git clone https://github.com/Shougo/neocomplete.vim.git ~/.vim/bundle/neocomplete.vim
