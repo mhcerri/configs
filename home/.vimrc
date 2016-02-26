@@ -112,6 +112,7 @@ map <F12> :call ToggleMouse()<CR>
 
 " Snippets
 au BufNewFile,BufRead *.md iabbrev ''' ```
+au FileType go abbrev ife if err != nil {<Enter>
 
 " Pathogen bundles
 " ----------------
