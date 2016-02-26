@@ -169,6 +169,8 @@ silent! au FileType go nmap <Leader>i <Plug>(go-info)
 silent! au FileType go nmap <Leader>e <Plug>(go-rename)
 " Emulate tags:
 silent! au FileType go nmap <C-]> <Plug>(go-def)
+" Replace go run:
+silent! au FileType go nmap <Leader>r :!go run %<CR>
 
 " Highlights:
 silent! let g:go_highlight_functions = 1
