@@ -30,6 +30,7 @@ set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set smartindent
+set title
 
 autocmd FileType javascript,scala set
     \ tabstop=2
@@ -114,8 +115,9 @@ map <F12> :call ToggleMouse()<CR>
 au BufNewFile,BufRead *.md iabbrev ''' ```
 au FileType go abbrev ife if err != nil {<Enter>
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Pathogen bundles
-" ----------------
+" -----------------------------------------------------------------------------
 " To install the bundles listed in this config file:
 "
 "   grep -E '^"\s*git clone' ~/.vimrc | sed -e 's/^"\s*//'
@@ -123,15 +125,19 @@ au FileType go abbrev ife if err != nil {<Enter>
 " Bundles configuration should start with "silent!" to avoid errors when
 " they are not installed.
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Auto-pair - Include or remove matching bracket and parenthesis
 " git clone git://github.com/jiangmiao/auto-pairs.git ~/.vim/bundle/auto-pairs
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " CsApprox - Better support with colorschemes
 " git clone https://github.com/godlygeek/csapprox.git ~/.vim/bundle/csapprox
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim bufferline - List buffer in the command line
 " git clone https://github.com/bling/vim-bufferline ~/.vim/bundle/vim-bufferline
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Syntastic - Check syntax error
 " git clone https://github.com/scrooloose/syntastic.git ~/.vim/bundle/syntastic
 silent! set statusline+=%#warningmsg#
@@ -146,16 +152,54 @@ silent! let g:syntastic_java_checkers=['']
 " Cycle through errors
 nnoremap <F2> :try<CR>lnext<CR>catch /E42/<CR>catch /E553/<CR>lfirst<CR>endtry<CR><CR>
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Neocomplete - Code completion
 " git clone https://github.com/Shougo/neocomplete.vim.git ~/.vim/bundle/neocomplete.vim
-silent! let g:neocomplete#enable_at_startup = 1
-silent! inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+"  silent! let g:neocomplete#enable_at_startup = 1
+"  silent! inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
+" Disable AutoComplPop.
+silent! let g:acp_enableAtStartup = 0
+" Use neocomplete.
+silent! let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+silent! let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+silent! let g:neocomplete#sources#syntax#min_keyword_length = 3
+
+" Plugin key-mappings.
+silent! inoremap <expr><C-g>     neocomplete#undo_completion()
+silent! inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+silent! inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+    return neocomplete#close_popup() . "\<CR>"
+endfunction
+" <TAB>: completion.
+silent! inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+silent! inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+silent! inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+silent! inoremap <expr><C-y>  neocomplete#close_popup()
+silent! inoremap <expr><C-e>  neocomplete#cancel_popup()
+
+" Auto close top window preview
+silent! let g:neocomplete#enable_auto_close_preview=1
+" Disable window preview
+set completeopt-=preview
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim-go - Golang support
 " git clone https://github.com/fatih/vim-go.git ~/.vim/bundle/vim-go
 "
 " Check https://github.com/fatih/vim-go
 " Use :GoInstallBinaries to install all the needed binaries.
+"
+" Set gocode autobuild for updated autocompletion:
+" $ gocode set autobuild true
+"
 
 " Shortcuts:
 silent! au FileType go nmap <leader>r <Plug>(go-run)
@@ -187,6 +231,7 @@ silent! let g:go_highlight_build_constraints = 1
 " Go fmt with organize imports:
 silent! let g:go_fmt_command = "goimports"
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Nerd tree - Browse files
 " git clone https://github.com/scrooloose/nerdtree.git ~/.vim/bundle/nerdtree
 
