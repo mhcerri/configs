@@ -192,6 +192,8 @@ silent! let g:go_fmt_command = "goimports"
 
 " Shortcut:
 silent! nmap <Leader>; :NERDTreeToggle<CR>
+silent! au FileType nerdtree nmap <buffer> <left> x
+silent! au FileType nerdtree nmap <buffer> <right> o
 " Close vim when Nerd tree is the last window
 silent! autocmd bufenter *
     \ if (winnr("$") == 1 
