@@ -48,6 +48,7 @@ set hlsearch
 try
     " Inverse priority list of preferred color schemes:
     colorscheme desert
+    " git clone https://github.com/endel/vim-github-colorscheme.git ~/.vim/bundle/vim-github-colorscheme
     colorscheme github
 catch
 endtry
