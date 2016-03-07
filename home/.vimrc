@@ -31,6 +31,7 @@ set softtabstop=4
 set shiftwidth=4
 set smartindent
 set title
+set hidden
 
 autocmd FileType javascript,scala set
     \ tabstop=2
@@ -75,8 +76,9 @@ hi Spellbad
 set tags=tags;
 
 " Buffer shortcuts
-:nnoremap <Tab> :bnext<CR>
-:nnoremap <S-Tab> :bprevious<CR>
+:nnoremap <Tab> :silent! bnext<CR>
+:nnoremap <S-Tab> :silent! bprevious<CR>
+:nnoremap <Leader>q :silent! bdelete<CR>
 
 " Tabs shortcuts
 :nnoremap . :tabnext<CR>
@@ -137,6 +139,12 @@ au FileType go abbrev ife if err != nil {<Enter>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim bufferline - List buffer in the command line
 " git clone https://github.com/bling/vim-bufferline ~/.vim/bundle/vim-bufferline
+silent! let g:bufferline_echo = 1
+silent! let g:bufferline_fixed_index = 0
+silent! let g:bufferline_rotate = 1
+silent! let g:bufferline_show_bufnr = 1
+silent! let g:bufferline_active_buffer_left = '['
+silent! let g:bufferline_active_buffer_right = ']'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Syntastic - Check syntax error
