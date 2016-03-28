@@ -27,7 +27,12 @@ if which go &> /dev/null; then
 fi
 
 # Alias to set GOPATH as the current directory
-alias gopath='export GOPATH="$PWD"; export GO15VENDOREXPERIMENT=1;'
+alias gopath='
+    export GOPATH="$PWD";
+    export GO15VENDOREXPERIMENT=1;
+    echo "GOPATH=\"$GOPATH\"";
+    echo "GO15VENDOREXPERIMENT=\"$GO15VENDOREXPERIMENT\"";
+'
 
 #
 # Proxy settings
