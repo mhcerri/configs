@@ -26,6 +26,9 @@ if which go &> /dev/null; then
     [[ ! -e "$GOPATH" ]] && mkdir -p "$GOPATH"
 fi
 
+# Alias to set GOPATH as the current directory
+alias gopath='export GOPATH="$PWD"; export GO15VENDOREXPERIMENT=1;'
+
 #
 # Proxy settings
 #
