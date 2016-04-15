@@ -57,20 +57,6 @@ fi
 # Set prompt
 #
 
-# Prompt helper functions:
-__jobs_ps1() {
-    N="$(jobs 2> /dev/null | wc -l)"
-    if [[ -z "$N" ]] || [[ "$N" == 0 ]]; then
-        return
-    fi
-    if [[ "$N" == 1 ]]; then
-        N="${N} job"
-    else
-        N="${N} jobs"
-    fi
-    echo "[$N] "
-}
-
 # Uncomment for color prompt when supported
 color_prompt_when_supported=yes
 
@@ -82,8 +68,18 @@ if [ -n "$color_prompt_when_supported" ]; then
 fi
 
 # Define prompt fragments
+JOBS_PS1='$(
+    N="$(jobs 2> /dev/null | wc -l)"
+    if [[ -n "$N" ]] && [[ "$N" != 0 ]]; then
+        if [[ "$N" == 1 ]]; then
+            N="${N} job"
+        else
+            N="${N} jobs"
+        fi
+        echo "[$N] "
+    fi
+)'
 RC_PS1='$(RC="$?"; [[ "$RC" -ne 0 ]] && echo -n "[rc=$RC] ")'
-JOBS_PS1='$(__jobs_ps1)'
 LOGIN_PS1='\u@\h'
 WINDOW_PS1="$([[ -n "$WINDOW" ]] && echo -n "[w$WINDOW]")"
 PWD_PS1='\w'
@@ -101,6 +97,7 @@ fi
 
 # Set prompt
 export PS1="$RC_PS1$JOBS_PS1$LOGIN_PS1$WINDOW_PS1 $PWD_PS1$GIT_PS1\$ "
+export SUDO_PS1="$( echo -n "$PS1" | sed -e 's/;32m/;31m/g' )"
 unset color_prompt color_prompt_when_supported
 
 #
