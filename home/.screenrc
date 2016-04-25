@@ -1,0 +1,13 @@
+# Skip startup message
+startup_message off
+
+# Force 256 colors terminal
+term "screen-256color"
+
+# Scroll
+termcapinfo xterm* ti@:te@
+
+# Status line: http://www.gnu.org/software/screen/manual/html_node/String-Escapes.html
+backtick 0 30 30 sh -c "uptime | sed -e 's/.*up/up/' | cut -d ',' -f '-2'"
+hardstatus alwayslastline
+hardstatus string "%{= gk}@%H %{= WK}%-w%{= KW}%n %t%{-}%+w %= %{= Bb} %` %{= bw} %Y-%m-%d %c:%s"
