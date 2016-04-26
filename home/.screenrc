@@ -7,6 +7,9 @@ term "screen-256color"
 # Scroll
 termcapinfo xterm* ti@:te@
 
+# Use audible bell
+vbell off
+
 # Status line: http://www.gnu.org/software/screen/manual/html_node/String-Escapes.html
 backtick 0 30 30 sh -c "uptime | sed -e 's/.*up/up/' | cut -d ',' -f '-2'"
 hardstatus alwayslastline
