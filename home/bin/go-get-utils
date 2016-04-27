@@ -1,0 +1,9 @@
+#!/bin/bash
+set -e # Exit on error
+echo "GOPATH=$GOPATH"
+set -x # Show commands
+go get github.com/cespare/reflex
+go get github.com/peco/peco/...
+go get github.com/miolini/jsonf
+go get github.com/noraesae/orange-cat/...
+ln -sf "$GOPATH/bin/orange" "$GOPATH/bin/md"
