@@ -17,7 +17,9 @@ if [[ -e "$HOME/bin" ]]; then
 fi
 
 # Add ruby gems to path
-export PATH="$(ruby -e 'print Gem.user_dir')/bin:$PATH"
+if which ruby &>/dev/null; then
+    export PATH="$(ruby -e 'print Gem.user_dir')/bin:$PATH"
+fi
 
 # Add Go user dirs to path
 if which go &> /dev/null; then
