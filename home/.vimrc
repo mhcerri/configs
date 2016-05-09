@@ -67,10 +67,10 @@ hi Spellbad
     \ term    = underline
     \ cterm   = underline
     \ gui     = underline
-    \ ctermbg = none
-    \ ctermfg = none
-    \ guibg   = none
-    \ guifg   = none
+    \ ctermbg = NONE
+    \ ctermfg = NONE
+    \ guibg   = NONE
+    \ guifg   = NONE
 
 " Search tag files in parent directories
 set tags=tags;
