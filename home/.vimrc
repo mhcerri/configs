@@ -48,9 +48,11 @@ set number
 set hlsearch 
 try
     " Inverse priority list of preferred color schemes:
-    colorscheme desert
+    colorscheme industry
     " git clone https://github.com/endel/vim-github-colorscheme.git ~/.vim/bundle/vim-github-colorscheme
-    colorscheme github
+    if &t_Co >= 256
+        colorscheme github
+    endif
 catch
 endtry
 if has('gui_running')
