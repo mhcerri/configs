@@ -50,6 +50,12 @@ xsetroot -solid '#555555'
 xautolock -detectsleep -time 10 -locker '~/.i3/lock -c 000000' &
 ~/.i3/xautolock-dbus &
 
+run_bg() {
+	if which "$1" > /dev/null; then
+		"$@" &
+	fi
+}
+
 # Run Mate utils
 path="$PATH"
 ifs="$IFS"; IFS=$'\n'
@@ -61,16 +67,16 @@ do
     export PATH="$dir:$PATH"
 done
 IFS="$ifs"
-mate-settings-daemon &
-polkit-mate-authentication-agent-1 &
-mate-power-manager &
-mate-bluetooth-applet &
-nm-applet &
+run_bg mate-settings-daemon mate-settings-daemon
+run_bg polkit-mate-authentication-agent-1
+run_bg mate-power-manager
+run_bg mate-bluetooth-applet
+run_bg nm-applet
 export PATH="$path"
 
 # Misc
-kalu &
-clipit &
-psensor &
-rofi &
-syncthing-gtk &
+run_bg kalu &
+run_bg clipit &
+run_bg psensor &
+run_bg rofi &
+run_bg syncthing-gtk &
