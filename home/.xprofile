@@ -3,6 +3,12 @@
 # ~/.xprofile
 #
 
+# Just start all the application when the script is not executed by a session
+# manager or when i3 is the window manager.
+if [[ -n "$XDG_SESSION_DESKTOP" && "$XDG_SESSION_DESKTOP" != "i3" ]]; then
+    return
+fi
+
 # Load X resources
 [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
 
