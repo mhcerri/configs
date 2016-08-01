@@ -4,7 +4,7 @@
 #
 
 # Load X profile
-~/.xprofile
+. ~/.xprofile
 
 # Start window manager
 i3
