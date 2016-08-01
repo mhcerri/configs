@@ -1,6 +1,7 @@
 #!/bin/sh
-SS="$HOME/.i3lock-blur.png"
-scrot "$SS"
-convert "$SS" -brightness-contrast -15x0 -blur 0x5 "$SS"
-i3lock -i "$SS" "$@"
-rm "$SS"
+#SS="$HOME/.i3lock-blur.png"
+#scrot "$SS"
+#convert "$SS" -blur 0x5 "$SS"
+#i3lock -i "$SS" "$@"
+#rm "$SS"
+i3lock "$@"
