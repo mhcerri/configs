@@ -9,6 +9,12 @@ if [[ -n "$XDG_SESSION_DESKTOP" && "$XDG_SESSION_DESKTOP" != "i3" ]]; then
     return
 fi
 
+## Ensure that the D-Bus Communication System is running properly to fix
+## File management, authentication, and other essential system processes
+if which dbus-launch >/dev/null && test -z "$DBUS_SESSION_BUS_ADDRESS"; then
+    eval "$(dbus-launch --sh-syntax --exit-with-session)"
+fi
+
 # Load X resources
 [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
 
