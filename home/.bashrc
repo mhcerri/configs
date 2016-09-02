@@ -86,7 +86,7 @@ if [ -n "$color_prompt_when_supported" ]; then
 fi
 
 # Define prompt fragments
-JOBS_PS1='$(
+jobs_ps1='$(
     N="$(jobs 2> /dev/null | wc -l)"
     if [[ -n "$N" ]] && [[ "$N" != 0 ]]; then
         if [[ "$N" == 1 ]]; then
@@ -97,27 +97,28 @@ JOBS_PS1='$(
         echo "[$N] "
     fi
 )'
-DEBIAN_ROOT_PS1='${debian_chroot:+($debian_chroot)}'
-RC_PS1='$(RC="$?"; [[ "$RC" -ne 0 ]] && echo -n "[rc=$RC] ")'
-LOGIN_PS1='\u@\h'
-WINDOW_PS1="$([[ -n "$WINDOW" ]] && echo -n "[w$WINDOW]")"
-PWD_PS1='\w'
-GIT_PS1='$(__git_ps1 " (%s)" 2> /dev/null)'
+debian_chroot_ps1='${debian_chroot:+($debian_chroot)}'
+rc_ps1='$(RC="$?"; [[ "$RC" -ne 0 ]] && echo -n "[rc=$RC] ")'
+login_ps1='\u@\h'
+window_ps1="$([[ -n "$WINDOW" ]] && echo -n "[w$WINDOW]")"
+pwd_ps1='\w'
+git_ps1='$(__git_ps1 " (%s)" 2> /dev/null)'
 
 # Add color to fragments
 if [ "$color_prompt" = yes ]; then
-    # No color for DEBIAN_ROOT_PS1
-    [ -n "$RC_PS1"     ] &&     RC_PS1="\[\033[01;31m\]$RC_PS1\[\033[01;00m\]"
-    [ -n "$JOBS_PS1"   ] &&   JOBS_PS1="\[\033[01;32m\]$JOBS_PS1\[\033[01;00m\]"
-    [ -n "$LOGIN_PS1"  ] &&  LOGIN_PS1="\[\033[01;32m\]$LOGIN_PS1\[\033[00m\]"
-    [ -n "$WINDOW_PS1" ] && WINDOW_PS1="\[\033[01;33m\]$WINDOW_PS1\[\033[00m\]"
-    [ -n "$PWD_PS1"    ] &&    PWD_PS1="\[\033[01;34m\]$PWD_PS1\[\033[00m\]"
-    [ -n "$GIT_PS1"    ] &&    GIT_PS1="\[\033[01;31m\]$GIT_PS1\[\033[01;00m\]"
+    # No color for debian_chroot_ps1
+    [ -n "$rc_ps1"     ] &&     rc_ps1="\[\033[01;31m\]$rc_ps1\[\033[01;00m\]"
+    [ -n "$jobs_ps1"   ] &&   jobs_ps1="\[\033[01;32m\]$jobs_ps1\[\033[01;00m\]"
+    [ -n "$login_ps1"  ] &&  login_ps1="\[\033[01;32m\]$login_ps1\[\033[00m\]"
+    [ -n "$window_ps1" ] && window_ps1="\[\033[01;33m\]$window_ps1\[\033[00m\]"
+    [ -n "$pwd_ps1"    ] &&    pwd_ps1="\[\033[01;34m\]$pwd_ps1\[\033[00m\]"
+    [ -n "$git_ps1"    ] &&    git_ps1="\[\033[01;31m\]$git_ps1\[\033[01;00m\]"
 fi
 
 # Set prompt
-export PS1="$DEBIAN_ROOT_PS1$RC_PS1$JOBS_PS1$LOGIN_PS1$WINDOW_PS1 $PWD_PS1$GIT_PS1\$ "
+export PS1="$debian_chroot_ps1$rc_ps1$jobs_ps1$login_ps1$window_ps1 $pwd_ps1$git_ps1\$ "
 export SUDO_PS1="$( echo -n "$PS1" | sed -e 's/;32m/;31m/g' )"
+unset debian_chroot_ps1 rc_ps1 login_ps1 window_ps1 pwd_ps1 git_ps1  
 unset color_prompt color_prompt_when_supported
 
 #
@@ -157,16 +158,17 @@ fi
 #
 # Proxy settings
 #
-if [[ -z "$_PROXY" ]]; then
-    _PROXY_FILE="$HOME/.proxy"
-    if [[ -f "$_PROXY_FILE" ]]; then
-        _PROXY=$( cat "$_PROXY_FILE" )
+if [[ -z "$proxy_addr" ]]; then
+    proxy_file="$HOME/.proxy"
+    if [[ -f "$proxy_file" ]]; then
+        proxy_addr=$( cat "$proxy_file" )
     fi
 fi
-if [[ -n "$_PROXY" ]]; then
-    export http_proxy="$_PROXY"
-    export https_proxy="$_PROXY"
+if [[ -n "$proxy_addr" ]]; then
+    export http_proxy="$proxy_addr"
+    export https_proxy="$proxy_addr"
 fi
+unset proxy_addr proxy_file
 
 #
 # Golang
