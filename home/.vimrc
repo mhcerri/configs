@@ -132,157 +132,155 @@ au FileType go abbrev ife if err != nil {<Enter>
 "
 "   grep -E '^\s*"\s*git clone' ~/.vimrc | sed -e 's/^\s*"\s*//'
 "
-" Bundle configurations should avoid error when the bundle is not available.
+" All bundle configuration must be placed in SetBundleOptions() to be set
+" lazily and must always check if the bundle is installed.
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Auto-pair - Include or remove matching bracket and parenthesis
-" git clone git://github.com/jiangmiao/auto-pairs.git ~/.vim/bundle/auto-pairs
+function! SetBundleOptions()
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " Auto-pair - Include or remove matching bracket and parenthesis
+    " git clone git://github.com/jiangmiao/auto-pairs.git ~/.vim/bundle/auto-pairs
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" CsApprox - Better support with colorschemes
-" git clone https://github.com/godlygeek/csapprox.git ~/.vim/bundle/csapprox
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " CsApprox - Better support with colorschemes
+    " git clone https://github.com/godlygeek/csapprox.git ~/.vim/bundle/csapprox
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Vim bufferline - List buffer in the command line
-" git clone https://github.com/bling/vim-bufferline ~/.vim/bundle/vim-bufferline
-try
-    let g:bufferline_echo = 1
-    let g:bufferline_fixed_index = 0
-    let g:bufferline_rotate = 1
-    let g:bufferline_show_bufnr = 1
-    let g:bufferline_active_buffer_left = '['
-    let g:bufferline_active_buffer_right = ']'
-catch
-endtry
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " Vim bufferline - List buffer in the command line
+    " git clone https://github.com/bling/vim-bufferline ~/.vim/bundle/vim-bufferline
+    if exists("g:bufferline_echo")
+        let g:bufferline_echo = 1
+        let g:bufferline_fixed_index = 0
+        let g:bufferline_rotate = 1
+        let g:bufferline_show_bufnr = 1
+        let g:bufferline_active_buffer_left = '['
+        let g:bufferline_active_buffer_right = ']'
+    endif
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Syntastic - Check syntax error
-" git clone https://github.com/scrooloose/syntastic.git ~/.vim/bundle/syntastic
-try
-    set statusline+=%#warningmsg#
-    set statusline+=%{SyntasticStatuslineFlag()}
-    set statusline+=%*
-    let g:syntastic_always_populate_loc_list = 1
-    let g:syntastic_auto_loc_list = 0
-    let g:syntastic_check_on_open = 1
-    let g:syntastic_check_on_wq = 0
-    let g:syntastic_auto_jump = 0
-    let g:syntastic_java_checkers=['']
-catch
-endtry
-" Cycle through errors
-nnoremap <F2> :try<CR>lnext<CR>catch /E42/<CR>catch /E553/<CR>lfirst<CR>endtry<CR><CR>
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " Syntastic - Check syntax error
+    " git clone https://github.com/scrooloose/syntastic.git ~/.vim/bundle/syntastic
+    if exists(':SyntasticCheck')
+        set statusline+=%#warningmsg#
+        set statusline+=%{SyntasticStatuslineFlag()}
+        set statusline+=%*
+        let g:syntastic_always_populate_loc_list = 1
+        let g:syntastic_auto_loc_list = 0
+        let g:syntastic_check_on_open = 1
+        let g:syntastic_check_on_wq = 0
+        let g:syntastic_auto_jump = 0
+        let g:syntastic_java_checkers=['']
+        " Cycle through errors
+        nnoremap <F2> :try<CR>lnext<CR>catch /E42/<CR>catch /E553/<CR>lfirst<CR>endtry<CR><CR>
+    endif
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Neocomplete - Code completion
-" git clone https://github.com/Shougo/neocomplete.vim.git ~/.vim/bundle/neocomplete.vim
-"  silent! let g:neocomplete#enable_at_startup = 1
-"  silent! inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-try
-    " Disable AutoComplPop.
-    let g:acp_enableAtStartup = 0
-    " Use neocomplete.
-    let g:neocomplete#enable_at_startup = 1
-    " Use smartcase.
-    let g:neocomplete#enable_smart_case = 1
-    " Set minimum syntax keyword length.
-    let g:neocomplete#sources#syntax#min_keyword_length = 3
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " Neocomplete - Code completion
+    " git clone https://github.com/Shougo/neocomplete.vim.git ~/.vim/bundle/neocomplete.vim
+    "  silent! let g:neocomplete#enable_at_startup = 1
+    "  silent! inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+    if exists(':NeoCompleteEnable')
+        " Disable AutoComplPop.
+        let g:acp_enableAtStartup = 0
+        " Use neocomplete.
+        let g:neocomplete#enable_at_startup = 1
+        " Use smartcase.
+        let g:neocomplete#enable_smart_case = 1
+        " Set minimum syntax keyword length.
+        let g:neocomplete#sources#syntax#min_keyword_length = 3
 
-    " Plugin key-mappings.
-    inoremap <expr><C-g>     neocomplete#undo_completion()
-    inoremap <expr><C-l>     neocomplete#complete_common_string()
+        " Plugin key-mappings.
+        inoremap <expr><C-g>     neocomplete#undo_completion()
+        inoremap <expr><C-l>     neocomplete#complete_common_string()
 
-    " Recommended key-mappings.
-    " <CR>: close popup and save indent.
-    inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-    function! s:my_cr_function()
-        return neocomplete#close_popup() . "\<CR>"
-    endfunction
-    " <TAB>: completion.
-    inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-    " <C-h>, <BS>: close popup and delete backword char.
-    inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-    inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-    inoremap <expr><C-y>  neocomplete#close_popup()
-    inoremap <expr><C-e>  neocomplete#cancel_popup()
+        " Recommended key-mappings.
+        " <CR>: close popup and save indent.
+        inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+        function! s:my_cr_function()
+            return neocomplete#close_popup() . "\<CR>"
+        endfunction
+        " <TAB>: completion.
+        inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+        " <C-h>, <BS>: close popup and delete backword char.
+        inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+        inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+        inoremap <expr><C-y>  neocomplete#close_popup()
+        inoremap <expr><C-e>  neocomplete#cancel_popup()
 
-    " Auto close top window preview
-    let g:neocomplete#enable_auto_close_preview=1
-    " Disable window preview
-    set completeopt-=preview
-catch
-endtry
+        " Auto close top window preview
+        let g:neocomplete#enable_auto_close_preview=1
+        " Disable window preview
+        set completeopt-=preview
+    endif
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Vim-go - Golang support
-" git clone https://github.com/fatih/vim-go.git ~/.vim/bundle/vim-go
-"
-" Check https://github.com/fatih/vim-go
-" Use :GoInstallBinaries to install all the needed binaries.
-"
-" Set gocode autobuild for updated autocompletion:
-" $ gocode set autobuild true
-"
-try
-    " Shortcuts:
-    au FileType go nmap <leader>r <Plug>(go-run)
-    au FileType go nmap <leader>b <Plug>(go-build)
-    au FileType go nmap <leader>t <Plug>(go-test)
-    au FileType go nmap <leader>c <Plug>(go-coverage)
-    au FileType go nmap <Leader>ds <Plug>(go-def-split)
-    au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
-    au FileType go nmap <Leader>dt <Plug>(go-def-tab)
-    au FileType go nmap <Leader>gd <Plug>(go-doc)
-    au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
-    au FileType go nmap <Leader>gb <Plug>(go-doc-browser)
-    au FileType go nmap <Leader>s <Plug>(go-implements)
-    au FileType go nmap <Leader>i <Plug>(go-info)
-    au FileType go nmap <Leader>e <Plug>(go-rename)
-    " Emulate tags:
-    au FileType go nmap <C-]> <Plug>(go-def)
-    " Replace go run:
-    au FileType go nmap <Leader>r :!go run %<CR>
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " Vim-go - Golang support
+    " git clone https://github.com/fatih/vim-go.git ~/.vim/bundle/vim-go
+    "
+    " Check https://github.com/fatih/vim-go
+    " Use :GoInstallBinaries to install all the needed binaries.
+    "
+    " Set gocode autobuild for updated autocompletion:
+    " $ gocode set autobuild true
+    "
+    if exists(':GoPath')
+        " Shortcuts:
+        au FileType go nmap <leader>r <Plug>(go-run)
+        au FileType go nmap <leader>b <Plug>(go-build)
+        au FileType go nmap <leader>t <Plug>(go-test)
+        au FileType go nmap <leader>c <Plug>(go-coverage)
+        au FileType go nmap <Leader>ds <Plug>(go-def-split)
+        au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
+        au FileType go nmap <Leader>dt <Plug>(go-def-tab)
+        au FileType go nmap <Leader>gd <Plug>(go-doc)
+        au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
+        au FileType go nmap <Leader>gb <Plug>(go-doc-browser)
+        au FileType go nmap <Leader>s <Plug>(go-implements)
+        au FileType go nmap <Leader>i <Plug>(go-info)
+        au FileType go nmap <Leader>e <Plug>(go-rename)
+        " Emulate tags:
+        au FileType go nmap <C-]> <Plug>(go-def)
+        " Replace go run:
+        au FileType go nmap <Leader>r :!go run %<CR>
 
-    " Highlights:
-    let g:go_highlight_functions = 1
-    let g:go_highlight_methods = 1
-    let g:go_highlight_structs = 1
-    let g:go_highlight_interfaces = 1
-    let g:go_highlight_operators = 1
-    let g:go_highlight_build_constraints = 1
+        " Highlights:
+        let g:go_highlight_functions = 1
+        let g:go_highlight_methods = 1
+        let g:go_highlight_structs = 1
+        let g:go_highlight_interfaces = 1
+        let g:go_highlight_operators = 1
+        let g:go_highlight_build_constraints = 1
 
-    " Go fmt with organize imports:
-    let g:go_fmt_command = "goimports"
-catch
-endtry
+        " Go fmt with organize imports:
+        let g:go_fmt_command = "goimports"
+    endif
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Nerd tree - Browse files
-" git clone https://github.com/scrooloose/nerdtree.git ~/.vim/bundle/nerdtree
-try
-    " Shortcut:
-    nmap <Leader>; :NERDTreeToggle<CR>
-    au FileType nerdtree nmap <buffer> <left> x
-    au FileType nerdtree nmap <buffer> <right> o
-    " Close vim when Nerd tree is the last window
-    autocmd bufenter *
-        \ if (winnr("$") == 1 
-        \ && exists("b:NERDTree")
-        \ && b:NERDTree.isTabTree()) | q | endif
-    " General
-    let NERDTreeDirArrows=1
-    let NERDTreeMinimalUI=1
-    let NERDTreeIgnore=['\.o$', '\.pyc$', '\.php\~$']
-    let NERDTreeWinSize = 30
-    let NERDTreeQuitOnOpen=1
-    let NERDTreeCascadeOpenSingleChildDir=1
-catch
-endtry
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " Nerd tree - Browse files
+    " git clone https://github.com/scrooloose/nerdtree.git ~/.vim/bundle/nerdtree
+    if exists(':NERDTree')
+        " Shortcut:
+        nmap <Leader>; :NERDTreeToggle<CR>
+        au FileType nerdtree nmap <buffer> <left> x
+        au FileType nerdtree nmap <buffer> <right> o
+        " Close vim when Nerd tree is the last window
+        autocmd bufenter *
+            \ if (winnr("$") == 1 
+            \ && exists("b:NERDTree")
+            \ && b:NERDTree.isTabTree()) | q | endif
+        " General
+        let NERDTreeDirArrows=1
+        let NERDTreeMinimalUI=1
+        let NERDTreeIgnore=['\.o$', '\.pyc$', '\.php\~$']
+        let NERDTreeWinSize = 30
+        let NERDTreeQuitOnOpen=1
+        let NERDTreeCascadeOpenSingleChildDir=1
+    endif
 
-""""
-" git clone https://github.com/vivien/vim-linux-coding-style.git ~/.vim/bundle/vim-linux-coding-style
-"
-try
-    let g:linuxsty_patterns = [ "xenial", "linux"  ]
-catch
-endtry
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " git clone https://github.com/vivien/vim-linux-coding-style.git ~/.vim/bundle/vim-linux-coding-style
+    "
+    if exists(':LinuxCodingStyle')
+        let g:linuxsty_patterns = [ "xenial", "linux"  ]
+    endif
+endfunction
+au VimEnter * call SetBundleOptions()
