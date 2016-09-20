@@ -7,7 +7,7 @@
 #
 # Add it to user's crontab using crontab -e. Example:
 #
-#   DISPLAY=:0                                                                                                              
+#   DISPLAY=:0
 #   */10 * * * * ~/bin/google-calendar-remider.sh
 #
 
