@@ -4,4 +4,7 @@
 [core]
 	editor = vim +:0
 [alias]
-	list = log --oneline --decorate=full --graph --all
+	s        = status
+	l        = log --oneline --decorate=full
+	list     = log --oneline --decorate=full
+	list-all = log --oneline --decorate=full --graph --all
