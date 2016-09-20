@@ -45,6 +45,9 @@ autocmd FileType javascript,scala set
 
 autocmd Filetype make set
     \ noexpandtab
+    \ tabstop=8
+    \ softtabstop=8
+    \ shiftwidth=8
 
 " Syntax, color and highlight
 filetype plugin indent on
