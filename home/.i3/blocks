@@ -21,88 +21,128 @@
 # urgent
 
 # Global properties
+#
+# The top properties below are applied to every block, but can be overridden.
+# Each block command defaults to the script name to avoid boilerplate.
+command=/usr/share/i3blocks/$BLOCK_NAME
 separator_block_width=15
+markup=none
 
-[capslock]
+# Key indicators
+#
+# Add the following bindings to i3 config file:
+#
+# bindsym --release Caps_Lock exec pkill -SIGRTMIN+11 i3blocks
+# bindsym --release Num_Lock  exec pkill -SIGRTMIN+11 i3blocks
+[keyindicator]
 instance=CAPS
-command=$HOME/.i3/scripts/keyindicator
-interval=1
+interval=once
 signal=11
 separator=false
 
-[numlock]
+[keyindicator]
 instance=NUM
-command=$HOME/.i3/scripts/keyindicator
-interval=1
+interval=once
 signal=11
 
-[disk-root]
-label=/
-instance=/
-command=/usr/lib/i3blocks/disk
-interval=30
-
-[disk-home]
-label=/home
-instance=/home/
-command=/usr/lib/i3blocks/disk
-interval=30
-
-[wireless]
-label=W
-instance=wlan0
-#command=/usr/lib/i3blocks/network
-command=$HOME/.i3/scripts/network '#555555'
-color=#FFFFFF
-interval=10
-
-[ethernet]
-label=E
-instance=eth0,enp0s3
-#command=/usr/lib/i3blocks/network
-command=$HOME/.i3/scripts/network '#555555'
-color=#FFFFFF
-interval=10
-
-[memory]
-label=MEM
-command=/usr/lib/i3blocks/memory
-interval=30
-separator=false
-
-[swap]
-label=SWAP
-instance=swap
-command=/usr/lib/i3blocks/memory
-interval=30
-
-[cpu]
-label=CPU
-command=$HOME/.i3/scripts/cpu_usage -f '% 6.2f%%'
-interval=10
-separator=false
-
-[load]
-command=/usr/lib/i3blocks/load_average
-interval=10
-separator=false
-
-[temperature]
-command=echo "$(sensors coretemp-isa-0000 | awk '/Physical/ { gsub(/^\+/, "", $4); print $4 }')"
-interval=30
-
-[battery]
-label=⚡
-command=/usr/lib/i3blocks/battery
-interval=30
-
+# Volume indicator
+#
+# The first parameter sets the step (and units to display)
+# The second parameter overrides the mixer selection
+# See the script for details.
 [volume]
+#label=VOL
 label=♪
 instance=Master
-command=/usr/lib/i3blocks/volume
+#instance=PCM
 interval=once
 signal=10
 
+# Memory usage
+#
+# The type defaults to "mem" if the instance is not specified.
+[memory]
+label=MEM
+separator=false
+interval=30
+
+#[memory]
+#label=SWAP
+#instance=swap
+#separator=false
+#interval=30
+
+# Disk usage
+#
+# The directory defaults to $HOME if the instance is not specified.
+# The script may be called with a optional argument to set the alert
+# (defaults to 10 for 10%).
+[disk]
+label=/
+instance=/
+interval=30
+
+# Network interface monitoring
+#
+# If the instance is not specified, use the interface used for default route.
+# The address can be forced to IPv4 or IPv6 with -4 or -6 switches.
+[iface]
+#instance=wlan0
+color=#FFFFFF
+interval=10
+separator=false
+
+[wifi]
+#instance=wlp3s0
+interval=10
+separator=false
+
+[bandwidth]
+#instance=eth0
+interval=5
+#separator=false
+
+# OpenVPN support
+#
+# Support multiple VPN, with colors.
+#[openvpn]
+#interval=20
+
+# CPU usage
+#
+# The script may be called with -w and -c switches to specify thresholds,
+# see the script for details.
+[cpu_usage]
+label=CPU
+interval=10
+min_width=CPU: 100.00%
+separator=false
+
+[load_average]
+interval=10
+
+# Battery indicator
+#
+# The battery instance defaults to 0.
+[battery]
+label=BAT
+#label=⚡
+#instance=1
+interval=30
+
+# Date Time
+#
 [time]
 command=date '+%Y-%m-%d %H:%M:%S'
 interval=5
+
+# Generic media player support
+#
+# This displays "ARTIST - SONG" if a music is playing.
+# Supported players are: spotify, vlc, audacious, xmms2, mplayer, and others.
+#[mediaplayer]
+#instance=spotify
+#interval=5
+#signal=10
+
+
