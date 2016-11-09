@@ -4,6 +4,7 @@
 [core]
 	editor = vim +:0
 [alias]
+	d        = diff
 	s        = status
 	l        = log --oneline --decorate=full
 	list     = log --oneline --decorate=full
