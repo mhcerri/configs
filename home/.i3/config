@@ -172,6 +172,7 @@ bar {
 
 # Additional custom config
 focus_follows_mouse no
+workspace_layout tabbed
 bindsym $mod+u [urgent=latest] focus
 bindsym $mod+z workspace back_and_forth
 bindsym $mod+Tab workspace back_and_forth
