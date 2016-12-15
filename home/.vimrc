@@ -189,8 +189,6 @@ function! SetBundleOptions()
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     " Neocomplete - Code completion
     " git clone https://github.com/Shougo/neocomplete.vim.git ~/.vim/bundle/neocomplete.vim
-    "  silent! let g:neocomplete#enable_at_startup = 1
-    "  silent! inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
     if exists(':NeoCompleteEnable')
         " Disable AutoComplPop.
         let g:acp_enableAtStartup = 0
