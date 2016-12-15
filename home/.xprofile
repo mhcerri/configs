@@ -50,6 +50,10 @@ xsetroot -solid '#555555'
 xautolock -detectsleep -time 10 -locker '~/.i3/lock -c 000000' &
 ~/.i3/xautolock-dbus &
 
+# Keyring
+eval $(/usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh)
+export GNOME_KEYRING_CONTROL GNOME_KEYRING_PID GPG_AGENT_INFO SSH_AUTH_SOCK
+
 run_bg() {
 	if which "$1" > /dev/null; then
 		"$@" &
