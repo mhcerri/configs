@@ -158,6 +158,10 @@ function! SetBundleOptions()
     " git clone https://github.com/godlygeek/csapprox.git ~/.vim/bundle/csapprox
 
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " Jedi-vim - Python support
+    " git clone --recursive https://github.com/davidhalter/jedi-vim.git ~/.vim/bundle/jedi-vim
+
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     " Vim bufferline - List buffer in the command line
     " git clone https://github.com/bling/vim-bufferline ~/.vim/bundle/vim-bufferline
     if exists("g:bufferline_echo")
