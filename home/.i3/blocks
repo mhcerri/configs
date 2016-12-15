@@ -121,6 +121,9 @@ separator=false
 [load_average]
 interval=10
 
+[temperature]
+interval=10
+
 # Battery indicator
 #
 # The battery instance defaults to 0.
