@@ -29,16 +29,20 @@ set fileencoding=utf-8
 
 " Editing options
 set autoindent
-set expandtab
+set noexpandtab
 set backspace=2
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
+set tabstop=8
+set softtabstop=8
+set shiftwidth=8
 set smartindent
 set title
 set hidden
 
+autocmd FileType C set
+    \ setlocal textwidth=80
+
 autocmd FileType javascript,scala set
+    \ expandtab
     \ tabstop=2
     \ softtabstop=2
     \ shiftwidth=2
@@ -48,6 +52,12 @@ autocmd Filetype make set
     \ tabstop=8
     \ softtabstop=8
     \ shiftwidth=8
+
+autocmd Filetype python set
+    \ expandtab
+    \ tabstop=4
+    \ softtabstop=4
+    \ shiftwidth=4
 
 " Syntax, color and highlight
 filetype plugin indent on
