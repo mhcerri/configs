@@ -1,0 +1,113 @@
+#!/usr/bin/perl
+use strict;
+use File::Basename;
+
+my %args = (
+    user    => undef,
+    domain  => undef,
+    port    => 22,
+    cmd     => "ssh",
+    verbose => 0,
+);
+
+sub debug($) {
+	if ($args{verbose}) {
+		print $_[0];
+	}
+}
+
+# Parse arguments
+while (@ARGV) {
+    my $arg = shift @ARGV;
+    if ($arg =~ /^(-h|--help)$/) {
+        print "Usage: \n";
+        print "    " . basename($0) . " [OPTIONS] [USER@]DOMAIN\n";
+        print "Options: \n";
+        print "    -p, --port <port> (default: 22)\n";
+        print "    -c, --command <ssh command> (default: ssh)\n";
+        print "    -v, --verbose\n";
+        exit(0);
+    }
+    elsif ($arg =~ /^(-p|--port)$/) {
+        $args{port} = shift @ARGV;
+    }
+    elsif ($arg =~ /^(-c|--command)$/) {
+        $args{cmd} = shift @ARGV;
+    }
+    elsif ($arg =~ /^(-v|--verbose)$/) {
+        $args{verbose} = 1;
+    }
+    elsif ($arg =~ /^-/) {
+        print "Invalid argument: $arg.\n";
+        exit(1);
+    }
+    else {
+	if (defined $args{domain}) {
+		print "Multiple domains are not supported.\n";
+		exit(1);
+	}
+	($args{domain}, $args{user}) = reverse split(/@/, $arg, 2);
+    }
+}
+
+if (!defined $args{domain}) {
+	print "Missing domain.\n";
+	exit(1);
+}
+
+# Start domain
+# TODO: check if it's running before
+debug("Starting domain \"$args{domain}\".\n");
+system("virsh start \"$args{domain}\" 1> /dev/null 2> /dev/null");
+
+# Wait for IP
+my $waiting = 0;
+my $ipv4 = undef;
+while (!defined $ipv4) {
+	# Read virsh domifaddr outout
+	open(OUT, "virsh domifaddr \"$args{domain}\" |") or die "Error: $!";
+	while (<OUT>) {
+		if (/^\s*\w+\s+[^\s]+\s+ipv4\s+(\d+\.\d+\.\d+\.\d+)(\/.*)?\s*$/) {
+			$ipv4 = $1;
+			last;
+		}
+	}
+	close(OUT) or die "Error: $!";
+	if (!defined $ipv4) {
+		if (!$waiting) {
+			debug("Waiting for IP address of domain \"$args{domain}\" ");
+			$waiting = 1;
+		} else {
+			debug(".");
+		}
+		sleep(1);
+	} elsif ($waiting) {
+		debug("\n");
+	}
+}
+debug("Found IP address $ipv4 for domain \"$args{domain}\".\n");
+
+# Wait for SSH port
+$waiting = 0;
+while (system("nc -z -w1 \"$ipv4\" \"$args{port}\"")) {
+	if (!$waiting) {
+		debug("Waiting for port $args{port} ");
+		$waiting = 1;
+	} else {
+		debug(".");
+	}
+	sleep(1);
+}
+if ($waiting) {
+	debug("\n");
+}
+
+# Connect via SSH
+my $user = "";
+if (defined $args{user}) {
+	$user = "$args{user}@"
+}
+my $cmd="ssh -p \"$args{port}\" \"$user$ipv4\"";
+debug("Running: $cmd\n");
+exec($cmd);
+
