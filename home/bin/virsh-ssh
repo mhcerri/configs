@@ -107,7 +107,7 @@ my $user = "";
 if (defined $args{user}) {
 	$user = "$args{user}@"
 }
-my $cmd="ssh -p \"$args{port}\" \"$user$ipv4\"";
+my $cmd="$args{cmd} -p \"$args{port}\" \"$user$ipv4\"";
 debug("Running: $cmd\n");
 exec($cmd);
 
