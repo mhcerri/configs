@@ -1,3 +1,4 @@
 home/bin/go
 home/.mutt/my_pass*
 home/.mutt/cache
+home/.imapfilter/config.lua
