@@ -9,4 +9,4 @@ set crypt_verify_sig            = yes
 set crypt_confirmhook           = no
 
 # crypt-hook's for GPG groups
-source 'mutt-gpg-groups.pl|'
+source '~/.mutt/mutt-gpg-groups.pl|'
