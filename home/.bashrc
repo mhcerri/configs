@@ -4,8 +4,8 @@
 
 # If not running interactively, don't do anything
 case $- in
-    *i*) ;;
-      *) return;;
+	*i*) ;;
+	  *) return;;
 esac
 
 # don't put duplicate lines or lines starting with space in the history.
@@ -32,16 +32,16 @@ shopt -s checkwinsize
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
+	debian_chroot=$(cat /etc/debian_chroot)
 fi
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
+	test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+	alias ls='ls --color=auto'
+	alias grep='grep --color=auto'
+	alias fgrep='fgrep --color=auto'
+	alias egrep='egrep --color=auto'
 fi
 
 # colored GCC warnings and errors
@@ -51,11 +51,11 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
+	if [ -f /usr/share/bash-completion/bash_completion ]; then
+		. /usr/share/bash-completion/bash_completion
+	elif [ -f /etc/bash_completion ]; then
+		. /etc/bash_completion
+	fi
 fi
 
 # Source any distro specific base shell
@@ -67,9 +67,9 @@ fi
 # Set prompt
 #
 case "$TERMINAL" in
-    terminology)
-        export  TERM=xterm-256color
-        ;;
+	terminology)
+		export  TERM=xterm-256color
+		;;
 esac
 
 # Uncomment for color prompt when supported
@@ -77,22 +77,22 @@ color_prompt_when_supported=yes
 
 # Check for color support
 if [ -n "$color_prompt_when_supported" ]; then
-    if [ -x /usr/bin/tput ] && tput setaf 1 >& /dev/null; then
-        color_prompt=yes
-    fi
+	if [ -x /usr/bin/tput ] && tput setaf 1 >& /dev/null; then
+		color_prompt=yes
+	fi
 fi
 
 # Define prompt fragments
 jobs_ps1='$(
-    N="$(jobs 2> /dev/null | wc -l)"
-    if [[ -n "$N" ]] && [[ "$N" != 0 ]]; then
-        if [[ "$N" == 1 ]]; then
-            N="${N} job"
-        else
-            N="${N} jobs"
-        fi
-        echo "[$N] "
-    fi
+	N="$(jobs 2> /dev/null | wc -l)"
+	if [[ -n "$N" ]] && [[ "$N" != 0 ]]; then
+		if [[ "$N" == 1 ]]; then
+			N="${N} job"
+		else
+			N="${N} jobs"
+		fi
+		echo "[$N] "
+	fi
 )'
 debian_chroot_ps1='${debian_chroot:+($debian_chroot)}'
 rc_ps1='$(RC="$?"; [[ "$RC" -ne 0 ]] && echo -n "[rc=$RC] ")'
@@ -103,13 +103,13 @@ git_ps1='$(__git_ps1 " (%s)" 2> /dev/null)'
 
 # Add color to fragments
 if [ "$color_prompt" = yes ]; then
-    # No color for debian_chroot_ps1
-    [ -n "$rc_ps1"     ] &&     rc_ps1="\[\033[01;31m\]$rc_ps1\[\033[01;00m\]"
-    [ -n "$jobs_ps1"   ] &&   jobs_ps1="\[\033[01;32m\]$jobs_ps1\[\033[01;00m\]"
-    [ -n "$login_ps1"  ] &&  login_ps1="\[\033[01;32m\]$login_ps1\[\033[00m\]"
-    [ -n "$window_ps1" ] && window_ps1="\[\033[01;33m\]$window_ps1\[\033[00m\]"
-    [ -n "$pwd_ps1"    ] &&    pwd_ps1="\[\033[01;34m\]$pwd_ps1\[\033[00m\]"
-    [ -n "$git_ps1"    ] &&    git_ps1="\[\033[01;31m\]$git_ps1\[\033[01;00m\]"
+	# No color for debian_chroot_ps1
+	[ -n "$rc_ps1"     ] &&     rc_ps1="\[\033[01;31m\]$rc_ps1\[\033[01;00m\]"
+	[ -n "$jobs_ps1"   ] &&   jobs_ps1="\[\033[01;32m\]$jobs_ps1\[\033[01;00m\]"
+	[ -n "$login_ps1"  ] &&  login_ps1="\[\033[01;32m\]$login_ps1\[\033[00m\]"
+	[ -n "$window_ps1" ] && window_ps1="\[\033[01;33m\]$window_ps1\[\033[00m\]"
+	[ -n "$pwd_ps1"    ] &&    pwd_ps1="\[\033[01;34m\]$pwd_ps1\[\033[00m\]"
+	[ -n "$git_ps1"    ] &&    git_ps1="\[\033[01;31m\]$git_ps1\[\033[01;00m\]"
 fi
 
 # Set prompt
@@ -135,7 +135,7 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
 if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+	. ~/.bash_aliases
 fi
 
 #
@@ -151,26 +151,26 @@ fi
 
 # Add user local bin/ directory to path
 if [[ -e "$HOME/bin" ]]; then
-    export PATH="$HOME/bin:$PATH"
+	export PATH="$HOME/bin:$PATH"
 fi
 
 # Add ruby gems to path
 if which ruby &>/dev/null; then
-    export PATH="$(ruby -e 'print Gem.user_dir')/bin:$PATH"
+	export PATH="$(ruby -e 'print Gem.user_dir')/bin:$PATH"
 fi
 
 #
 # Proxy settings
 #
 if [[ -z "$proxy_addr" ]]; then
-    proxy_file="$HOME/.proxy"
-    if [[ -f "$proxy_file" ]]; then
-        proxy_addr=$( cat "$proxy_file" )
-    fi
+	proxy_file="$HOME/.proxy"
+	if [[ -f "$proxy_file" ]]; then
+		proxy_addr=$( cat "$proxy_file" )
+	fi
 fi
 if [[ -n "$proxy_addr" ]]; then
-    export http_proxy="$proxy_addr"
-    export https_proxy="$proxy_addr"
+	export http_proxy="$proxy_addr"
+	export https_proxy="$proxy_addr"
 fi
 unset proxy_addr proxy_file
 
@@ -180,17 +180,17 @@ unset proxy_addr proxy_file
 
 # Add Go user dirs to path
 if which go &> /dev/null; then
-    export GOPATH="$HOME/go"
-    export PATH="$PATH:$GOPATH/bin"
-    [[ ! -e "$GOPATH" ]] && mkdir -p "$GOPATH"
+	export GOPATH="$HOME/go"
+	export PATH="$PATH:$GOPATH/bin"
+	[[ ! -e "$GOPATH" ]] && mkdir -p "$GOPATH"
 fi
 
 # Alias to set GOPATH as the current directory
 alias gopath='
-    export GOPATH="$PWD";
-    export GO15VENDOREXPERIMENT=1;
-    echo "GOPATH=\"$GOPATH\"";
-    echo "GO15VENDOREXPERIMENT=\"$GO15VENDOREXPERIMENT\"";
+	export GOPATH="$PWD";
+	export GO15VENDOREXPERIMENT=1;
+	echo "GOPATH=\"$GOPATH\"";
+	echo "GO15VENDOREXPERIMENT=\"$GO15VENDOREXPERIMENT\"";
 '
 
 #
@@ -202,16 +202,16 @@ if [[ ! -e "$PYTHONSTARTUP" ]]; then
 cat > "$PYTHONSTARTUP" << END
 # Auto generated by ~/.bashrc
 try:
-    import readline
+	import readline
 except ImportError:
-    print("Module readline not available.")
+	print("Module readline not available.")
 else:
-    import rlcompleter
-    readline.parse_and_bind("tab: complete")
+	import rlcompleter
+	readline.parse_and_bind("tab: complete")
 END
 fi
 if [ -e "/usr/bin/virtualenvwrapper.sh" ]; then
-    . /usr/bin/virtualenvwrapper.sh
+	. /usr/bin/virtualenvwrapper.sh
 fi
 
 #
@@ -220,15 +220,15 @@ fi
 alias t=todo-txt
 declare -f _todo 2>&1 >/dev/null ||
 for f in \
-    /usr/share/bash-completion/completions/todo-txt
+	/usr/share/bash-completion/completions/todo-txt
 do
-    if [ -f "$f" ]; then
-        source "$f"
-        break
-    fi
+	if [ -f "$f" ]; then
+		source "$f"
+		break
+	fi
 done
 if declare -f _todo 2>&1 >/dev/null; then
-    complete -F _todo t
+	complete -F _todo t
 fi
 
 #
@@ -236,5 +236,5 @@ fi
 #
 
 if [ -f ~/.bash_local ]; then
-    . ~/.bash_local
+	. ~/.bash_local
 fi
