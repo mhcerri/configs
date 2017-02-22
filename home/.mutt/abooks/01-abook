@@ -1,0 +1,3 @@
+#!/bin/sh
+abook --mutt-query "$1"
+exit 0

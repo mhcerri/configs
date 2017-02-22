@@ -1,0 +1,13 @@
+# Address book.
+
+# Common tools
+#set query_command = "abook --mutt-query '%s'"
+#set query_command = "/usr/lib/lbdb/mutt_ldap_query -i '%s'"
+
+# Use multiple address books:
+# https://dev.mutt.org/trac/wiki/QueryCommand#UsingMultipleQueryTools
+set query_command = "echo; /bin/run-parts -a %s ~/.mutt/abooks/ | grep '@'"
+
+# Address book shortcuts
+macro index a "|abook --add-email\n" 'add sender to abook'
+macro pager a "|abook --add-email\n" 'add sender to abook'

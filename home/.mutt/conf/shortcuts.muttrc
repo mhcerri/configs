@@ -1,0 +1,35 @@
+# Genera binds and macros
+
+# vi-like bindings and others
+bind pager j next-line
+bind pager k previous-line
+macro index <insert> 'Wn'
+
+# Scroll inside the message rather than the index
+bind pager <up> previous-line
+bind pager <down> next-line
+
+# ctrl-a mark all messages in a mailbox as read.
+# 
+# 1. Tag unread messages.
+# 2. Mark all tagged messages as read.
+# 3. Untag tagged messages.
+#
+#              1.           2.   3.
+#               \___________ \___ \__
+#macro index \Ca 'T~U<return>'';Wn'';t'
+
+# ctrl-a mark all messages in a mailbox as read (faster version).
+# 
+# 1. Ensures that there's at least one unread message. Steps 3, 4 and 5 can
+#    fail if no message is filtered in step 2.
+# 2. Filter just unread messages (this makes next operations faster in big
+#    mailboxes).
+# 3. Tag unread messages.
+# 4. Mark all tagged messages as read.
+# 5. Untag tagged messages.
+# 6. Remove filter and show all messages.
+#
+#              1.  2.           3.           4.   5.  6.
+#               \__ \___________ \___________ \___ \__ \___________
+macro index \Ca 'wn''l~U<return>''T~U<return>'';Wn'';t''l~A<return>'

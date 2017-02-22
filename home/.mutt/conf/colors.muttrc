@@ -1,0 +1,17 @@
+# Colors
+
+# to use solarized theme, also replace "default" with "color 234"
+# git clone https://github.com/altercation/mutt-colors-solarized.git ~/.mutt/colors/mutt-colors-solarized
+source ~/.mutt/colors/mutt-colors-solarized/mutt-colors-solarized-dark-256.muttrc
+
+# Colors for patches!
+color body red          default "^>+ -.*"
+color body brightred    default "^-.*"
+color body green        default "^>+ [+].*"
+color body brightgreen  default "^[+].*"
+color body white        default "^>+ diff --git.*"
+color body brightwhite  default "^diff --git.*"
+color body white        default "^>+ index [a-f0-9].*"
+color body brightwhite  default "^index [a-f0-9].*"
+color body yellow       default "^>+ @@.*"
+color body brightyellow default "^@@.*"

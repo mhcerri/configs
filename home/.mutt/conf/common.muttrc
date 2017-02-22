@@ -1,0 +1,37 @@
+# Common configs
+
+# Cache for headers and bodies
+set header_cache            = ~/.mutt/cache/headers
+set message_cachedir        = ~/.mutt/cache/bodies
+
+# Sort and wrap
+set sort                    = threads
+set sort_aux                = last-date-received
+#set sort_aux                = reverse-last-date-received
+#set sort_aux                = date
+set smart_wrap              = yes
+
+# VIM in mail mode as default editor
+set editor                  = 'vim +"/^$" -c "let @/ = \"\"" -c "set textwidth=72" -c "set wrap" -c "set nocp" -c "set spell"'
+
+# View HTML messages in links (check ~/.mailcap)
+auto_view text/html
+alternative_order text/plain text/html
+
+# Set an external alias file
+set alias_file              = ~/.mutt/alias
+
+# Additional settings
+set beep_new                = no    # no alert on new messages
+set edit_headers            = yes   # always edit message headers in editor
+set include                 = yes   # always include messages when replying
+set pager_index_lines       = 10    # show some lines from index on top message body
+set pager_stop              = yes   # Stop at the end instead jumping to next email
+set pager_context           = 3     # Show context lines when going to next page
+set signature               = "echo 'Regards,\nMarcelo\n'|" # Signature
+set sig_on_top              = no    # Signature after any quoted or forwarded text
+set menu_scroll             = yes   # Do not use pages in index
+set markers                 = no    # Remove '+' markers in wrapped lines
+set sleep_time              = 0     # Speed up folders switch
+set forward_format          = "Fwd: %s" # Forwarded message subject
+set folder_format="%2C %t %6N %F %2l %-8.8u %-8.8g %8s %d %f" # Align folder list
