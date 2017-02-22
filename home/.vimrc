@@ -53,7 +53,7 @@ autocmd Filetype make set
     \ softtabstop=8
     \ shiftwidth=8
 
-autocmd Filetype python,sh set
+autocmd Filetype python set
     \ expandtab
     \ tabstop=4
     \ softtabstop=4
