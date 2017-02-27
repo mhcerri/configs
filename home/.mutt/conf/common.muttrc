@@ -35,3 +35,6 @@ set markers                 = no    # Remove '+' markers in wrapped lines
 set sleep_time              = 0     # Speed up folders switch
 set forward_format          = "Fwd: %s" # Forwarded message subject
 set folder_format="%2C %t %6N %F %2l %-8.8u %-8.8g %8s %d %f" # Align folder list
+
+# Used mainly to add the local date for messages
+set display_filter          = "~/.mutt/display_filter.sh"
