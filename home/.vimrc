@@ -67,6 +67,7 @@ set hlsearch
 try
     " Inverse priority list of preferred color schemes:
     colorscheme industry
+    hi ColorColumn ctermbg=232 ctermfg=1
     " git clone https://github.com/endel/vim-github-colorscheme.git ~/.vim/bundle/vim-github-colorscheme
     if &t_Co >= 256
         colorscheme github
