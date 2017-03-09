@@ -117,6 +117,9 @@ nmap <Leader>v :tabe ~/.vimrc<CR>
 set pastetoggle=<Ins>
 nmap <Ins> :set paste<CR>i
 
+" Re-wrap paragraph
+nmap <Leader>w {gq}
+
 " Scroll the screen before the cursor reaches edge
 set scrolloff=5
 
