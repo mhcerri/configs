@@ -17,12 +17,17 @@ bugs = function()
 	return acct.Bugs:is_unseen()
 end
 results = (
+	-- Bugs related to me
 	bugs():contain_field('X-Launchpad-Message-For', lp_user)
 		:contain_field('X-Launchpad-Message-Rationale', 'Subscriber')
 		:match_field('X-Launchpad-Message-Rationale', '^Subscriber$') +
 	bugs():contain_field('X-Launchpad-Bug-Commenters', lp_user) +
 	bugs():contain_field('X-Launchpad-Bug-Reporter', lp_user) +
-	bugs():contain_field('X-Launchpad-Bug-Modifier', lp_user)
+	bugs():contain_field('X-Launchpad-Bug-Modifier', lp_user) +
+	-- Bugs related to azure
+	bugs():contain_subject('azure') +
+	bugs():contain_subject('hyperv') +
+	bugs():contain_subject('hyper-v')
 )
 results:move_messages(acct['Bugs/Important'])
 bugs():mark_seen()
