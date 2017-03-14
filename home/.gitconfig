@@ -1,11 +1,20 @@
 [user]
-	name = Marcelo Cerri
+	name = Marcelo Henrique Cerri
 	email = mhcerri@gmail.com
+
 [core]
-	editor = vim +:0
+	editor = vim +:0 -c 'set textwidth=72' -c 'set wrap' -c 'set nocp' -c 'set spell'
+	abbrev = 12
+
 [alias]
 	d        = diff
 	s        = status
+	co       = checkout
+	pick	 = cherry-pick
 	l        = log --oneline --decorate=full
 	list     = log --oneline --decorate=full
 	list-all = log --oneline --decorate=full --graph --all
+	fixes    = log --pretty=fixes
+
+[pretty]
+	fixes = Fixes: %h (\"%s\")
