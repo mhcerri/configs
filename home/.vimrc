@@ -21,8 +21,12 @@ let mapleader=";"
 silent! execute pathogen#infect()
 
 " Jump to the last position when reopening a file
+" Note: ~/.viminfo must be owned by you user
 if has("autocmd")
-  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+  autocmd BufReadPost *
+    \ if line("'\"") >= 1 && line("'\"") <= line("$") |
+    \   exe "normal! g`\"" |
+    \ endif
 endif
 
 " File encoding
