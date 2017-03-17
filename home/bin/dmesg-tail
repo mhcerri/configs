@@ -1,0 +1,5 @@
+#!/bin/bash
+# TODO: add -n option
+color=never
+[ -t 1 ] && color=always
+n=$(dmesg | wc -l) && dmesg --color="$color" -w | tail -n "+$n" -f
