@@ -102,6 +102,10 @@ hi Spellbad
 " Search tag files in parent directories
 set tags=tags;
 
+" :w!!
+" Write the file when you accidentally opened it without the right (root) privileges
+cmap w!! w !sudo tee % > /dev/null
+
 " Buffer shortcuts
 :nnoremap <Tab> :silent! bnext<CR>
 :nnoremap <S-Tab> :silent! bprevious<CR>
