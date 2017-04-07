@@ -7,7 +7,7 @@ my %args = (
     domain  => undef,
     port    => 22,
     cmd     => "ssh",
-    verbose => 0,
+    verbose => 1,
 );
 
 sub debug($) {
@@ -25,6 +25,7 @@ while (@ARGV) {
         print "Options: \n";
         print "    -p, --port <port> (default: 22)\n";
         print "    -c, --command <ssh command> (default: ssh)\n";
+        print "    -q, --quiet\n";
         print "    -v, --verbose\n";
         exit(0);
     }
@@ -33,6 +34,9 @@ while (@ARGV) {
     }
     elsif ($arg =~ /^(-c|--command)$/) {
         $args{cmd} = shift @ARGV;
+    }
+    elsif ($arg =~ /^(-q|--quiet)$/) {
+        $args{verbose} = 0;
     }
     elsif ($arg =~ /^(-v|--verbose)$/) {
         $args{verbose} = 1;
