@@ -85,6 +85,10 @@ if has('gui_running')
     "set guifont=Consolas:h10
 endif
 
+" Show tabs and other special characters
+set list
+set listchars=tab:␉·,trail:␠,nbsp:⎵
+
 " Spell
 " cd ~/.vim/spell/; wget 'http://ftp.vim.org/pub/vim/runtime/spell/pt.utf-8.spl'
 set spelllang=en,pt
