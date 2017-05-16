@@ -36,3 +36,4 @@ macro index \Ca 'wn''l~U<return>''T~U<return>'';Wn'';t''l~A<return>'
 
 # Search incoming mailboxes
 macro index Y 'y/'
+macro pager Y 'y/'
