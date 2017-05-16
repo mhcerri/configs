@@ -39,3 +39,6 @@ set narrow_tree             = yes   # Makes the thread tree narrower
 
 # Used mainly to add the local date for messages
 set display_filter          = "~/.mutt/display_filter.sh"
+
+# Open folders on the last email
+folder-hook . 'push <last-entry>'
