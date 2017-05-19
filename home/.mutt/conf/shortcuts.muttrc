@@ -10,7 +10,7 @@ bind pager <up> previous-line
 bind pager <down> next-line
 
 # ctrl-a mark all messages in a mailbox as read.
-# 
+#
 # 1. Tag unread messages.
 # 2. Mark all tagged messages as read.
 # 3. Untag tagged messages.
@@ -20,7 +20,7 @@ bind pager <down> next-line
 #macro index \Ca 'T~U<return>'';Wn'';t'
 
 # ctrl-a mark all messages in a mailbox as read (faster version).
-# 
+#
 # 1. Ensures that there's at least one unread message. Steps 3, 4 and 5 can
 #    fail if no message is filtered in step 2.
 # 2. Filter just unread messages (this makes next operations faster in big
