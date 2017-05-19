@@ -1,19 +1,29 @@
 # Side bar
 
 set sidebar_width           = 35
-set sidebar_visible         = yes
+set sidebar_visible         = no
 
 # Color of folders with new mail
 color sidebar_new yellow default
 
 # ctrl-n, ctrl-p to select next, prev folder
 # ctrl-o to open selected folder
-bind index \CP sidebar-prev
-bind index \CN sidebar-next
-bind index \CO sidebar-open
-bind pager \CP sidebar-prev
-bind pager \CN sidebar-next
-bind pager \CO sidebar-open
+
+## Regular usage:
+#bind index \CP sidebar-prev
+#bind index \CN sidebar-next
+#bind index \CO sidebar-open
+#bind pager \CP sidebar-prev
+#bind pager \CN sidebar-next
+#bind pager \CO sidebar-open
+
+## Open and close the sidebar on demand:
+macro index \CP '<enter-command>set sidebar_visible = yes<enter><sidebar-prev>'
+macro index \CN '<enter-command>set sidebar_visible = yes<enter><sidebar-next>'
+macro index \CO '<enter-command>set sidebar_visible = no<enter><sidebar-open>'
+macro pager \CP '<enter-command>set sidebar_visible = yes<enter><sidebar-prev>'
+macro pager \CN '<enter-command>set sidebar_visible = yes<enter><sidebar-next>'
+macro pager \CO '<enter-command>set sidebar_visible = no<enter><sidebar-open>'
 
 # b toggles sidebar visibility
 macro index b '<enter-command>toggle sidebar_visible<enter>'
