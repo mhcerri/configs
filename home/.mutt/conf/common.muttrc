@@ -12,7 +12,7 @@ set sort_aux                = last-date-received
 set smart_wrap              = yes
 
 # VIM in mail mode as default editor
-set editor                  = 'vim +"/^$" -c "let @/ = \"\"" -c "set textwidth=72" -c "set wrap" -c "set nocp" -c "set spell"'
+set editor                  = '~/.mutt/editor.sh'
 
 # View HTML messages in links (check ~/.mailcap)
 auto_view text/html

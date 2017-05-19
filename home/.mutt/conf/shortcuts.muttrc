@@ -37,3 +37,21 @@ macro index \Ca 'wn''l~U<return>''T~U<return>'';Wn'';t''l~A<return>'
 # Search incoming mailboxes
 macro index Y 'y/'
 macro pager Y 'y/'
+
+# Ack an email.
+#
+# Note: mutt doesn't handle well strings with escape chars. So in order
+#       to save and restore the $editor variable it's necessary to keep
+#       it simple. Use an external script, such as ~/.mutt/editor.sh, to
+#       keep the complexity of the editor command instead.
+#
+# 1. Save $editor.
+# 2. Set $editor to the script that will prepare the ack message.
+# 3. Group reply and accept subject and recipients (that runs the script
+#    set in the last step).
+# 4. Restore $editor.
+# 5. No PGP encryption or signing.
+#
+#            1.                              2.                                    3.                 4.                                5.
+#             \______________________________ \____________________________________ \_________________ \________________________________ \__
+macro index A ':set my_editor=$editor<return>'':set editor="~/.mutt/ack.sh"<return>''g<return><return>'':set editor="$my_editor"<return>''pc'
