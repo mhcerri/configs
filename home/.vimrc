@@ -120,6 +120,8 @@ cmap w!! w !sudo tee % > /dev/null
 " Buffer shortcuts
 nmap <Tab> :silent! bnext<CR>
 nmap <S-Tab> :silent! bprevious<CR>
+map <C-n> :silent! bnext<CR>
+map <C-p> :silent! bprevious<CR>
 nmap <Leader>q :silent! bdelete<CR>
 
 " Tabs shortcuts
