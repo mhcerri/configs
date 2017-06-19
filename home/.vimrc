@@ -175,10 +175,6 @@ au FileType go abbrev ife if err != nil {<Enter>
 
 function! SetBundleOptions()
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    " Auto-pair - Include or remove matching bracket and parenthesis
-    " git clone git://github.com/jiangmiao/auto-pairs.git ~/.vim/bundle/auto-pairs
-
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     " CsApprox - Better support with colorschemes
     " git clone https://github.com/godlygeek/csapprox.git ~/.vim/bundle/csapprox
 
