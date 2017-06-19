@@ -183,16 +183,8 @@ function! SetBundleOptions()
     " git clone --recursive https://github.com/davidhalter/jedi-vim.git ~/.vim/bundle/jedi-vim
 
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    " Vim bufferline - List buffer in the command line
-    " git clone https://github.com/bling/vim-bufferline ~/.vim/bundle/vim-bufferline
-    if exists("g:bufferline_echo")
-        let g:bufferline_echo = 1
-        let g:bufferline_fixed_index = 0
-        let g:bufferline_rotate = 1
-        let g:bufferline_show_bufnr = 1
-        let g:bufferline_active_buffer_left = '['
-        let g:bufferline_active_buffer_right = ']'
-    endif
+    " Vim buftabline - List buffer in the tab line
+    " git clone https://github.com/ap/vim-buftabline ~/.vim/bundle/vim-buftabline
 
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     " Syntastic - Check syntax error
