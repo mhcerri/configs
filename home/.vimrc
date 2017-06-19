@@ -118,15 +118,15 @@ set tags=tags;
 cmap w!! w !sudo tee % > /dev/null
 
 " Buffer shortcuts
-:nnoremap <Tab> :silent! bnext<CR>
-:nnoremap <S-Tab> :silent! bprevious<CR>
-:nnoremap <Leader>q :silent! bdelete<CR>
+nnoremap <Tab> :silent! bnext<CR>
+nnoremap <S-Tab> :silent! bprevious<CR>
+nnoremap <Leader>q :silent! bdelete<CR>
 
 " Tabs shortcuts
-:nnoremap . :tabnext<CR>
-:nnoremap , :tabprevious<CR>
-:nnoremap > :tabmove +1<CR>
-:nnoremap < :tabmove -1<CR>
+nnoremap . :tabnext<CR>
+nnoremap , :tabprevious<CR>
+nnoremap > :tabmove +1<CR>
+nnoremap < :tabmove -1<CR>
 
 " Stay in visual mode when shifting
 vnoremap < <gv
