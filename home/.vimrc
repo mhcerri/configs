@@ -65,6 +65,12 @@ autocmd Filetype python set
     \ softtabstop=4
     \ shiftwidth=4
 
+" Git conflicts
+nmap <Leader>c /^\(=======\\|<<<<<<<\\|>>>>>>>\)\(\s.*\)\?$<CR>
+autocmd ColorScheme * highlight GitConflicts ctermbg=red ctermfg=white guibg=red guifg=white
+highlight GitConflicts ctermbg=red ctermfg=white guibg=red guifg=white
+match GitConflicts /^\(=======\|<<<<<<<\|>>>>>>>\)\(\s.*\)\?$/
+
 " Syntax, color and highlight
 filetype plugin indent on
 syntax on
