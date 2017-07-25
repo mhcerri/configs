@@ -17,6 +17,7 @@ while (<GROUPS>) {
 			open(KEY, "gpg --list-key \"$addr\" |") or die;
 			while (<KEY>) {
 				if (/^pub\s+.*\/([[:xdigit:]]+)/) {
+					next if (/expired:/);
 					printf("crypt-hook %s 0x%s # %s\n",
 					$group, $1, $addr);
 					last;
