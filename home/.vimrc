@@ -207,6 +207,8 @@ function! SetBundleOptions()
         let g:syntastic_check_on_wq = 0
         let g:syntastic_auto_jump = 0
         let g:syntastic_java_checkers=['']
+        let g:syntastic_c_checkpatch_exec = '~/bin/checkpatch.pl'
+        let g:syntastic_c_checkers = ['checkpatch', 'gcc']
         " Cycle through errors
         function! LocationNext()
             try
