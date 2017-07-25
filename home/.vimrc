@@ -208,7 +208,18 @@ function! SetBundleOptions()
         let g:syntastic_auto_jump = 0
         let g:syntastic_java_checkers=['']
         " Cycle through errors
-        nnoremap <F2> :try<CR>lnext<CR>catch /E42/<CR>catch /E553/<CR>lfirst<CR>endtry<CR><CR>
+        function! LocationNext()
+            try
+                lnext
+            catch /:E553:/
+                lfirst
+            catch /:E\%(42\|776\):/
+                echo "Location list empty"
+            catch /.*/
+                echo v:exception
+            endtry
+        endfunction
+        nmap <F2> :call LocationNext()<CR>
     endif
 
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
