@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -e
+
+cfg="$1"
+if [ ! "$cfg" ]; then
+	echo "Usage: $(basename "$0") <config>" >&2
+	exit 1
+fi
+
+cfg=$(echo "$cfg" | tr '[:lower:]' '[:upper:]')
+cfg="${cfg#CONFIG_}"
+
+if ! git rev-parse --show-toplevel &> /dev/null; then
+	echo "Not a git repository. Aborting..." >&2
+	exit 1
+fi
+
+i=1
+git grep -n "^\(menu\)\?config $cfg\>" -- './Kconfig*' '**/Kconfig*' | cut -d: -f1-2 |
+while read result; do
+	file=$(echo "$result" | cut -d: -f1)
+	line=$(echo "$result" | cut -d: -f2)
+	echo "#$i \"$file\" +$line"
+	tail -n+"$line" "$file" |
+		awk '
+			NR != 1 && /^[^#\t ]/ {
+				if (last != "") {
+					print ""
+				}
+				exit
+			}
+			{
+				print
+				last=$0
+			}'
+	i=$(( $i + 1 ))
+done
