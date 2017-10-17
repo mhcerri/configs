@@ -50,8 +50,8 @@ macro pager Y 'y/'
 # 3. Group reply and accept subject and recipients (that runs the script
 #    set in the last step).
 # 4. Restore $editor.
-# 5. No PGP encryption or signing.
+# 5. No PGP encryption, just signing.
 #
 #            1.                              2.                                    3.                 4.                                5.
 #             \______________________________ \____________________________________ \_________________ \________________________________ \__
-macro index A ':set my_editor=$editor<return>'':set editor="~/.mutt/ack.sh"<return>''g<return><return>'':set editor="$my_editor"<return>''pc'
+macro index A ':set my_editor=$editor<return>'':set editor="~/.mutt/ack.sh"<return>''g<return><return>'':set editor="$my_editor"<return>''ps'
