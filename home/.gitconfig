@@ -7,16 +7,28 @@
 	abbrev = 12
 
 [alias]
+	a        = add
 	d        = diff
 	s        = status
 	co       = checkout
 	pick	 = cherry-pick
 	l        = log --oneline --decorate=full
+	l1       = log --oneline --decorate=full -1
 	list     = log --oneline --decorate=full
 	list-all = log --oneline --decorate=full --graph --all
 	fixes    = log --pretty=fixes
-	send-email-kt = send-email --suppress-cc=all --to=kernel-team@lists.ubuntu.com
+	amend    = commit --amend --no-edit
+	send-email-to-kt = send-email --suppress-cc=all --to=kernel-team@lists.ubuntu.com
+	send-email-to-me = send-email --suppress-cc=all --to=marcelo.cerri@canonical.com
 	format-patch = format-patch --from
 
 [pretty]
 	fixes = Fixes: %h (\"%s\")
+
+[format]
+	pretty = fuller
+
+[url "git+ssh://mhcerri@git.launchpad.net/"]
+	pushinsteadof = lp:
+[url "git://git.launchpad.net/"]
+	insteadof = lp:
