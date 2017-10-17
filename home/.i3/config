@@ -171,6 +171,8 @@ bar {
 }
 
 # Additional custom config
+new_window pixel
+hide_edge_borders both
 focus_follows_mouse no
 workspace_layout tabbed
 bindsym $mod+u [urgent=latest] focus
