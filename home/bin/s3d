@@ -1,0 +1,11 @@
+#!/bin/bash
+dir=$(find /opt/ -mindepth 1 -maxdepth 1 -type d -a -name 'Simplify3D-*' | tail -n1)
+cmd="$dir/LaunchScript.sh"
+if [[ ! -x "$cmd" ]]; then
+	error="Simplify3D lauch script not found!"
+	echo "$error" >&2
+	zenity --error --text="$error" &> /dev/null
+	exit 1
+fi
+echo "Launching \"$cmd\""
+"$cmd" "$@"
