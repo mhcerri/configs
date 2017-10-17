@@ -1,0 +1,51 @@
+#!/bin/bash
+
+set -e
+
+EDITOR="${EDITOR:-vim}"
+cfg="$1"
+if [ ! "$cfg" ]; then
+	echo "Usage: $(basename "$0") <config>" >&2
+	exit 1
+fi
+
+open_result() {
+	file=$(echo "$*" | cut -d: -f1)
+	line=$(echo "$*" | cut -d: -f2)
+	"${EDITOR[@]}" "$file" "+$line"
+}
+
+format_result() {
+	file=$(echo "$*" | cut -d: -f1)
+	line=$(echo "$*" | cut -d: -f2)
+	config=$(tail -n+"$line" "$file" | head -n1)
+	echo "$file:$line:$config"
+}
+
+results=$(show-kconfig "$cfg" | sed -r -n -e '/^#[0-9]+\s+"(.*)"\s+\+([0-9]+)$/s//\1:\2/p')
+case "$(echo "$results" | wc -l)" in
+0|1)
+	if [[ -z "$results" ]]; then
+		echo "Not found."
+		exit 2
+	fi
+	open_result "$results"
+	;;
+*)
+	i=1
+	echo "Results:"
+	for result in $results; do
+		config=$()
+		printf " %3d - %s\n" "$i" "$(format_result "$result")"
+		i=$(( $i + 1 ))
+	done
+	read -p 'Open result number: ' n
+	result=$(echo "$results" | head -n "$n" 2>/dev/null | tail -n 1)
+	if [[ -z "$result" ]]; then
+		echo "Invalid option." >&2
+		exit 2
+	fi
+	open_result "$result"
+	;;
+esac
+exit 0
