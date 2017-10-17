@@ -1,0 +1,58 @@
+#!/usr/bin/perl
+use strict;
+
+my $domain = undef;
+my $port   = 22;
+
+sub debug($) {
+	print $_[0];
+}
+
+# Parse arguments
+for (my $i = 0; $i <= $#ARGV; $i++) {
+	if ($ARGV[$i] =~ /^-p$/) {
+		$port = $ARGV[++$i];
+	}
+	elsif ($ARGV[$i] =~ /^-p/) {
+		$port = substr($ARGV[$i], 2);
+	}
+	elsif ($ARGV[$i] =~ /^-/) {
+		# Ignore
+	}
+	else {
+		($domain, ) = reverse split(/@/, $ARGV[$i], 2);
+	}
+}
+
+if (!defined $domain) {
+	print "Missing domain.\n";
+	exit 1;
+}
+if (!defined $port) {
+	print "Missing port.\n";
+	exit 1;
+}
+if ($port !~ /^\d+$/) {
+	print "Invalid port: $port\n";
+	exit 1
+}
+
+# Wait for SSH port
+my $waiting = 0;
+while (system("nc -z -w1 \"$domain\" \"$port\"")) {
+	if (!$waiting) {
+		debug("Waiting for port $port ");
+		$waiting = 1;
+	} else {
+		debug(".");
+	}
+	sleep(1);
+}
+if ($waiting) {
+	debug("\n");
+}
+
+my $cmd="ssh @ARGV";
+debug("Running: $cmd\n");
+exec($cmd);
+
