@@ -171,6 +171,13 @@ map <F12> :call ToggleMouse()<CR>
 au BufNewFile,BufRead *.md iabbrev ''' ```
 au FileType go abbrev ife if err != nil {<Enter>
 
+" Git snippets
+augroup FileType gitcommit
+	iabbrev buglink BugLink: http://bugs.launchpad.net/bugs/
+	iabbrev sof Signed-off-by: |
+	iabbrev ack Acked-by:
+augroup END
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Pathogen bundles
 " -----------------------------------------------------------------------------
