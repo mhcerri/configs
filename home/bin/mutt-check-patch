@@ -1,0 +1,8 @@
+#!/bin/bash
+
+KERNEL_DIR="$HOME/workspace/linux/torvalds-linux"
+
+trap '[ "$temp" ] && rm -f "$temp"' 0
+temp=$(mktemp)
+cat > "$temp"
+"$KERNEL_DIR/scripts/checkpatch.pl" --color=always "$@" "$temp" | less -R
