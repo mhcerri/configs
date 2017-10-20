@@ -4,6 +4,9 @@
 # git clone https://github.com/altercation/mutt-colors-solarized.git ~/.mutt/colors/mutt-colors-solarized
 source ~/.mutt/colors/mutt-colors-solarized/mutt-colors-solarized-dark-256.muttrc
 
+# Don't treat messages sent from me specially
+uncolor index "~P"
+
 # Colors for patches!
 color body red          default "^>+ -.*"
 color body brightred    default "^-.*"
