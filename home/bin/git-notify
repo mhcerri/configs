@@ -1,0 +1,69 @@
+#!/bin/bash
+set -e
+
+# Default value:
+SAVED_DIR=~/.git-notify/
+NOTIFY_CMD="notify-send --expire-time=0 \"%s\""
+
+# Load configs
+config=~/.git-notify.conf
+if [ ! -f "$config" ]; then
+	echo "Missing config file: $config" >&2
+	exit 1
+fi
+. $config
+
+# Prepare for execution
+mkdir -p "$SAVED_DIR"
+if ! echo "$NOTIFY_CMD" | grep -q "%s"; then
+	NOTIFY_CMD="$NOTIFY_CMD \"%s\""
+fi
+
+notify() {
+	cmd=$(printf "$NOTIFY_CMD" "$*")
+	eval "$cmd"
+}
+
+error() {
+	notify "Error: $@"
+}
+
+i=0
+for repo in "${REPO[@]}"; do
+	name="${NAME[$i]:-$(basename "$repo")}"
+	saved="$SAVED_DIR/$(echo "$repo" | sed -e 's/\//_/g')"
+
+	if ! output=$(git ls-remote "$repo" 2>&1); then
+		error "$output"
+		continue
+	fi
+
+	if [ ! -e "$saved" ]; then
+		notify "\"$name\" is now watched"
+		echo "$output" > "$saved"
+		continue
+	fi
+
+	obj_list=$(
+		(echo "$output"; cat "$saved") |
+		awk '{ print $2 }' |
+		sort -u)
+	for obj in $obj_list; do
+		new=$(echo "$output" | awk -vobj="$obj" '$2 == obj { print $1 }')
+		old=$(cat  "$saved"  | awk -vobj="$obj" '$2 == obj { print $1 }')
+		if [ "$new" == "$old" ]; then
+			continue
+		fi
+		if [ -z "$new" ]; then
+			notify "$name: $obj deleted."
+		elif [ -z "$old" ]; then
+			notify "$name: $obj created."
+		else
+			notify "$name: $obj updated."
+		fi
+	done
+
+	echo "$output" > "$saved"
+	i=$(( $i + 1 ))
+done
+echo Done
