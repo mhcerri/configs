@@ -28,6 +28,18 @@ error() {
 	notify "Error: $@"
 }
 
+# Ensure a single instance is running:
+if [ "$FLOCKER" != "$0" ]; then
+	(
+		if ! flock -n 9; then
+			error "$(basename "$0") is already running."
+			exit 1
+		fi
+		exec env FLOCKER="$0" "$0" "$@"
+	) 9> "$SAVED_DIR/lock"
+	exit "$?"
+fi
+
 i=0
 for repo in "${REPO[@]}"; do
 	name="${NAME[$i]:-$(basename "$repo")}"
