@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-# Default value:
+# Default values:
 SAVED_DIR=~/.git-notify/
 NOTIFY_CMD="notify-send --expire-time=0 \"%s\""
 
@@ -11,7 +11,7 @@ if [ ! -f "$config" ]; then
 	echo "Missing config file: $config" >&2
 	exit 1
 fi
-. $config
+. "$config"
 
 # Prepare for execution
 mkdir -p "$SAVED_DIR"
@@ -39,7 +39,7 @@ for repo in "${REPO[@]}"; do
 	fi
 
 	if [ ! -e "$saved" ]; then
-		notify "\"$name\" is now watched"
+		notify "\"$name\" is now watched."
 		echo "$output" > "$saved"
 		continue
 	fi
