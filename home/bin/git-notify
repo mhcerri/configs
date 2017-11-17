@@ -28,6 +28,29 @@ error() {
 	notify "Error: $@"
 }
 
+get_msg() {
+	local repo="$1"
+	local id="$2"
+
+	# Use HTTP instead:
+	repo="${repo/#git:/http:}"
+	repo="${repo%/}"
+
+	for url in \
+		"${repo}/patch/?id=$id"         `# cgit` \
+		"${repo%.git}/commit/$id.patch" `# github`
+	do
+		if local msg=$(curl -s -L "$url" 2> /dev/null); then
+			msg=$(echo "$msg" |
+				sed -n -r -e '/^Subject:\s*(.*)/I{s//\1/p;q}')
+			if [ -n "$msg" ]; then
+				echo "$msg"
+				return
+			fi
+		fi
+	done
+}
+
 # Ensure a single instance is running:
 if [ "$FLOCKER" != "$0" ]; then
 	(
@@ -66,12 +89,16 @@ for repo in "${REPO[@]}"; do
 		if [ "$new" == "$old" ]; then
 			continue
 		fi
+
 		if [ -z "$new" ]; then
 			notify "$name: $obj deleted."
-		elif [ -z "$old" ]; then
-			notify "$name: $obj created."
 		else
-			notify "$name: $obj updated."
+			msg=$(get_msg "$repo" "$new")
+			if [ -z "$old" ]; then
+				notify "$name: $obj created."$'\n'"$msg"
+			else
+				notify "$name: $obj updated."$'\n'"$msg"
+			fi
 		fi
 	done
 
