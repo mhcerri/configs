@@ -3,7 +3,7 @@ set -e
 
 # Default values:
 SAVED_DIR=~/.git-notify/
-NOTIFY_CMD="notify-send --expire-time=0 \"%s\""
+NOTIFY_CMD="notify-send --expire-time=0 %s"
 
 # Load configs
 config=~/.git-notify.conf
@@ -16,11 +16,12 @@ fi
 # Prepare for execution
 mkdir -p "$SAVED_DIR"
 if ! echo "$NOTIFY_CMD" | grep -q "%s"; then
-	NOTIFY_CMD="$NOTIFY_CMD \"%s\""
+	NOTIFY_CMD="$NOTIFY_CMD %s"
 fi
 
 notify() {
-	cmd=$(printf "$NOTIFY_CMD" "$*")
+	arg=$(printf '%q' "$*")
+	cmd=$(printf "$NOTIFY_CMD" "$arg")
 	eval "$cmd"
 }
 
