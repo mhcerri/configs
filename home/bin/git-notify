@@ -63,8 +63,8 @@ if [ "$FLOCKER" != "$0" ]; then
 	exit "$?"
 fi
 
-i=0
-for repo in "${REPO[@]}"; do
+for i in "${!REPO[@]}"; do
+	repo="${REPO[$i]}"
 	name="${NAME[$i]:-$(basename "$repo")}"
 	saved="$SAVED_DIR/$(echo "$repo" | sed -e 's/\//_/g')"
 
@@ -103,6 +103,5 @@ for repo in "${REPO[@]}"; do
 	done
 
 	echo "$output" > "$saved"
-	i=$(( $i + 1 ))
 done
 echo Done
