@@ -242,6 +242,13 @@ if declare -f _todo 2>&1 >/dev/null; then
 fi
 
 #
+# Use neovim instead if it's available.
+#
+if which nvim &> /dev/null; then
+	alias vim=nvim
+fi
+
+#
 # Local customizations
 #
 
