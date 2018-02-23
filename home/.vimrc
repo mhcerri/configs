@@ -229,6 +229,7 @@ function! SetBundleOptions()
 		let g:syntastic_java_checkers=['']
 		let g:syntastic_c_checkpatch_exec = '~/bin/checkpatch.pl'
 		let g:syntastic_c_checkers = ['checkpatch', 'gcc']
+		let g:syntastic_go_checkers = ['govet', 'errcheck', 'go']
 		" Cycle through errors
 		function! LocationNext()
 			try
@@ -293,10 +294,10 @@ function! SetBundleOptions()
 	"
 	if exists(':GoPath')
 		" Shortcuts:
-		au FileType go nmap <leader>r <Plug>(go-run)
-		au FileType go nmap <leader>b <Plug>(go-build)
-		au FileType go nmap <leader>t <Plug>(go-test)
-		au FileType go nmap <leader>c <Plug>(go-coverage)
+		au FileType go nmap <Leader>r <Plug>(go-run)
+		au FileType go nmap <Leader>b <Plug>(go-build)
+		au FileType go nmap <Leader>t <Plug>(go-test)
+		au FileType go nmap <Leader>c <Plug>(go-coverage)
 		au FileType go nmap <Leader>ds <Plug>(go-def-split)
 		au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
 		au FileType go nmap <Leader>dt <Plug>(go-def-tab)
@@ -308,10 +309,9 @@ function! SetBundleOptions()
 		au FileType go nmap <Leader>e <Plug>(go-rename)
 		" Emulate tags:
 		au FileType go nmap <C-]> <Plug>(go-def)
-		" Replace go run:
-		au FileType go nmap <Leader>r :!go run %<CR>
 
 		" Highlights:
+		let g:go_highlight_types = 1
 		let g:go_highlight_functions = 1
 		let g:go_highlight_methods = 1
 		let g:go_highlight_structs = 1
