@@ -115,8 +115,15 @@ fi
 # Set prompt
 export PS1="$debian_chroot_ps1$rc_ps1$jobs_ps1$login_ps1$window_ps1 $pwd_ps1$git_ps1\$ "
 export SUDO_PS1="$( echo -n "$PS1" | sed -e 's/;32m/;31m/g' )"
-unset debian_chroot_ps1 rc_ps1 login_ps1 window_ps1 pwd_ps1 git_ps1  
+export ALT_PS1="$PS1\[\a\]"
+unset debian_chroot_ps1 rc_ps1 login_ps1 window_ps1 pwd_ps1 git_ps1 jobs_ps1
 unset color_prompt color_prompt_when_supported
+
+toggle_bell() {
+	local ps1="$PS1"
+	PS1="$ALT_PS1"
+	ALT_PS1="$ps1"
+}
 
 #
 # Aliases
