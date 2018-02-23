@@ -22,6 +22,7 @@ alternative_order text/plain text/html
 set alias_file              = ~/.mutt/alias
 
 # Additional settings
+set ts_enabled              = yes   # set terminal title
 set beep_new                = no    # no alert on new messages
 set edit_headers            = yes   # always edit message headers in editor
 set include                 = yes   # always include messages when replying
