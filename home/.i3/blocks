@@ -136,7 +136,8 @@ interval=30
 # Date Time
 #
 [time]
-command=date '+%Y-%m-%d %H:%M:%S'
+#command=date '+%Y-%m-%d %H:%M:%S'
+command=~/.i3/clock 'Europe/Berlin' 'Europe/London' 'America/Sao_Paulo' 'US/Central' 'US/Pacific'
 interval=5
 
 # Generic media player support
@@ -147,5 +148,4 @@ interval=5
 #instance=spotify
 #interval=5
 #signal=10
-
 

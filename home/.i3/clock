@@ -1,0 +1,47 @@
+#!/bin/bash
+#
+# An argument starting with '+' will be considered a format string for `date`.
+# An argument starting with '++' will be considered a format string for `data`
+# only for time zones messages.
+# Any remaining arguments will be considered time zones to be shown when a
+# click event is received.
+#
+# List all valid time zones with:
+#
+# $ timedatectl list-timezones
+#
+# Or check the directory `/usr/share/zoneinfo`.
+#
+
+# Parse args
+tzs=()
+while [ -n "$1" ]; do
+	case "$1" in
+	++*)
+		tz_fmt="${1#+}";;
+	+*)
+		fmt="$1";;
+	*)
+		tzs+=("$1");;
+	esac
+	shift
+done
+fmt="${fmt:-+%Y-%m-%d %H:%M:%S}"
+tz_fmt="${tz_fmt:-+%H:%M:%S}"
+
+# When a button is pressed:
+if [ -n "$BLOCK_BUTTON" ]; then
+	output=""
+	for tz in "${tzs[@]}"; do
+		date="$(TZ="$tz" date "$tz_fmt")"
+		if [ "$?" -eq 0 ]; then
+			output=$(echo -e "$output\n$tz: $date")
+		fi
+	done
+	output=$(echo "$output" | sed '/./,$!d')
+	if [ -n "$output" ]; then
+		notify-send "$output"
+	fi
+fi
+
+date "$fmt"
