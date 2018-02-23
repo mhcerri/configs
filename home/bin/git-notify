@@ -20,8 +20,8 @@ if ! echo "$NOTIFY_CMD" | grep -q "%s"; then
 fi
 
 notify() {
-	arg=$(printf '%q' "$*")
-	cmd=$(printf "$NOTIFY_CMD" "$arg")
+	local arg=$(printf '%q' "$*")
+	local cmd=$(printf "$NOTIFY_CMD" "$arg")
 	eval "$cmd"
 }
 
@@ -70,7 +70,7 @@ for i in "${!REPO[@]}"; do
 	saved="$SAVED_DIR/$(echo "$repo" | sed -e 's/\//_/g')"
 
 	if ! output=$(git ls-remote "$repo" 2>&1); then
-		error "$output"
+		error "$name"$'\n'"$output"
 		continue
 	fi
 
