@@ -1,0 +1,52 @@
+#!/bin/bash
+#
+# Usage: | add-ack-filter <person> [<person> ...]
+#
+# Example: git filter-branch --filter-msg 'add-ack-filter "Name 1 <name1@email.com>"' <commit range>
+#
+set -e
+
+if [[ $# -eq 0 ]]; then
+	# Print the header comment
+	sed -nr -e '/^([^#]|$)/,$!{/^#!/d;s/^#\s*//;p}' "$0"
+	exit 1
+fi
+
+msg=$(cat)
+name=$(git config --get user.name)
+email=$(git config --get user.email)
+
+# Remove your own Signed-off-by line to avoid duplicating it
+msg=$(echo "$msg" | grep -iv "Signed-off-by:\\s*$name\\s*<$email>")
+
+# Remove trailing blank lines
+msg=$(echo "$msg" | tac | sed '/./,$!d' | tac)
+
+# Find the last Signed-off-by line
+target_line=$(echo "$msg" |
+	      grep -n "^Signed-off-by:" |
+	      tail -n1 |
+	      cut -d ':' -f 1)
+
+# Use last line if no target line was found
+add_blank_line=0
+if [[ -z $target_line ]]; then
+	add_blank_line=1
+	target_line=$(echo "$msg" | wc -l)
+fi
+
+# Advance the target line until the end of the current block
+while echo "$msg" | tail -n "+$target_line" |
+	head -n 1 | grep -qv '^\s*$'
+do
+	target_line=$(( $target_line + 1 ))
+done
+
+# Print the new message
+echo "$msg" | head -n "$(( target_line - 1 ))"
+if [[ $add_blank_line -ne 0 ]]; then echo; fi
+for arg in "$@"; do
+	echo "Acked-by: $arg"
+done
+echo "Signed-off-by: $name <$email>"
+echo "$msg" | tail -n "+$target_line"

@@ -1,0 +1,29 @@
+#!/bin/bash
+#
+# Usage: | add-buglink-filter <bug number>
+#
+# Example: git filter-branch --filter-msg 'add-buglink-filter 123456789"' <commit range>
+#
+set -e
+
+if [[ $# -ne 1 ]]; then
+	# Print the header comment
+	sed -nr -e '/^([^#]|$)/,$!{/^#!/d;s/^#\s*//;p}' "$0"
+	exit 1
+fi
+
+# Verify bug number format
+if [[ ! $1 =~ ^[0-9]+$ ]]; then
+	echo "Invalid bug number: $1" >&2
+	exit 2
+fi
+
+# Add BugLink tag on the third line
+awk -vbug="$1" '
+	{
+		if (NR == 3) {
+			printf("BugLink: http://bugs.launchpad.net/bugs/%s\n\n", bug)
+		}
+		print $0
+	}
+'
