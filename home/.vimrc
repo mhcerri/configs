@@ -41,8 +41,21 @@ set tabstop=8
 set softtabstop=8
 set shiftwidth=8
 set smartindent
-set title
 set hidden
+
+if has ("title")
+    " if there is no &t_ts sequence, is the terminal type known?
+    if &t_ts == "" && ( &term == "screen" || &term == "xterm" || &term == "xterm-256color" )
+        " add the missing control sequence for xterm or screen
+        let &t_ts = "\e]2;"
+    endif
+
+    " enable setting the title only if vim can read the old one
+    if &t_ts != ""
+        set title
+	set titleold=
+    endif
+endif
 
 autocmd FileType C set
 	\ setlocal textwidth=80
