@@ -82,6 +82,13 @@
 (require 'use-package)
 
 ;; Evil mode
-(use-package evil
-  :init (evil-mode 1)
-  :ensure t)
+(use-package evil :ensure t
+  :config
+  (evil-mode 1)
+  ;; C-w <arrow> bindings
+  (define-key evil-window-map (kbd "<left>")  'evil-window-left)
+  (define-key evil-window-map (kbd "<down>")  'evil-window-down)
+  (define-key evil-window-map (kbd "<up>")    'evil-window-up)
+  (define-key evil-window-map (kbd "<right>") 'evil-window-right)
+  (global-set-key (kbd "C-*") 'evil-search-symbol-forward)
+  (global-set-key (kbd "C-#") 'evil-search-symbol-backward))
