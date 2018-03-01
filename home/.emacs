@@ -43,16 +43,16 @@
 
 ;; Kills emacs server
 (global-set-key (kbd "C-c C-c") 'kill-emacs)
+
+;; Re-load ~/.emacs
 (defun my-reload()
   "Load ~/.emacs again."
   (interactive)
   (load-file "~/.emacs"))
-
-;; Re-load ~/.emacs
 (global-set-key (kbd "C-c C-r") 'my-reload)
-	
+
 ;; Kill line backwards
-;; Use C-u u to delete from cursor to beginning of line. Similarly to C-u used by vim and bash 
+;; Use C-u u to delete from cursor to beginning of line. Similarly to C-u used by vim and bash
 (defun backward-kill-line (arg)
   "Kill ARG lines backward."
   (interactive "p")
