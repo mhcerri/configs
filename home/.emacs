@@ -26,6 +26,10 @@
 (if (not (display-graphic-p))
     (menu-bar-mode -1))
 
+;; Sane defaults
+(show-paren-mode 1) ; Highlight matching parenthesis
+(column-number-mode 1) ; Show column number with line number
+
 ;; Line number
 (global-linum-mode nil)
 (if (display-graphic-p)
@@ -41,6 +45,13 @@
       (require 'saveplace)
       (setq-default save-place t))
   (save-place-mode 1))
+
+;; Default indentation settings
+(setq-default indent-tabs-mode t)
+(setq tab-width 8)
+(defvaralias 'c-basic-offset 'tab-width)
+(defvaralias 'cperl-indent-level 'tab-width)
+(setq c-default-style "linux")
 
 ;; Make ibuffer default. This way it's possible to switch buffers with "C-x C-b".
 (defalias 'list-buffers 'ibuffer)
