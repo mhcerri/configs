@@ -39,6 +39,9 @@
       (setq-default save-place t))
   (save-place-mode 1))
 
+;; Make ibuffer default. This way it's possible to switch buffers with "C-x C-b".
+(defalias 'list-buffers 'ibuffer)
+
 ;; Shotcuts
 
 ;; Kills emacs server
