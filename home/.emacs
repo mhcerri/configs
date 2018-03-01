@@ -5,11 +5,14 @@
 ;; TODOs:
 ;; - spell
 ;; - auto-completion
-;; - better buffer switching
 ;; - mouse
 ;; - org mode and markdown
 ;; - linters
 ;; - Snippets (git, etc)
+
+
+;; General
+;;==============================================================================
 
 ;; Theme
 (load-theme 'tango)
@@ -59,6 +62,7 @@
   (add-hook 'ido-setup-hook 'ido-define-keys)
 
 ;; Shotcuts
+;;------------------------------------------------------------------------------
 
 ;; Kills emacs server
 (global-set-key (kbd "C-c C-c") 'kill-emacs)
@@ -79,6 +83,7 @@
 (global-set-key (kbd "C-c u") 'backward-kill-line)
 
 ;; Package manager
+;;==============================================================================
 ;; M-x package-refresh-contents RET
 ;; M-x package-install RET evil RET
 (require 'package)
@@ -100,7 +105,7 @@
       (package-install 'use-package)))
 (require 'use-package)
 
-;; Evil mode
+;; evil - eVIl mode
 (use-package evil :ensure t
   :config
   (evil-mode 1)
@@ -112,7 +117,7 @@
   (global-set-key (kbd "C-*") 'evil-search-symbol-forward)
   (global-set-key (kbd "C-#") 'evil-search-symbol-backward))
 
-;; ido-vertical-mode
+;; ido-vertical-mode - Better buffer switching
 (use-package ido-vertical-mode :ensure t
   :config
   (setq ido-use-faces t)
