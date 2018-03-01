@@ -31,6 +31,9 @@
     (setq linum-format "%4d ")
   (setq linum-format "%4d\u2502 "))
 
+;; Follow symlinks under version control
+(setq vc-follow-symlinks 't)
+
 ;; Remember cursor position
 (if (version< emacs-version "25.0")
     (progn
