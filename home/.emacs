@@ -111,3 +111,17 @@
   (define-key evil-window-map (kbd "<right>") 'evil-window-right)
   (global-set-key (kbd "C-*") 'evil-search-symbol-forward)
   (global-set-key (kbd "C-#") 'evil-search-symbol-backward))
+
+;; ido-vertical-mode
+(use-package ido-vertical-mode :ensure t
+  :config
+  (setq ido-use-faces t)
+  (set-face-attribute 'ido-vertical-first-match-face nil
+		      :background "#e5b7c0")
+  (set-face-attribute 'ido-vertical-only-match-face nil
+		      :background "#b00000"
+		      :foreground "white")
+  (set-face-attribute 'ido-vertical-match-face nil
+		      :foreground "#b00000")
+  (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
+  (ido-vertical-mode 1))
