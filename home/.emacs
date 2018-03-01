@@ -147,3 +147,15 @@
    ("C-c o"   . counsel-find-file-extern)
    ("C-S-s"   . counsel-ag)
    ("C-c l"   . counsel-locate)))
+
+;; which-key - Show hints about shortcuts
+(use-package which-key :ensure t
+  :config
+  (which-key-mode)
+  (which-key-setup-side-window-bottom)
+  (setq which-key-sort-order 'which-key-prefix-then-key-order
+	which-key-popup-type 'side-window
+	which-key-side-window-max-height 0.5
+	which-key-side-window-max-width 0.33
+	which-key-idle-delay 0.5
+	which-key-min-display-lines 7))
