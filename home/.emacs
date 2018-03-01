@@ -42,6 +42,22 @@
 ;; Make ibuffer default. This way it's possible to switch buffers with "C-x C-b".
 (defalias 'list-buffers 'ibuffer)
 
+;; ido-mode
+;; Further improvements with ido-vertical-mode bellow
+(require 'ido)
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode 1)
+(setq ido-decorations (quote ("\n-> " "" "\n   " "\n   ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]")))
+(defun ido-disable-line-truncation ()
+  (set (make-local-variable 'truncate-lines) nil))
+(add-hook 'ido-minibuffer-setup-hook 'ido-disable-line-truncation)
+(defun ido-define-keys ()
+  (define-key ido-completion-map (kbd "C-n") 'ido-next-match)
+  (define-key ido-completion-map (kbd "C-p") 'ido-prev-match)
+  (define-key ido-completion-map (kbd "TAB") 'ido-next-match))
+  (add-hook 'ido-setup-hook 'ido-define-keys)
+
 ;; Shotcuts
 
 ;; Kills emacs server
