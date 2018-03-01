@@ -9,8 +9,6 @@
 ;; - mouse
 ;; - org mode and markdown
 ;; - linters
-;; - avoid some questions, ie: "Symbolic link to Git-controlled source file; follow link? (yes or no)"
-;; - or maybe ensure default actions for those questions
 ;; - Snippets (git, etc)
 
 ;; Theme
