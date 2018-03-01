@@ -31,6 +31,13 @@
     (setq linum-format "%4d ")
   (setq linum-format "%4d\u2502 "))
 
+;; Remember cursor position
+(if (version< emacs-version "25.0")
+    (progn
+      (require 'saveplace)
+      (setq-default save-place t))
+  (save-place-mode 1))
+
 ;; Shotcuts
 
 ;; Kills emacs server
