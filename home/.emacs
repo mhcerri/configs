@@ -135,3 +135,15 @@
 		      :foreground "#b00000")
   (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
   (ido-vertical-mode 1))
+
+;; councel - Better M-x and "C-x f"
+(use-package counsel :ensure t
+  :bind
+  (("M-x"     . counsel-M-x)
+   ("C-x C-f" . counsel-find-file)
+   ("C-c f"   . counsel-git)
+   ("C-c s"   . counsel-git-grep)
+   ("C-c /"   . counsel-ag)
+   ("C-c o"   . counsel-find-file-extern)
+   ("C-S-s"   . counsel-ag)
+   ("C-c l"   . counsel-locate)))
