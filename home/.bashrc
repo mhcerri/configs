@@ -128,7 +128,14 @@ unset debian_chroot_ps1 rc_ps1 login_ps1 window_ps1 pwd_ps1 git_ps1 jobs_ps1
 unset color_prompt color_prompt_when_supported
 
 # Terminal title
-export PROMPT_COMMAND='echo -ne "\033]0;${USER}${HOSTNAME} ${PWD}\007"'
+case "$TERM" in
+dumb|eterm*)
+	# Do not set title for emacs terminals
+	export PROMPT_COMMAND=
+	;;
+*)
+	export PROMPT_COMMAND='echo -ne "\033]0;${USER}${HOSTNAME} ${PWD}\007"'
+esac
 
 toggle_bell() {
 	local ps1="$PS1"
