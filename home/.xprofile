@@ -31,7 +31,7 @@ fi
 
 # Set environment
 . ~/.bashrc
-for t in terminology mate-terminal urxvt256c; do
+for t in gnome-terminal mate-terminal urxvt256c; do
 	if which "$t" &> /dev/null; then
 		export TERMINAL="$t"
 		break
