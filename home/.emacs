@@ -156,7 +156,8 @@
   (if (display-graphic-p)
       (setq nlinum-format "%4d")
     (setq nlinum-format "%4d\u2502"))
-  :hook (((text-mode prog-mode) . nlinum-mode)))
+  :hook
+  (((text-mode prog-mode) . nlinum-mode)))
 
 ;; Highlight trailing spaces
 (use-package whitespace :ensure t
@@ -217,7 +218,8 @@
 (use-package highlight-symbol :ensure t
   :config
   (setq highlight-symbol-idle-delay 0.1)
-  :hook (prog-mode . highlight-symbol-mode))
+  :hook
+  ((prog-mode . highlight-symbol-mode)))
 
 ;; Spell checkinga
 (use-package flyspell
@@ -235,7 +237,8 @@
 	  (flyspell-prog-mode)
 	(flyspell-mode 1))
       (flyspell-buffer)))
-  :hook ((find-file text-mode prog-mode) . my:enable-flyspell))
+  :hook
+  ((find-file text-mode prog-mode) . my:enable-flyspell))
 
 ;; Syntax check
 (use-package flycheck :ensure t
@@ -251,7 +254,8 @@
 (use-package company :ensure t
   :config
   (setq company-idle-delay 0.1)
-  :hook (prog-mode . company-mode))
+  :hook
+  ((prog-mode . company-mode)))
 
 (use-package irony :ensure t
   :config
@@ -262,9 +266,10 @@
       'irony-completion-at-point-async)
     (define-key irony-mode-map [remap complete-symbol]
       'irony-completion-at-point-async))
-  :hook (((c++-mode c-mode objc-mode) . irony-mode)
-	 (irony-mode . my-irony-mode-hook)
-	 (irony-mode . irony-cdb-autosetup-compile-options)))
+  :hook
+  (((c++-mode c-mode objc-mode) . irony-mode)
+   (irony-mode                  . my-irony-mode-hook)
+   (irony-mode                  . irony-cdb-autosetup-compile-options)))
 
 (use-package company-irony :ensure t
   :after (:all company irony))
