@@ -168,6 +168,15 @@
 	  lines-tail)) ; Lines with columns beyond whitespace-line-column
   (global-whitespace-mode t))
 
+(use-package smart-backspace :ensure t
+  :config
+  ;; (global-set-key [?\C-?] 'smart-backspace)
+  (define-key evil-insert-state-map [?\C-?] 'smart-backspace))
+
+(use-package smartparens-config :ensure smartparens
+  :config
+  (smartparens-global-mode))
+
 ;; ivy, swiper and counsel - Better "M-x", "C-s" and "C-x f"
 (use-package ivy :ensure t :defer t
   :config
