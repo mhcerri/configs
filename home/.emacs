@@ -1,43 +1,44 @@
-;;
+;;; .emacs --- Summary
 ;; Emacs configuration
 ;;
-
-;; TODOs:
-;; - spell
-;; - auto-completion
-;; - mouse
-;; - org mode and markdown
-;; - linters
+;;; Commentary:
+;;
+;; To do:
+;; - Auto spell checking when entering prog-mode
+;; - Improve auto-completion
+;; - Org mode and markdown
+;; - Code navigation
 ;; - Snippets (git, etc)
 
-
-;; General
-;;==============================================================================
-
-;; Theme
-(load-theme 'tango)
+;;; Code:
 
 ;; Suppress welcome screen
 (setq inhibit-startup-screen t)
 
-;; Hide tool and menu bars
+;; Hide tool and menu bars and use reasonable font size
 (if (display-graphic-p)
-    (tool-bar-mode -1))
-(if (not (display-graphic-p))
-    (menu-bar-mode -1))
+    (tool-bar-mode 0))
+(menu-bar-mode 0)
+(scroll-bar-mode 0)
+(set-face-attribute 'default nil :height 110)
 
 ;; Sane defaults
-(show-paren-mode 1) ; Highlight matching parenthesis
-(column-number-mode 1) ; Show column number with line number
+(show-paren-mode 1)           ; Highlight matching parenthesis
+(column-number-mode 1)        ; Show column number with line number
+(cua-mode 1)                  ; Regular Ctrl-C/Ctrl-X/Ctrl-V
+(setq vc-follow-symlinks t)   ; Follow symlinks under version control
+(prefer-coding-system 'utf-8) ; Use utf8 by default
+(fset 'yes-or-no-p 'y-or-n-p) ; Lazy prompt
+(savehist-mode)               ; Persistent history
+(xterm-mouse-mode)            ; Support mouse inside terminal
+(global-hl-line-mode 1)       ; Highlight current line
 
-;; Line number
-(global-linum-mode nil)
-(if (display-graphic-p)
-    (setq linum-format "%4d ")
-  (setq linum-format "%4d\u2502 "))
-
-;; Follow symlinks under version control
-(setq vc-follow-symlinks 't)
+;; ediff options
+(require 'ediff)
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+(setq ediff-split-window-function 'split-window-horizontally)
+(setq ediff-merge-split-window-function 'split-window-horizontally)
+(setq ediff-diff-options "")
 
 ;; Remember cursor position
 (if (version< emacs-version "25.0")
@@ -46,44 +47,44 @@
       (setq-default save-place t))
   (save-place-mode 1))
 
+;; Backups at .saves folder in the current folder
+(setq
+ ;; Don't mess with symlinks
+ backup-by-copying t
+ ;; Don't leave garbage around the entire file system
+ backup-directory-alist '(("." . "~/.emacs.d/saves"))
+ ;; Remove old versions
+ delete-old-versions t
+ ;; Number of files to keep
+ kept-new-versions 6
+ kept-old-versions 2
+ ;; Do not create #autosave# files
+ auto-save-default nil
+ ;; Use backups with version numbers
+ version-control t)
+
 ;; Default indentation settings
+(require 'cc-mode)
 (setq-default indent-tabs-mode t)
+(setq backward-delete-char-untabify-method 'hungry)
 (setq tab-width 8)
+(setq c-block-comment-prefix "* ")
+(defvaralias 'c-indent 'tab-width)
 (defvaralias 'c-basic-offset 'tab-width)
+(defvaralias 'sh-indentation 'tab-width)
+(defvaralias 'sh-basic-offset 'tab-width)
 (defvaralias 'cperl-indent-level 'tab-width)
-(setq c-default-style "linux")
+(setq c-default-style '((other . "linux")))
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; Make ibuffer default. This way it's possible to switch buffers with "C-x C-b".
 (defalias 'list-buffers 'ibuffer)
-
-;; ido-mode
-;; Further improvements with ido-vertical-mode bellow
-(require 'ido)
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
-(ido-mode 1)
-(setq ido-decorations (quote ("\n-> " "" "\n   " "\n   ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]")))
-(defun ido-disable-line-truncation ()
-  (set (make-local-variable 'truncate-lines) nil))
-(add-hook 'ido-minibuffer-setup-hook 'ido-disable-line-truncation)
-(defun ido-define-keys ()
-  (define-key ido-completion-map (kbd "C-n") 'ido-next-match)
-  (define-key ido-completion-map (kbd "C-p") 'ido-prev-match)
-  (define-key ido-completion-map (kbd "TAB") 'ido-next-match))
-  (add-hook 'ido-setup-hook 'ido-define-keys)
 
 ;; Shotcuts
 ;;------------------------------------------------------------------------------
 
 ;; Kills emacs server
 (global-set-key (kbd "C-c C-c") 'kill-emacs)
-
-;; Re-load ~/.emacs
-(defun my-reload()
-  "Load ~/.emacs again."
-  (interactive)
-  (load-file "~/.emacs"))
-(global-set-key (kbd "C-c C-r") 'my-reload)
 
 ;; Kill line backwards
 ;; Use C-u u to delete from cursor to beginning of line. Similarly to C-u used by vim and bash
@@ -98,9 +99,10 @@
 ;; M-x package-refresh-contents RET
 ;; M-x package-install RET evil RET
 (require 'package)
-(setq package-archives '(("melpa"     . "https://melpa.org/packages/") ; Assume ssl
-			 ("marmalade" . "https://marmalade-repo.org/packages/")
-			 ("gnu"       . "https://elpa.gnu.org/packages/")))
+(setq package-archives '(("melpa"        . "https://melpa.org/packages/") ; Assume ssl
+			 ("melpa-stable" . "https://stable.melpa.org/packages/")
+			 ("marmalade"    . "https://marmalade-repo.org/packages/")
+			 ("gnu"          . "https://elpa.gnu.org/packages/")))
 (package-initialize)
 
 ;; Auto install mechanism
@@ -110,46 +112,87 @@
       (package-install 'use-package)))
 (require 'use-package)
 
-;; evil - eVIl mode
-(use-package evil :ensure t
+;; Hide modes from status bar (used it use-package)
+(use-package diminish :ensure t)
+
+;; zerodark-theme
+(use-package zerodark-theme :ensure t
+  :config
+  (load-theme 'zerodark t)
+  (if (not (display-graphic-p))
+      (set-face-attribute
+       'hl-line nil
+       :background "gray22"
+       :foreground nil
+       :bold t))
+  (zerodark-setup-modeline-format))
+
+;; Extensible vi layer
+(use-package evil :ensure t :demand
+  :init
+  ;; Use default emacs bindings for insert vim mode
+  (setq evil-disable-insert-state-bindings t)
   :config
   (evil-mode 1)
-  ;; C-w <arrow> bindings
-  (define-key evil-window-map (kbd "<left>")  'evil-window-left)
-  (define-key evil-window-map (kbd "<down>")  'evil-window-down)
-  (define-key evil-window-map (kbd "<up>")    'evil-window-up)
-  (define-key evil-window-map (kbd "<right>") 'evil-window-right)
-  (global-set-key (kbd "C-*") 'evil-search-symbol-forward)
-  (global-set-key (kbd "C-#") 'evil-search-symbol-backward))
+  ;; Use evil mode eveywhere
+  (setq evil-emacs-state-modes nil)
+  (setq evil-insert-state-modes nil)
+  (setq evil-motion-state-modes nil)
+  :bind
+  ((:map evil-window-map
+	 ("<left>"  . evil-window-left)
+	 ("<down>"  . evil-window-down)
+	 ("<up>"    . evil-window-up)
+	 ("<right>" . evil-window-right))
+   (:map evil-normal-state-map
+	 ("<backtab>" . previous-buffer)
+	 ("TAB"       . next-buffer)
+	 ("C-e"       . move-end-of-line))))
 
-;; ido-vertical-mode - Better buffer switching
-(use-package ido-vertical-mode :ensure t
+;; Efficiently add numbers to lines
+(use-package nlinum :ensure t
   :config
-  (setq ido-use-faces t)
-  (set-face-attribute 'ido-vertical-first-match-face nil
-		      :background "#e5b7c0")
-  (set-face-attribute 'ido-vertical-only-match-face nil
-		      :background "#b00000"
-		      :foreground "white")
-  (set-face-attribute 'ido-vertical-match-face nil
-		      :foreground "#b00000")
-  (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
-  (ido-vertical-mode 1))
+  (if (display-graphic-p)
+      (setq nlinum-format "%4d")
+    (setq nlinum-format "%4d\u2502"))
+  :hook (((text-mode prog-mode) . nlinum-mode)))
 
-;; councel - Better M-x and "C-x f"
+;; Highlight trailing spaces
+(use-package whitespace :ensure t
+  :config
+  (setq whitespace-line-column 78)
+  (setq whitespace-style
+	'(face         ;
+	  trailing     ; Trailing blanks
+	  lines-tail)) ; Lines with columns beyond whitespace-line-column
+  (global-whitespace-mode t))
+
+;; ivy, swiper and counsel - Better "M-x", "C-s" and "C-x f"
+(use-package ivy :ensure t :defer t
+  :config
+  (setq ivy-use-virtual-buffers t)
+  (ivy-mode))
+
+(use-package swiper :ensure t
+  :bind
+  (("C-s"     . swiper)))
+
 (use-package counsel :ensure t
   :bind
   (("M-x"     . counsel-M-x)
    ("C-x C-f" . counsel-find-file)
    ("C-c f"   . counsel-git)
+   ("C-c C-f" . counsel-git)
    ("C-c s"   . counsel-git-grep)
+   ("C-c C-s" . counsel-git-grep)
    ("C-c /"   . counsel-ag)
    ("C-c o"   . counsel-find-file-extern)
    ("C-S-s"   . counsel-ag)
    ("C-c l"   . counsel-locate)))
 
-;; which-key - Show hints about shortcuts
+;; Show hints about shortcuts
 (use-package which-key :ensure t
+  :diminish which-key-mode
   :config
   (which-key-mode)
   (which-key-setup-side-window-bottom)
@@ -159,3 +202,62 @@
 	which-key-side-window-max-width 0.33
 	which-key-idle-delay 0.5
 	which-key-min-display-lines 7))
+
+;; Highlight symbol under the cursor
+(use-package highlight-symbol :ensure t
+  :config
+  (setq highlight-symbol-idle-delay 0.1)
+  :hook (prog-mode . highlight-symbol-mode))
+
+;; Spell checkinga
+(use-package flyspell
+  :config
+  (cond
+   ((executable-find "aspell")
+    (setq ispell-program-name "aspell")
+    (setq ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))))
+  (setq flyspell-issue-message-flag nil)
+  (defun my:enable-flyspell()
+    "Enable flyspell based on the current major mode."
+    (interactive)
+    (progn
+      (if (derived-mode-p 'prog-mode)
+	  (flyspell-prog-mode)
+	(flyspell-mode 1))
+      (flyspell-buffer)))
+  :hook ((find-file text-mode prog-mode) . my:enable-flyspell))
+
+;; Syntax check
+(use-package flycheck :ensure t
+  :config
+  (global-flycheck-mode))
+
+;; Aggressive indentation
+(use-package aggressive-indent :ensure t
+  :config
+  (aggressive-indent-global-mode 1))
+
+;; Auto complete
+(use-package company :ensure t
+  :config
+  (setq company-idle-delay 0.1)
+  :hook (prog-mode . company-mode))
+
+(use-package irony :ensure t
+  :config
+  ;; replace the `completion-at-point' and `complete-symbol' bindings in
+  ;; irony-mode's buffers by irony-mode's function
+  (defun my-irony-mode-hook ()
+    (define-key irony-mode-map [remap completion-at-point]
+      'irony-completion-at-point-async)
+    (define-key irony-mode-map [remap complete-symbol]
+      'irony-completion-at-point-async))
+  :hook (((c++-mode c-mode objc-mode) . irony-mode)
+	 (irony-mode . my-irony-mode-hook)
+	 (irony-mode . irony-cdb-autosetup-compile-options)))
+
+(use-package company-irony :ensure t
+  :after (:all company irony))
+
+(provide '.emacs)
+;;; .emacs ends here
