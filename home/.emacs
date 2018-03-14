@@ -143,7 +143,7 @@
 (use-package evil :ensure t :demand
   :init
   ;; Use default emacs bindings for insert vim mode
-  (setq evil-disable-insert-state-bindings t)
+  (setq-default evil-disable-insert-state-bindings t)
   :config
   (evil-mode 1)
   ;; Use evil mode eveywhere
