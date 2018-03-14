@@ -66,11 +66,19 @@ fi
 #
 # Set prompt
 #
-case "$TERMINAL" in
+export _TERM=$(ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$))
+OLD_TERM="$TERM"
+case "$_TERM" in
 	terminology)
-		export  TERM=xterm-256color
+		export TERM=xterm-256color
+		which emacs &> /dev/null && alias emacs='TERM=rxvt-unicode-256color emacs'
+		which emacsclient &> /dev/null && alias emacsclient='TERM=rxvt-unicode-256color emacsclient'
+		;;
+	mate-terminal)
+		export TERM=xterm-256color
 		;;
 esac
+[ $OLD_TERM == $TERM ] && unset OLD_TERM
 
 # Uncomment for color prompt when supported
 color_prompt_when_supported=yes
