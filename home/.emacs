@@ -99,10 +99,11 @@
 ;; M-x package-refresh-contents RET
 ;; M-x package-install RET evil RET
 (require 'package)
-(setq package-archives '(("melpa"        . "https://melpa.org/packages/") ; Assume ssl
-			 ("melpa-stable" . "https://stable.melpa.org/packages/")
-			 ("marmalade"    . "https://marmalade-repo.org/packages/")
-			 ("gnu"          . "https://elpa.gnu.org/packages/")))
+(setq package-archives
+      '(("marmalade"    . "https://marmalade-repo.org/packages/")
+	("melpa"        . "https://melpa.org/packages/") ; Assume ssl
+	("melpa-stable" . "https://stable.melpa.org/packages/")
+	("gnu"          . "https://elpa.gnu.org/packages/")))
 (package-initialize)
 
 ;; Auto install mechanism
