@@ -1,0 +1,8 @@
+#!/bin/bash
+cmd=diff
+for c in colordiff; do
+	if which "$c" &> /dev/null; then
+		cmd="$c"
+	fi
+done
+"$cmd" -uprN "$@"
