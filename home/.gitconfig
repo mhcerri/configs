@@ -10,6 +10,7 @@
 	a        = add
 	d        = diff
 	s        = status
+	ss       = show --stat
 	co       = checkout
 	pick	 = cherry-pick
 	l        = log --oneline --decorate=full
