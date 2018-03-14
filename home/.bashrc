@@ -149,6 +149,7 @@ toggle_bell() {
 
 alias ls='ls --color=auto'
 alias ll='ls -l'
+alias e='emacsclient -a "" -t'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
