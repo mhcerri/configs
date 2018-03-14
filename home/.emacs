@@ -80,6 +80,17 @@
 ;; Make ibuffer default. This way it's possible to switch buffers with "C-x C-b".
 (defalias 'list-buffers 'ibuffer)
 
+;; Mutt specific configurations
+(defun my:mutt-mode()
+  "Mutt mode"
+  (interactive)
+  (progn
+    (mail-mode)
+    (whitespace-mode -1)
+    (re-search-forward "^$")
+    (forward-char 1)))
+(add-to-list 'auto-mode-alist '("/mutt" . my:mutt-mode))
+
 ;; Shotcuts
 ;;------------------------------------------------------------------------------
 
@@ -167,7 +178,8 @@
 	'(face         ;
 	  trailing     ; Trailing blanks
 	  lines-tail)) ; Lines with columns beyond whitespace-line-column
-  (global-whitespace-mode t))
+  :hook
+  (((text-mode prog-mode) . whitespace-mode)))
 
 (use-package smart-backspace :ensure t
   :config
