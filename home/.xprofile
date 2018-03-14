@@ -31,14 +31,12 @@ fi
 
 # Set environment
 . ~/.bashrc
-# TODO use a loop instead
-if which terminology &> /dev/null; then
-    export TERMINAL=terminology
-elif which mate-terminal &> /dev/null; then
-    export TERMINAL=mate-terminal
-elif which urxvt256c &> /dev/null; then
-    export TERMINAL=urxvt256c
-fi
+for t in terminology mate-terminal urxvt256c; do
+	if which "$t" &> /dev/null; then
+		export TERMINAL="$t"
+		break
+	fi
+done
 
 # Ensure that SSH will ask the passphase via console
 export SSH_ASKPASS=
