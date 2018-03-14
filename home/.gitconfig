@@ -19,7 +19,7 @@
 	list-all = log --oneline --decorate=full --graph --all
 	fixes    = log --pretty=fixes
 	amend    = commit --amend --no-edit
-	send-email-to-kt = send-email --suppress-cc=all --to=kernel-team@lists.ubuntu.com
+	send-email-to-ckt = send-email --suppress-cc=all --to=kernel-team@lists.ubuntu.com
 	send-email-to-me = send-email --suppress-cc=all --to=marcelo.cerri@canonical.com
 	format-patch = format-patch --from
 
