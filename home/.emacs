@@ -191,13 +191,16 @@
   (smartparens-global-mode))
 
 ;; ivy, swiper and counsel - Better "M-x", "C-s" and "C-x f"
-(use-package ivy :ensure t :defer t
+(use-package ivy :ensure t
   :demand
   :config
   (setq ivy-use-virtual-buffers t)
   (ivy-mode 1)
   :bind
-  (("C-x b"   . ivy-switch-buffer)))
+  ((:map ivy-minibuffer-map
+	 ([escape] . minibuffer-keyboard-quit))
+   ;;   ("C-x b"   . ivy-switch-buffer)))
+   ))
 
 (use-package swiper :ensure t
   :bind
