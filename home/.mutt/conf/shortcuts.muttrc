@@ -9,6 +9,13 @@ macro index <insert> 'Wn'
 bind pager <up> previous-line
 bind pager <down> next-line
 
+# Complete addresses with tab
+bind editor <Tab> complete-query
+
+# Show only unread messages
+macro index <F12> 'l~(~O|~N)<return>ZZ<end>'
+macro index <F24> 'l~(~s ^\\[ ~P)<return>ZZ<end>' # <F24> == <Shift><F12>
+
 # ctrl-a mark all messages in a mailbox as read.
 #
 # 1. Tag unread messages.
