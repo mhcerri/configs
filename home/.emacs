@@ -91,11 +91,14 @@
     (forward-char 1)))
 (add-to-list 'auto-mode-alist '("/mutt" . my:mutt-mode))
 
-;; Shotcuts
+;; Shortcuts
 ;;------------------------------------------------------------------------------
 
 ;; Kills emacs server
 (global-set-key (kbd "C-c C-c") 'kill-emacs)
+
+;; Cycle between the last two buffers
+(global-set-key (kbd "M-o")  'mode-line-other-buffer)
 
 ;; Kill line backwards
 ;; Use C-u u to delete from cursor to beginning of line. Similarly to C-u used by vim and bash
