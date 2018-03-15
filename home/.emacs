@@ -328,6 +328,20 @@
   :config
   (aggressive-indent-global-mode 1))
 
+;; Git support
+(use-package magit :ensure t
+  :config
+  (use-package evil-magit :ensure t
+    :demand
+    :after (:all evil magit))
+  :commands
+  (magit-status magit-blame)
+  :bind
+  (("C-c g s" . magit-status)
+   ("C-c g b" . magit-blame)
+   ("C-c g l" . magit-log-current)
+   ("C-c g L" . magit-log-all)))
+
 ;; Auto complete
 (use-package company :ensure t
   :diminish
