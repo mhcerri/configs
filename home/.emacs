@@ -292,22 +292,31 @@
 
 ;; Spell checking
 (use-package flyspell
+  :diminish "FlyS"
   :config
   (cond
    ((executable-find "aspell")
     (setq ispell-program-name "aspell")
     (setq ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))))
-  (setq flyspell-issue-message-flag nil)
-  (defun my:enable-flyspell()
+  ;;(setq flyspell-issue-message-flag nil)
+  (defun flyspell-visible-region()
+    "Check spelling only on the visible region"
+    (interactive)
+    (flyspell-region (window-start) (window-end)))
+  (defun flyspell-smart-mode()
     "Enable flyspell based on the current major mode."
     (interactive)
     (progn
       (if (derived-mode-p 'prog-mode)
 	  (flyspell-prog-mode)
 	(flyspell-mode 1))
-      (flyspell-buffer)))
+      ;; fixme: workaround to avoid checking the entire buffer and blocking
+      ;; It might be possible to call that after scrolling the buffer
+      ;;(flyspell-buffer)
+      (flyspell-visible-region)
+      ))
   :hook
-  ((find-file text-mode prog-mode) . my:enable-flyspell))
+  ((text-mode prog-mode) . flyspell-smart-mode))
 
 ;; Syntax check
 (use-package flycheck :ensure t
