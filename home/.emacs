@@ -269,6 +269,8 @@
     "iedit-mode on the current function."
     (interactive)
     (iedit-mode 0))
+  ;;(add-hook 'iedit-mode-hook '(lambda () (which-key-show-keymap 'iedit-mode-keymap)))
+  :hook ((iedit-mode . (lambda () (which-key-show-keymap 'iedit-mode-keymap))))
   :bind
   (("C-c E" . iedit-mode)
    ("C-c e" . my:iedit-local-mode)
