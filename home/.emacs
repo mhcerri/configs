@@ -176,6 +176,7 @@
 
 ;; Highlight trailing spaces
 (use-package whitespace :ensure t
+  :diminish
   :config
   (setq whitespace-line-column 78)
   (setq whitespace-style
@@ -186,6 +187,7 @@
   (((text-mode prog-mode) . whitespace-mode)))
 
 (use-package smart-backspace :ensure t
+  :diminish
   :config
   ;; (global-set-key [?\C-?] 'smart-backspace)
   (define-key evil-insert-state-map [?\C-?] 'smart-backspace))
@@ -197,6 +199,7 @@
 ;; ivy, swiper and counsel - Better "M-x", "C-s" and "C-x f"
 (use-package ivy :ensure t
   :demand
+  :diminish
   :config
   (setq ivy-use-virtual-buffers t)
   (ivy-mode 1)
@@ -207,10 +210,12 @@
    ))
 
 (use-package swiper :ensure t
+  :diminish
   :bind
   (("C-s"     . swiper)))
 
 (use-package counsel :ensure t
+  :diminish
   :bind
   (("M-x"     . counsel-M-x)
    ("C-x C-f" . counsel-find-file)
@@ -225,7 +230,7 @@
 
 ;; Show hints about shortcuts
 (use-package which-key :ensure t
-  :diminish which-key-mode
+  :diminish
   :config
   (which-key-mode)
   (which-key-setup-side-window-bottom)
@@ -238,6 +243,7 @@
 
 ;; Highlight symbol under the cursor
 (use-package highlight-symbol :ensure t
+  :diminish
   :config
   (setq highlight-symbol-idle-delay 0.1)
   :hook
@@ -312,6 +318,7 @@
 
 ;; Auto complete
 (use-package company :ensure t
+  :diminish
   :config
   (setq company-idle-delay 0.1)
   :hook
