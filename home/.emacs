@@ -252,6 +252,28 @@
    (:map evil-normal-state-map ("C-@" . er/expand-region))
    (:map evil-visual-state-map ("C-@" . er/expand-region))))
 
+;; Edit multiple occurrences of a symbol at the same time
+;; todo: try multiple-cursors.el agan.
+(use-package iedit :ensure t
+  :demand
+  :config
+  (defun my:iedit-local-mode()
+    "iedit-mode on the current function."
+    (interactive)
+    (iedit-mode 0))
+  :bind
+  (("C-c E" . iedit-mode)
+   ("C-c e" . my:iedit-local-mode)
+   (:map evil-insert-state-map
+	 ("C-c E" . iedit-mode)
+	 ("C-c e" . my:iedit-local-mode))
+   (:map evil-normal-state-map
+	 ("C-c E" . iedit-mode)
+	 ("C-c e" . my:iedit-local-mode))
+   (:map evil-visual-state-map
+	 ("C-c E" . iedit-mode)
+	 ("C-c e" . my:iedit-local-mode))))
+
 ;; Spell checking
 (use-package flyspell
   :config
