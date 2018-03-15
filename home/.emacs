@@ -160,12 +160,13 @@
 	 ("<up>"    . evil-window-up)
 	 ("<right>" . evil-window-right))
    (:map evil-normal-state-map
-	 ("<backtab>" . previous-buffer)
-	 ("TAB"       . next-buffer)
-	 ("C-e"       . move-end-of-line))))
+	 ("g T"     . previous-buffer)
+	 ("g t"     . next-buffer)
+	 ("C-e"     . move-end-of-line))))
 
 ;; Efficiently add numbers to lines
 (use-package nlinum :ensure t
+  :diminish
   :config
   (if (display-graphic-p)
       (setq nlinum-format "%4d")
