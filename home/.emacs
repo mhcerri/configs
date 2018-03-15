@@ -275,6 +275,12 @@
 	 ("C-c E" . iedit-mode)
 	 ("C-c e" . my:iedit-local-mode))))
 
+(use-package yasnippet-snippets :ensure t)
+(use-package yasnippet :ensure t
+  :demand
+  :config
+  (yas-global-mode 1))
+
 ;; Spell checking
 (use-package flyspell
   :config
