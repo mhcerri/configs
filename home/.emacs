@@ -242,7 +242,7 @@
   :hook
   ((prog-mode . highlight-symbol-mode)))
 
-;; Spell checkinga
+;; Spell checking
 (use-package flyspell
   :config
   (cond
