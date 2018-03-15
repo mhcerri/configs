@@ -86,6 +86,7 @@
   (interactive)
   (progn
     (mail-mode)
+    (auto-fill-mode 1)
     (whitespace-mode -1)
     (re-search-forward "^$")
     (forward-char 1)))
