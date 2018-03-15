@@ -242,6 +242,16 @@
   :hook
   ((prog-mode . highlight-symbol-mode)))
 
+;; Select based on context
+(use-package expand-region :ensure t
+  :config
+  (global-set-key (kbd "C-@") 'er/expand-region)
+  :bind
+  (("C-@" . er/expand-region)
+   (:map evil-insert-state-map ("C-@" . er/expand-region))
+   (:map evil-normal-state-map ("C-@" . er/expand-region))
+   (:map evil-visual-state-map ("C-@" . er/expand-region))))
+
 ;; Spell checking
 (use-package flyspell
   :config
