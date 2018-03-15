@@ -145,15 +145,6 @@
 
 ;; Extensible vi layer
 (use-package evil :ensure t :demand
-  :init
-  ;; Use default emacs bindings for insert vim mode
-  (setq-default evil-disable-insert-state-bindings t)
-  :config
-  (evil-mode 1)
-  ;; Use evil mode eveywhere
-  (setq evil-emacs-state-modes nil)
-  (setq evil-insert-state-modes nil)
-  (setq evil-motion-state-modes nil)
   :bind
   ((:map evil-window-map
 	 ("<left>"  . evil-window-left)
@@ -163,29 +154,39 @@
    (:map evil-normal-state-map
 	 ("g T"     . previous-buffer)
 	 ("g t"     . next-buffer)
-	 ("C-e"     . move-end-of-line))))
+	 ("C-e"     . move-end-of-line)))
+  :init
+  ;; Use default emacs bindings for insert vim mode
+  (setq-default evil-disable-insert-state-bindings t)
+  :config
+  (evil-mode 1)
+  ;; Use evil mode eveywhere
+  (setq evil-emacs-state-modes nil)
+  (setq evil-insert-state-modes nil)
+  (setq evil-motion-state-modes nil))
 
 ;; Efficiently add numbers to lines
 (use-package nlinum :ensure t
   :diminish
+  :hook
+  (((text-mode prog-mode) . nlinum-mode))
   :config
   (if (display-graphic-p)
       (setq nlinum-format "%4d")
-    (setq nlinum-format "%4d\u2502"))
-  :hook
-  (((text-mode prog-mode) . nlinum-mode)))
+    (setq nlinum-format "%4d\u2502")))
 
 ;; Highlight trailing spaces
 (use-package whitespace :ensure t
   :diminish
+  :hook
+  (((text-mode prog-mode) . whitespace-mode))
   :config
   (setq whitespace-line-column 78)
   (setq whitespace-style
 	'(face         ;
 	  trailing     ; Trailing blanks
-	  lines-tail)) ; Lines with columns beyond whitespace-line-column
-  :hook
-  (((text-mode prog-mode) . whitespace-mode)))
+	  lines-tail)  ; Lines with columns beyond whitespace-line-column
+	))
 
 (use-package smart-backspace :ensure t
   :diminish
@@ -201,14 +202,13 @@
 (use-package ivy :ensure t
   :demand
   :diminish
-  :config
-  (setq ivy-use-virtual-buffers t)
-  (ivy-mode 1)
   :bind
   ((:map ivy-minibuffer-map
 	 ([escape] . minibuffer-keyboard-quit))
-   ;;   ("C-x b"   . ivy-switch-buffer)))
-   ))
+   )
+  :config
+  (setq ivy-use-virtual-buffers t)
+  (ivy-mode 1))
 
 (use-package swiper :ensure t
   :diminish
@@ -245,15 +245,13 @@
 ;; Highlight symbol under the cursor
 (use-package highlight-symbol :ensure t
   :diminish
-  :config
-  (setq highlight-symbol-idle-delay 0.1)
   :hook
-  ((prog-mode . highlight-symbol-mode)))
+  ((prog-mode . highlight-symbol-mode))
+  :config
+  (setq highlight-symbol-idle-delay 0.1))
 
 ;; Select based on context
 (use-package expand-region :ensure t
-  :config
-  (global-set-key (kbd "C-@") 'er/expand-region)
   :bind
   (("C-@" . er/expand-region)
    (:map evil-insert-state-map ("C-@" . er/expand-region))
@@ -264,26 +262,27 @@
 ;; todo: try multiple-cursors.el agan.
 (use-package iedit :ensure t
   :demand
-  :config
-  (defun my:iedit-local-mode()
-    "iedit-mode on the current function."
-    (interactive)
-    (iedit-mode 0))
   ;;(add-hook 'iedit-mode-hook '(lambda () (which-key-show-keymap 'iedit-mode-keymap)))
   :hook ((iedit-mode . (lambda () (which-key-show-keymap 'iedit-mode-keymap))))
   :bind
   (("C-c E" . iedit-mode)
-   ("C-c e" . my:iedit-local-mode)
+   ("C-c e" . iedit-local-mode)
    (:map evil-insert-state-map
 	 ("C-c E" . iedit-mode)
-	 ("C-c e" . my:iedit-local-mode))
+	 ("C-c e" . iedit-local-mode))
    (:map evil-normal-state-map
 	 ("C-c E" . iedit-mode)
-	 ("C-c e" . my:iedit-local-mode))
+	 ("C-c e" . iedit-local-mode))
    (:map evil-visual-state-map
 	 ("C-c E" . iedit-mode)
-	 ("C-c e" . my:iedit-local-mode))))
+	 ("C-c e" . iedit-local-mode)))
+  :config
+  (defun iedit-local-mode()
+    "iedit-mode on the current function."
+    (interactive)
+    (iedit-mode 0)))
 
+;; Snippets
 (use-package yasnippet-snippets :ensure t)
 (use-package yasnippet :ensure t
   :demand
@@ -293,6 +292,8 @@
 ;; Spell checking
 (use-package flyspell
   :diminish "FlyS"
+  :hook
+  ((text-mode prog-mode) . flyspell-smart-mode)
   :config
   (cond
    ((executable-find "aspell")
@@ -314,9 +315,7 @@
       ;; It might be possible to call that after scrolling the buffer
       ;;(flyspell-buffer)
       (flyspell-visible-region)
-      ))
-  :hook
-  ((text-mode prog-mode) . flyspell-smart-mode))
+      )))
 
 ;; Syntax check
 (use-package flycheck :ensure t
@@ -330,27 +329,31 @@
 
 ;; Git support
 (use-package magit :ensure t
-  :config
-  (use-package evil-magit :ensure t
-    :demand
-    :after (:all evil magit))
   :commands
   (magit-status magit-blame)
   :bind
   (("C-c g s" . magit-status)
    ("C-c g b" . magit-blame)
    ("C-c g l" . magit-log-current)
-   ("C-c g L" . magit-log-all)))
+   ("C-c g L" . magit-log-all))
+  :config
+  (use-package evil-magit :ensure t
+    :demand
+    :after (:all evil magit)))
 
 ;; Auto complete
 (use-package company :ensure t
   :diminish
-  :config
-  (setq company-idle-delay 0.1)
   :hook
-  ((prog-mode . company-mode)))
+  ((prog-mode . company-mode))
+  :config
+  (setq company-idle-delay 0.1))
 
 (use-package irony :ensure t
+  :hook
+  (((c++-mode c-mode objc-mode) . irony-mode)
+   (irony-mode                  . my-irony-mode-hook)
+   (irony-mode                  . irony-cdb-autosetup-compile-options))
   :config
   ;; replace the `completion-at-point' and `complete-symbol' bindings in
   ;; irony-mode's buffers by irony-mode's function
@@ -360,11 +363,7 @@
     (define-key irony-mode-map [remap complete-symbol]
       'irony-completion-at-point-async))
   (use-package company-irony :ensure t
-    :after (:all company irony))
-  :hook
-  (((c++-mode c-mode objc-mode) . irony-mode)
-   (irony-mode                  . my-irony-mode-hook)
-   (irony-mode                  . irony-cdb-autosetup-compile-options)))
+    :after (:all company irony)))
 
 (provide '.emacs)
 ;;; .emacs ends here
