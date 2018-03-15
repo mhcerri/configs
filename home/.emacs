@@ -345,13 +345,12 @@
       'irony-completion-at-point-async)
     (define-key irony-mode-map [remap complete-symbol]
       'irony-completion-at-point-async))
+  (use-package company-irony :ensure t
+    :after (:all company irony))
   :hook
   (((c++-mode c-mode objc-mode) . irony-mode)
    (irony-mode                  . my-irony-mode-hook)
    (irony-mode                  . irony-cdb-autosetup-compile-options)))
-
-(use-package company-irony :ensure t
-  :after (:all company irony))
 
 (provide '.emacs)
 ;;; .emacs ends here
