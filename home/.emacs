@@ -374,6 +374,7 @@
 (use-package company
   :ensure t
   :diminish
+  :commands (company-mode)
   :hook
   ((prog-mode . company-mode))
   :config
@@ -382,9 +383,9 @@
 (use-package irony
   :ensure t
   :hook
-  (((c++-mode c-mode objc-mode) . irony-mode)
-   (irony-mode                  . my-irony-mode-hook)
-   (irony-mode                  . irony-cdb-autosetup-compile-options))
+  (((c++-mode c-mode) . irony-mode)
+   (irony-mode        . my-irony-mode-hook)
+   (irony-mode        . irony-cdb-autosetup-compile-options))
   :config
   ;; replace the `completion-at-point' and `complete-symbol' bindings in
   ;; irony-mode's buffers by irony-mode's function
@@ -393,8 +394,13 @@
       'irony-completion-at-point-async)
     (define-key irony-mode-map [remap complete-symbol]
       'irony-completion-at-point-async))
-  (use-package company-irony :ensure t
-    :after (:all company irony)))
+  (use-package company-irony
+    :ensure t
+    :demand
+    :after (:all company irony)
+    :config
+    (add-to-list 'company-backends 'company-irony)
+    ))
 
 (provide '.emacs)
 ;;; .emacs ends here
