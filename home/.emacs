@@ -133,7 +133,8 @@
 (use-package diminish :ensure t)
 
 ;; zerodark-theme
-(use-package zerodark-theme :ensure t
+(use-package zerodark-theme
+  :ensure t
   :config
   (load-theme 'zerodark t)
   (if (not (display-graphic-p))
@@ -145,7 +146,9 @@
   (zerodark-setup-modeline-format))
 
 ;; Extensible vi layer
-(use-package evil :ensure t :demand
+(use-package evil
+  :ensure t
+  :demand
   :bind
   ((:map evil-window-map
 	 ("<left>"  . evil-window-left)
@@ -167,7 +170,8 @@
   (setq evil-motion-state-modes nil))
 
 ;; Efficiently add numbers to lines
-(use-package nlinum :ensure t
+(use-package nlinum
+  :ensure t
   :diminish
   :hook
   (((text-mode prog-mode) . nlinum-mode))
@@ -177,7 +181,8 @@
     (setq nlinum-format "%4d\u2502")))
 
 ;; Highlight trailing spaces
-(use-package whitespace :ensure t
+(use-package whitespace
+  :ensure t
   :diminish
   :hook
   (((text-mode prog-mode) . whitespace-mode))
@@ -189,18 +194,21 @@
 	  lines-tail)  ; Lines with columns beyond whitespace-line-column
 	))
 
-(use-package smart-backspace :ensure t
+(use-package smart-backspace
+  :ensure t
   :diminish
   :config
   ;; (global-set-key [?\C-?] 'smart-backspace)
   (define-key evil-insert-state-map [?\C-?] 'smart-backspace))
 
-(use-package smartparens-config :ensure smartparens
+(use-package smartparens-config
+  :ensure smartparens
   :config
   (smartparens-global-mode))
 
 ;; ivy, swiper and counsel - Better "M-x", "C-s" and "C-x f"
-(use-package ivy :ensure t
+(use-package ivy
+  :ensure t
   :demand
   :diminish
   :bind
@@ -211,12 +219,14 @@
   (setq ivy-use-virtual-buffers t)
   (ivy-mode 1))
 
-(use-package swiper :ensure t
+(use-package swiper
+  :ensure t
   :diminish
   :bind
   (("C-s"     . swiper)))
 
-(use-package counsel :ensure t
+(use-package counsel
+  :ensure t
   :diminish
   :bind
   (("M-x"     . counsel-M-x)
@@ -231,7 +241,8 @@
    ("C-c l"   . counsel-locate)))
 
 ;; Show hints about shortcuts
-(use-package which-key :ensure t
+(use-package which-key
+  :ensure t
   :diminish
   :config
   (which-key-mode)
@@ -244,7 +255,8 @@
 	which-key-min-display-lines 7))
 
 ;; Highlight symbol under the cursor
-(use-package highlight-symbol :ensure t
+(use-package highlight-symbol
+  :ensure t
   :diminish
   :hook
   ((prog-mode . highlight-symbol-mode))
@@ -252,7 +264,8 @@
   (setq highlight-symbol-idle-delay 0.1))
 
 ;; Select based on context
-(use-package expand-region :ensure t
+(use-package expand-region
+  :ensure t
   :bind
   (("C-@" . er/expand-region)
    (:map evil-insert-state-map ("C-@" . er/expand-region))
@@ -261,7 +274,8 @@
 
 ;; Edit multiple occurrences of a symbol at the same time
 ;; todo: try multiple-cursors.el agan.
-(use-package iedit :ensure t
+(use-package iedit
+  :ensure t
   :demand
   ;;(add-hook 'iedit-mode-hook '(lambda () (which-key-show-keymap 'iedit-mode-keymap)))
   :hook ((iedit-mode . (lambda () (which-key-show-keymap 'iedit-mode-keymap))))
@@ -285,7 +299,9 @@
 
 ;; Snippets
 (use-package yasnippet-snippets :ensure t)
-(use-package yasnippet :ensure t
+
+(use-package yasnippet
+  :ensure t
   :demand
   :config
   (yas-global-mode 1))
@@ -319,17 +335,20 @@
       )))
 
 ;; Syntax check
-(use-package flycheck :ensure t
+(use-package flycheck
+  :ensure t
   :config
   (global-flycheck-mode))
 
 ;; Aggressive indentation
-(use-package aggressive-indent :ensure t
+(use-package aggressive-indent
+  :ensure t
   :config
   (aggressive-indent-global-mode 1))
 
 ;; Git support
-(use-package magit :ensure t
+(use-package magit
+  :ensure t
   :commands
   (magit-status magit-blame)
   :bind
@@ -338,19 +357,22 @@
    ("C-c g l" . magit-log-current)
    ("C-c g L" . magit-log-all))
   :config
-  (use-package evil-magit :ensure t
+  (use-package evil-magit
+    :ensure t
     :demand
     :after (:all evil magit)))
 
 ;; Auto complete
-(use-package company :ensure t
+(use-package company
+  :ensure t
   :diminish
   :hook
   ((prog-mode . company-mode))
   :config
   (setq company-idle-delay 0.1))
 
-(use-package irony :ensure t
+(use-package irony
+  :ensure t
   :hook
   (((c++-mode c-mode objc-mode) . irony-mode)
    (irony-mode                  . my-irony-mode-hook)
