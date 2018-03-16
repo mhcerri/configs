@@ -362,6 +362,8 @@
    ("C-c g b" . magit-blame)
    ("C-c g l" . magit-log-current)
    ("C-c g L" . magit-log-all))
+  :init
+  (which-key-add-key-based-replacements "C-c g" "magit")
   :config
   (use-package evil-magit
     :ensure t
