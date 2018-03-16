@@ -169,6 +169,12 @@
   (setq evil-insert-state-modes nil)
   (setq evil-motion-state-modes nil))
 
+;; Use proper regexp
+(use-package pcre2el
+  :ensure t
+  :config
+  (pcre-mode))
+
 ;; Efficiently add numbers to lines
 (use-package nlinum
   :ensure t
