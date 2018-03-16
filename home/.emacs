@@ -17,9 +17,10 @@
 
 ;; Hide tool and menu bars and use reasonable font size
 (if (display-graphic-p)
-    (tool-bar-mode 0))
+    (progn
+      (scroll-bar-mode 0)
+      (tool-bar-mode 0)))
 (menu-bar-mode 0)
-(scroll-bar-mode 0)
 (set-face-attribute 'default nil :height 110)
 
 ;; Sane defaults
