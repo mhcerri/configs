@@ -360,10 +360,10 @@
   (global-flycheck-mode))
 
 ;; Aggressive indentation
+;; Use `aggressive-indent-mode' to enable it.
 (use-package aggressive-indent
   :ensure t
-  :config
-  (aggressive-indent-global-mode 1))
+  :diminish "AI")
 
 ;; Git support
 (use-package magit
