@@ -414,5 +414,51 @@
     :config
     (add-to-list 'company-backends 'company-irony)))
 
+;; Code and project navigation
+(use-package etags :ensure t
+  :config
+  ;; Don't ask before rereading the TAGS files if they have changed
+  (setq tags-revert-without-query t)
+  ;; Don't warn when TAGS files are large
+  (setq large-file-warning-threshold nil))
+
+(use-package counsel-etags :ensure t)
+
+(use-package ggtags :ensure t)
+
+(use-package counsel-gtags :ensure t)
+
+(use-package projectile
+  :ensure t
+  :after (:all counsel-etags)
+  :commands (projectile-mode)
+  :hook
+  ((prog-mode . projectile-mode))
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :init
+  ;; which-key prefix title
+  (which-key-add-key-based-replacements "C-c p" "Projectile")
+  :config
+  (defun projectile-update-etags ()
+    "Generate etags file using counsel-etags."
+    (interactive)
+    (let* (
+	   (project-root (projectile-project-root))
+	   )
+      (message "Generating etags at \"%s\"" project-root)
+      (counsel-etags-scan-dir project-root t)
+      )
+    )
+  ;; projectile-regenerate-tags blocks. So replace it with something better
+  (remove-hook 'projectile-idle-timer-hook
+	       'projectile-regenerate-tags t)
+  (add-hook 'projectile-idle-timer-hook
+	    'projectile-update-etags)
+  ;; Enable projectile idle timer
+  ;;(setq projectile-enable-idle-timer t
+  ;;	projectile-idle-timer-seconds 3)
+  (projectile-mode))
+
 (provide '.emacs)
 ;;; .emacs ends here
