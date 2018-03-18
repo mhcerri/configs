@@ -350,7 +350,7 @@
       ;; fixme: workaround to avoid checking the entire buffer and blocking
       ;; It might be possible to call that after scrolling the buffer
       ;;(flyspell-buffer)
-      (flyspell-visible-region)
+      ;;(flyspell-visible-region)
       )))
 
 ;; Syntax check
