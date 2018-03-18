@@ -386,34 +386,33 @@
 ;; Auto complete
 (use-package company
   :ensure t
-  :diminish
+  :diminish "Company"
   :commands (company-mode)
   :hook
   ((prog-mode . company-mode))
   :config
-  (setq company-idle-delay 0.1))
+  ;; Time before completion starts
+  (setq company-idle-delay 0.1)
+  ;; Avoid triggering the generation of tag completion table (that blicks
+  ;; the UI and might take very long on large projects).
+  (setq company-etags-use-main-table-list nil)
+  ;; The minimum prefix length for idle completion.
+  (setq company-minimum-prefix-length 3)
+  ;; Allow user to type a value that is not listed in the completion.
+  (setq company-require-match nil))
 
 (use-package irony
   :ensure t
   :hook
   (((c++-mode c-mode) . irony-mode)
-   (irony-mode        . my-irony-mode-hook)
    (irony-mode        . irony-cdb-autosetup-compile-options))
   :config
-  ;; replace the `completion-at-point' and `complete-symbol' bindings in
-  ;; irony-mode's buffers by irony-mode's function
-  (defun my-irony-mode-hook ()
-    (define-key irony-mode-map [remap completion-at-point]
-      'irony-completion-at-point-async)
-    (define-key irony-mode-map [remap complete-symbol]
-      'irony-completion-at-point-async))
   (use-package company-irony
     :ensure t
     :demand
     :after (:all company irony)
     :config
-    (add-to-list 'company-backends 'company-irony)
-    ))
+    (add-to-list 'company-backends 'company-irony)))
 
 (provide '.emacs)
 ;;; .emacs ends here
