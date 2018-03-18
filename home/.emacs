@@ -33,6 +33,16 @@
 (savehist-mode)               ; Persistent history
 (xterm-mouse-mode)            ; Support mouse inside terminal
 (global-hl-line-mode 1)       ; Highlight current line
+(setq scroll-step 1)          ; Scroll one line at a time
+(setq scroll-margin 5)        ; Show N lines at the edge when scrolling
+(setq                         ; Scroll one line at a time
+ mouse-wheel-scroll-amount
+ '(1 ((shift) . 1)))
+(setq                         ; Don't accelerate scrolling
+ mouse-wheel-progressive-speed
+ nil)
+(setq                         ; Scroll window under mouse
+ mouse-wheel-follow-mouse 't)
 
 ;; ediff options
 (require 'ediff)
