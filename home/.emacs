@@ -172,18 +172,21 @@
   :init
   ;; Use default emacs bindings for insert vim mode
   (setq-default evil-disable-insert-state-bindings t)
-  :config
-  (evil-mode 1)
+  ;; Search for symbols not words
+  (setq evil-symbol-word-search t)
+  (setq evil-ex-search-vim-style-regexp t)
+  (setq evil-search-module 'evil-search)
   ;; Use evil mode eveywhere
   (setq evil-emacs-state-modes nil)
   (setq evil-insert-state-modes nil)
-  (setq evil-motion-state-modes nil))
-
-;; Use proper regexp
-(use-package pcre2el
-  :ensure t
+  (setq evil-motion-state-modes nil)
   :config
-  (pcre-mode))
+  (evil-mode 1))
+
+;; PCRE regular expression style
+;; Use `pcre-mode' to enable it.
+(use-package pcre2el
+  :ensure t)
 
 ;; Efficiently add numbers to lines
 (use-package nlinum
