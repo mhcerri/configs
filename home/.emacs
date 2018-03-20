@@ -404,20 +404,29 @@
   ;; Allow user to type a value that is not listed in the completion.
   (setq company-require-match nil))
 
+;; clang based completion server
 (use-package irony
   :ensure t
   :hook
   (((c++-mode c-mode) . irony-mode)
-   (irony-mode        . irony-cdb-autosetup-compile-options))
-  :config
-  (use-package company-irony
-    :ensure t
-    :demand
-    :after (:all company irony)
-    :config
-    (add-to-list 'company-backends 'company-irony)))
+   (irony-mode        . irony-cdb-autosetup-compile-options)))
 
-;; Code and project navigation
+;; company integration
+(use-package company-irony
+  :ensure t
+  :after (:all company irony)
+  :config
+  (add-to-list 'company-backends 'company-irony))
+
+;; C headers completion based on the irony server
+(use-package company-irony-c-headers
+  :ensure t
+  :after (:all company-irony)
+  :config
+  (add-to-list
+   'company-backends
+   '(company-irony-c-headers company-irony)))
+
 (use-package etags :ensure t
   :config
   ;; Don't ask before rereading the TAGS files if they have changed
