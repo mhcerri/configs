@@ -117,7 +117,8 @@
 (global-set-key (kbd "M-o")  'mode-line-other-buffer)
 
 ;; Kill line backwards
-;; Use C-u u to delete from cursor to beginning of line. Similarly to C-u used by vim and bash
+;; Use C-u u to delete from cursor to beginning of line, similarly
+;; to C-u used by vim and bash/readline.
 (defun backward-kill-line (arg)
   "Kill ARG lines backward."
   (interactive "p")
@@ -125,9 +126,6 @@
 (global-set-key (kbd "C-c u") 'backward-kill-line)
 
 ;; Package manager
-;;==============================================================================
-;; M-x package-refresh-contents RET
-;; M-x package-install RET evil RET
 (require 'package)
 (setq package-archives
       '(("marmalade"    . "https://marmalade-repo.org/packages/")
@@ -223,7 +221,6 @@
   :ensure t
   :diminish
   :config
-  ;; (global-set-key [?\C-?] 'smart-backspace)
   (define-key evil-insert-state-map [?\C-?] 'smart-backspace))
 
 (use-package smartparens-config
@@ -300,11 +297,10 @@
    (:map evil-visual-state-map ("C-@" . er/expand-region))))
 
 ;; Edit multiple occurrences of a symbol at the same time
-;; todo: try multiple-cursors.el agan.
+;; todo: try multiple-cursors.el again.
 (use-package iedit
   :ensure t
   :demand
-  ;;(add-hook 'iedit-mode-hook '(lambda () (which-key-show-keymap 'iedit-mode-keymap)))
   :hook ((iedit-mode . (lambda () (which-key-show-keymap 'iedit-mode-keymap))))
   :bind
   (("C-c E" . iedit-mode)
@@ -402,7 +398,7 @@
   :config
   ;; Time before completion starts
   (setq company-idle-delay 0.1)
-  ;; Avoid triggering the generation of tag completion table (that blicks
+  ;; Avoid triggering the generation of tag completion table (that bricks
   ;; the UI and might take very long on large projects).
   (setq company-etags-use-main-table-list nil)
   ;; The minimum prefix length for idle completion.
@@ -436,7 +432,7 @@
 ;; Basic support for etags if gtags is not available:
 (use-package etags :ensure t
   :config
-  ;; Don't ask before rereading the TAGS files if they have changed
+  ;; Don't ask before re-reading the TAGS files if they have changed
   (setq tags-revert-without-query t)
   ;; Don't warn when TAGS files are large
   (setq large-file-warning-threshold nil))
@@ -471,7 +467,6 @@
   :bind-keymap
   ("C-c p" . projectile-command-map)
   :init
-  ;; which-key prefix title
   (which-key-add-key-based-replacements "C-c p" "Projectile")
   :config
   (projectile-mode))
