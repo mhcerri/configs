@@ -474,5 +474,11 @@
   :config
   (projectile-mode))
 
+(use-package ibuffer-projectile
+  :ensure t
+  :after (:all ibuffer projectile)
+  :hook
+  ((ibuffer . ibuffer-projectile-set-filter-groups)))
+
 (provide '.emacs)
 ;;; .emacs ends here
