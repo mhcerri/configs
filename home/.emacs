@@ -273,7 +273,8 @@
 	which-key-side-window-max-width 0.33
 	which-key-idle-delay 0.01
 	which-key-idle-secondary-delay 0.1
-	which-key-min-display-lines 7)
+	which-key-min-display-lines 7
+	which-key-sort-order 'which-key-key-order-alpha)
   :config
   (which-key-mode)
   (which-key-setup-side-window-bottom))
