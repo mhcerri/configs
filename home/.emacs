@@ -457,6 +457,21 @@
    (:map evil-normal-state-map ("C-t" . counsel-gtags-go-backward))
    (:map evil-insert-state-map ("C-t" . counsel-gtags-go-backward))))
 
+;; Tag-like jump without any support
+(use-package dumb-jump
+  :ensure t
+  :init
+  (which-key-add-key-based-replacements "C-c j" "dump-jump")
+  :bind
+  (("C-c j o" . dumb-jump-go-other-window)
+   ("C-c j j" . dumb-jump-go)
+   ("C-c j b" . dumb-jump-back)
+   ("C-c j i" . dumb-jump-go-prompt)
+   ("C-c j x" . dumb-jump-go-prefer-external)
+   ("C-c j z" . dumb-jump-go-prefer-external-other-window))
+  :config
+  (setq dumb-jump-selector 'ivy))
+
 ;; Code and project navigation
 (use-package projectile
   :ensure t
