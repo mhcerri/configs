@@ -370,6 +370,7 @@
 ;; Git support
 (use-package magit
   :ensure t
+  :if (executable-find "git")
   :commands
   (magit-status magit-blame)
   :bind
