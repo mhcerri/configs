@@ -427,6 +427,7 @@
    'company-backends
    '(company-irony-c-headers company-irony)))
 
+;; Basic support for etags if gtags is not available:
 (use-package etags :ensure t
   :config
   ;; Don't ask before rereading the TAGS files if they have changed
@@ -436,10 +437,25 @@
 
 (use-package counsel-etags :ensure t)
 
-(use-package ggtags :ensure t)
+;; counsel-gtags completely replaces ggtags.el and offers better
+;; support for creating and updating tags files.
+(use-package counsel-gtags
+  :ensure t
+  :after (:all evil counsel)
+  :hook
+  ((prog-mode . counsel-gtags-mode))
+  :bind
+  (
+   ;; Emulate etags/ctags jump
+   ("C-]" . counsel-gtags-dwim)
+   (:map evil-normal-state-map ("C-]" . counsel-gtags-dwim))
+   (:map evil-insert-state-map ("C-]" . counsel-gtags-dwim))
+   ;; Emulate etags/ctags return to previous location
+   ("C-t" . counsel-gtags-go-backward)
+   (:map evil-normal-state-map ("C-t" . counsel-gtags-go-backward))
+   (:map evil-insert-state-map ("C-t" . counsel-gtags-go-backward))))
 
-(use-package counsel-gtags :ensure t)
-
+;; Code and project navigation
 (use-package projectile
   :ensure t
   :after (:all counsel-etags)
@@ -452,24 +468,6 @@
   ;; which-key prefix title
   (which-key-add-key-based-replacements "C-c p" "Projectile")
   :config
-  (defun projectile-update-etags ()
-    "Generate etags file using counsel-etags."
-    (interactive)
-    (let* (
-	   (project-root (projectile-project-root))
-	   )
-      (message "Generating etags at \"%s\"" project-root)
-      (counsel-etags-scan-dir project-root t)
-      )
-    )
-  ;; projectile-regenerate-tags blocks. So replace it with something better
-  (remove-hook 'projectile-idle-timer-hook
-	       'projectile-regenerate-tags t)
-  (add-hook 'projectile-idle-timer-hook
-	    'projectile-update-etags)
-  ;; Enable projectile idle timer
-  ;;(setq projectile-enable-idle-timer t
-  ;;	projectile-idle-timer-seconds 3)
   (projectile-mode))
 
 (provide '.emacs)
