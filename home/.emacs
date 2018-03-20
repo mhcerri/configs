@@ -143,6 +143,8 @@
 (use-package diminish :ensure t)
 
 ;; zerodark-theme
+;; This theme uses all-the-icons.el which needs "Ubuntu mono"
+;; to work in the terminal.
 (use-package zerodark-theme
   :ensure t
   :config
