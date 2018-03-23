@@ -158,6 +158,7 @@
        :background "gray22"
        :foreground nil
        :bold t))
+  (setq zerodark-use-paddings-in-mode-line nil)
   (zerodark-setup-modeline-format))
 
 ;; Extensible vi layer
