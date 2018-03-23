@@ -24,25 +24,25 @@
 (set-face-attribute 'default nil :height 110)
 
 ;; Sane defaults
-(show-paren-mode 1)           ; Highlight matching parenthesis
-(column-number-mode 1)        ; Show column number with line number
-(cua-mode 1)                  ; Regular Ctrl-C/Ctrl-X/Ctrl-V
-(setq vc-follow-symlinks t)   ; Follow symlinks under version control
-(prefer-coding-system 'utf-8) ; Use utf8 by default
-(fset 'yes-or-no-p 'y-or-n-p) ; Lazy prompt
-(savehist-mode)               ; Persistent history
-(xterm-mouse-mode)            ; Support mouse inside terminal
-(global-hl-line-mode 1)       ; Highlight current line
-(setq scroll-step 1)          ; Scroll one line at a time
-(setq scroll-margin 5)        ; Show N lines at the edge when scrolling
-(setq                         ; Scroll one line at a time
+(show-paren-mode 1)                     ; Highlight matching parenthesis
+(column-number-mode 1)                  ; Show column number with line number
+(cua-mode 1)                            ; Regular Ctrl-C/Ctrl-X/Ctrl-V
+(setq vc-follow-symlinks t)             ; Follow symlinks under version control
+(prefer-coding-system 'utf-8)           ; Use utf8 by default
+(fset 'yes-or-no-p 'y-or-n-p)           ; Lazy prompt
+(savehist-mode)                         ; Persistent history
+(xterm-mouse-mode)                      ; Support mouse inside terminal
+(global-hl-line-mode 1)                 ; Highlight current line
+(setq scroll-step 1)                    ; Scroll one line at a time
+(setq scroll-margin 5)                  ; Show N lines at the edge when scrolling
+(setq                                   ; Scroll one line at a time
  mouse-wheel-scroll-amount
  '(1 ((shift) . 1)))
-(setq                         ; Don't accelerate scrolling
- mouse-wheel-progressive-speed
- nil)
-(setq                         ; Scroll window under mouse
+(setq                                   ; Don't accelerate scrolling
+ mouse-wheel-progressive-speed nil)
+(setq                                   ; Scroll window under mouse
  mouse-wheel-follow-mouse 't)
+(put 'narrow-to-region 'disabled nil)   ; Allow narrowing a region
 
 ;; ediff options
 (require 'ediff)
