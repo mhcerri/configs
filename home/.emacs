@@ -301,10 +301,10 @@
 (use-package expand-region
   :ensure t
   :bind
-  (("C-@" . er/expand-region)
-   (:map evil-insert-state-map ("C-@" . er/expand-region))
-   (:map evil-normal-state-map ("C-@" . er/expand-region))
-   (:map evil-visual-state-map ("C-@" . er/expand-region))))
+  (("<M-SPC>" . er/expand-region)
+   (:map evil-insert-state-map ("<M-SPC>" . er/expand-region))
+   (:map evil-normal-state-map ("<M-SPC>" . er/expand-region))
+   (:map evil-visual-state-map ("<M-SPC>" . er/expand-region))))
 
 ;; Edit multiple occurrences of a symbol at the same time
 ;; todo: try multiple-cursors.el again.
