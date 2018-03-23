@@ -131,7 +131,8 @@
       '(("marmalade"    . "https://marmalade-repo.org/packages/")
 	("melpa"        . "https://melpa.org/packages/") ; Assume ssl
 	("melpa-stable" . "https://stable.melpa.org/packages/")
-	("gnu"          . "https://elpa.gnu.org/packages/")))
+	("gnu"          . "https://elpa.gnu.org/packages/")
+	("org"          . "http://orgmode.org/elpa/")))
 (package-initialize)
 
 ;; Auto install mechanism
@@ -184,6 +185,8 @@
   (setq evil-emacs-state-modes nil)
   (setq evil-insert-state-modes nil)
   (setq evil-motion-state-modes nil)
+  ;; Make TAB work with evil-org
+  (setq evil-want-C-i-jump nil)
   :config
   (evil-mode 1))
 
@@ -492,6 +495,19 @@
   :after (:all ibuffer projectile)
   :hook
   ((ibuffer . ibuffer-projectile-set-filter-groups)))
+
+;; org mode
+(use-package org
+  :ensure org-plus-contrib
+  :defer t
+  :mode ("\\.org$" . org-mode))
+
+(use-package evil-org
+  :ensure t
+  :after (:all evil org)
+  :hook
+  ((org-mode      . evil-org-mode)
+   (evil-org-mode . evil-org-set-key-theme)))
 
 (provide '.emacs)
 ;;; .emacs ends here
