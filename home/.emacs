@@ -310,25 +310,36 @@
 ;; todo: try multiple-cursors.el again.
 (use-package iedit
   :ensure t
-  :demand
-  :hook ((iedit-mode . (lambda () (which-key-show-keymap 'iedit-mode-keymap))))
+  :config
+  (if (display-graphic-p)
+      (set-face-attribute 'iedit-occurrence nil :box t)
+    (set-face-attribute 'iedit-occurrence nil :background "magenta")))
+
+(use-package evil-iedit-state
+  :ensure t
+  :after (:all iedit)
   :bind
-  (("C-c E" . iedit-mode)
+  ;; Define key bindings here since it's necessary to
+  ;; use evil-iedit-state/iedit-mode instead
+  (("C-c E" . evil-iedit-state/iedit-mode)
    ("C-c e" . iedit-local-mode)
+   (:map evil-iedit-state-map
+	 ([backspace] . nil)
+	 ("t"         . iedit-toggle-selection))
    (:map evil-insert-state-map
-	 ("C-c E" . iedit-mode)
+	 ("C-c E" . evil-iedit-state/iedit-mode)
 	 ("C-c e" . iedit-local-mode))
    (:map evil-normal-state-map
-	 ("C-c E" . iedit-mode)
+	 ("C-c E" . evil-iedit-state/iedit-mode)
 	 ("C-c e" . iedit-local-mode))
    (:map evil-visual-state-map
-	 ("C-c E" . iedit-mode)
+	 ("C-c E" . evil-iedit-state/iedit-mode)
 	 ("C-c e" . iedit-local-mode)))
   :config
   (defun iedit-local-mode()
     "iedit-mode on the current function."
     (interactive)
-    (iedit-mode 0)))
+    (evil-iedit-state/iedit-mode 0)))
 
 ;; Snippets
 (use-package yasnippet-snippets :ensure t)
