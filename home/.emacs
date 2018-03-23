@@ -335,8 +335,14 @@
   (yas-global-mode 1))
 
 ;; Spell checking
+(use-package flyspell-lazy
+  :ensure t
+  :config
+  (flyspell-lazy-mode 1))
+
 (use-package flyspell
   :diminish "FlyS"
+  :after (:all flyspell-lazy)
   :hook
   ((text-mode prog-mode) . flyspell-smart-mode)
   :config
