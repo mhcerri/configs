@@ -91,7 +91,7 @@
 ;; Make ibuffer default. This way it's possible to switch buffers with "C-x C-b".
 (require 'ibuffer)
 (setq ibuffer-expert t) ; Do not ask to delete buffer
-(setq ibuffer-show-empty-filter-groups nil)
+(setq-default ibuffer-show-empty-filter-groups nil)
 (add-hook 'ibuffer-mode-hook 'ibuffer-auto-mode)
 (defalias 'list-buffers 'ibuffer)
 
