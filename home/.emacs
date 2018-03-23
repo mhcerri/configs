@@ -191,6 +191,11 @@
   :config
   (evil-mode 1))
 
+(use-package evil-nerd-commenter
+  :ensure t
+  :config
+  (evilnc-default-hotkeys))
+
 ;; PCRE regular expression style
 ;; Use `pcre-mode' to enable it.
 (use-package pcre2el
