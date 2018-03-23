@@ -111,7 +111,7 @@
 ;;------------------------------------------------------------------------------
 
 ;; Kills emacs server
-(global-set-key (kbd "C-x Q") 'kill-emacs)
+(global-set-key (kbd "C-x Q") 'save-buffers-kill-emacs)
 
 ;; Cycle between the last two buffers
 (global-set-key (kbd "M-o")  'mode-line-other-buffer)
