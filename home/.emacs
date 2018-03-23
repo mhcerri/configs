@@ -471,6 +471,7 @@
 (use-package counsel-gtags
   :ensure t
   :after (:all evil counsel)
+  :diminish "Gtags"
   :hook
   ((prog-mode . counsel-gtags-mode))
   :bind
@@ -511,6 +512,8 @@
   :init
   (which-key-add-key-based-replacements "C-c p" "Projectile")
   :config
+  (setq projectile-mode-line
+	'(:eval (format " Proj[%s]" (projectile-project-name))))
   (projectile-mode))
 
 (use-package ibuffer-projectile
