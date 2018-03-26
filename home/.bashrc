@@ -74,7 +74,7 @@ case "$_TERM" in
 		which emacs &> /dev/null && alias emacs='TERM=rxvt-unicode-256color emacs'
 		which emacsclient &> /dev/null && alias emacsclient='TERM=rxvt-unicode-256color emacsclient'
 		;;
-	mate-terminal)
+	*terminator|mate-terminal)
 		export TERM=xterm-256color
 		;;
 esac
