@@ -3,7 +3,8 @@
 	email = mhcerri@gmail.com
 
 [core]
-	editor = vim +:0 -c 'set textwidth=72' -c 'set wrap' -c 'set nocp' -c 'set spell'
+	#editor = vim +:0 -c 'set textwidth=72' -c 'set wrap' -c 'set nocp' -c 'set spell'
+	editor = emacsclient -a '' -t
 	abbrev = 12
 
 [alias]
