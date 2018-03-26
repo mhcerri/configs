@@ -9,10 +9,16 @@ if [[ -n "$XDG_SESSION_DESKTOP" && "$XDG_SESSION_DESKTOP" != "i3" ]]; then
     return
 fi
 
+# Un comment for debug:
+#exec &> >(tee ~/.xprofile.log)
+#set -x
+
 ## Ensure that the D-Bus Communication System is running properly to fix
 ## File management, authentication, and other essential system processes
 if which dbus-launch >/dev/null && test -z "$DBUS_SESSION_BUS_ADDRESS"; then
-    eval "$(dbus-launch --sh-syntax --exit-with-session)"
+    #eval "$(dbus-launch --sh-syntax --exit-with-session)"
+    export NO_AT_BRIDGE=1
+    eval "$(dbus-launch --auto-syntax --exit-with-session)"
 fi
 
 # Load X resources
@@ -69,7 +75,8 @@ do
     export PATH="$dir:$PATH"
 done
 IFS="$ifs"
-run_bg mate-settings-daemon mate-settings-daemon
+#run_bg mate-settings-daemon mate-settings-daemon
+run_bg mate-settings-daemon
 run_bg polkit-mate-authentication-agent-1
 run_bg mate-power-manager
 run_bg mate-bluetooth-applet
