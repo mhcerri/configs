@@ -204,16 +204,32 @@
 (use-package pcre2el
   :ensure t)
 
-;; Efficiently add numbers to lines
-(use-package nlinum
+;; Add numbers to lines
+;; nlinum might be efficient but it doesn't play well with git-gutter.
+(use-package linum
   :ensure t
-  :diminish
   :hook
-  (((text-mode prog-mode) . nlinum-mode))
+  (((text-mode prog-mode) . my:linum-hook))
   :config
-  (if (display-graphic-p)
-      (setq nlinum-format "%4d")
-    (setq nlinum-format "%4d\u2502")))
+  ;; Avoid performance issues
+  (defun my:is-buffer-too-big ()
+    "Check buffer size"
+    (or (> (buffer-size) (* 10000 80))
+	(> (line-number-at-pos (point-max)) 10000)))
+  (defun my:linum-hook ()
+    "Disable linum if buffer is too big"
+    (if (my:is-buffer-too-big)
+	(progn
+	  (message "Buffer is too big! Disabling line numbers...")
+	  (linum-mode -1))
+      (linum-mode 1)
+      ))
+  ;; Use separator
+  (setq linum-format "%4d\u2502")
+  ;; Hide fringe in gui mode for consistency
+  (add-to-list 'default-frame-alist '(left-fringe . 0))
+  (add-to-list 'default-frame-alist '(right-fringe . 0))
+  (setq-default left-fringe-width 0))
 
 ;; Highlight trailing spaces
 (use-package whitespace
