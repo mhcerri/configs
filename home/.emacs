@@ -422,6 +422,14 @@
    ("C-c g l" . magit-log-current)
    ("C-c g L" . magit-log-all))
   :init
+  ;; Set YASnippet mode
+  (defun my:git-commit-mode ()
+	"Run when entering git-commit mode"
+	(interactive)
+	(when (derived-mode-p 'text-mode)
+	  (yas-activate-extra-mode 'text-mode+git-commit-mode)))
+  (add-hook 'git-commit-setup-hook 'my:git-commit-mode)
+  ;; Binding hint
   (which-key-add-key-based-replacements "C-c g" "magit")
   :config
   (use-package evil-magit
