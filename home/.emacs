@@ -434,6 +434,17 @@
     :demand
     :after (:all evil magit)))
 
+(use-package git-gutter
+  :ensure t
+  :demand
+  :diminish
+  :bind
+  (("C-c =" . git-gutter:popup-hunk))
+  :config
+  (setq git-gutter:update-interval 0)
+  (global-git-gutter-mode 1)
+  (git-gutter:linum-setup))
+
 ;; Auto complete
 (use-package company
   :ensure t
