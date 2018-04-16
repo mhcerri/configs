@@ -16,10 +16,10 @@
 (setq inhibit-startup-screen t)
 
 ;; Hide tool and menu bars and use reasonable font size
-(if (display-graphic-p)
-    (progn
-      (scroll-bar-mode 0)
-      (tool-bar-mode 0)))
+(if (fboundp 'scroll-bar-mode)
+    (scroll-bar-mode 0))
+(if (fboundp 'tool-bar-mode)
+    (tool-bar-mode 0))
 (menu-bar-mode 0)
 (set-face-attribute 'default nil :height 110)
 
