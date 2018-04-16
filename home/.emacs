@@ -454,13 +454,14 @@
   :diminish "Company"
   :commands (company-mode)
   :hook
-  (((prog-mode org-mode) . company-mode))
+  ((after-init . global-company-mode))
   :config
+  (company-mode)
   ;; Time before completion starts
   (setq company-idle-delay 0.1)
   ;; Avoid triggering the generation of tag completion table (that bricks
   ;; the UI and might take very long on large projects).
-  (setq company-etags-use-main-table-list nil)
+  (setq-default company-etags-use-main-table-list nil)
   ;; The minimum prefix length for idle completion.
   (setq company-minimum-prefix-length 3)
   ;; Allow user to type a value that is not listed in the completion.
