@@ -102,6 +102,8 @@
   (interactive)
   (progn
     (mail-mode)
+    (orgstruct++-mode)
+    (orgtbl-mode)
     (auto-fill-mode 1)
     (whitespace-mode -1)
     (re-search-forward "^$")
