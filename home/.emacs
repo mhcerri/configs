@@ -86,6 +86,7 @@
 (defvaralias 'sh-basic-offset 'tab-width)
 (defvaralias 'cperl-indent-level 'tab-width)
 (setq c-default-style '((other . "linux")))
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; Make ibuffer default. This way it's possible to switch buffers with "C-x C-b".
