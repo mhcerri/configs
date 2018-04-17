@@ -189,8 +189,17 @@
   (setq evil-motion-state-modes nil)
   ;; Make TAB work with evil-org
   (setq evil-want-C-i-jump nil)
+  ;; Required for evil-collection
+  (setq evil-want-integration nil)
   :config
   (evil-mode 1))
+
+(use-package evil-collection
+  :ensure t
+  :load-path "~/.emacs.d/evil-collection"
+  :after evil
+  :config
+  (evil-collection-init))
 
 (use-package evil-nerd-commenter
   :ensure t
