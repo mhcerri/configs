@@ -595,5 +595,14 @@
   ((org-mode      . evil-org-mode)
    (evil-org-mode . evil-org-set-key-theme)))
 
+;; GoLang
+(use-package go-mode
+  :ensure t)
+(use-package company-go
+  :ensure t
+  :after (company)
+  :config
+  (add-to-list 'company-backends 'company-go))
+
 (provide '.emacs)
 ;;; .emacs ends here
