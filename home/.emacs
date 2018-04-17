@@ -4,11 +4,10 @@
 ;;; Commentary:
 ;;
 ;; To do:
-;; - Auto spell checking when entering prog-mode
-;; - Improve auto-completion
+;; - Better spell checking
 ;; - Org mode and markdown
-;; - Code navigation
-;; - Snippets (git, etc)
+;; - Text-mode for files without extension (ie README)
+;; - Email
 
 ;;; Code:
 
