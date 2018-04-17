@@ -158,8 +158,7 @@
       (set-face-attribute
        'hl-line nil
        :background "gray22"
-       :foreground nil
-       :bold t))
+       :foreground nil))
   (setq zerodark-use-paddings-in-mode-line nil)
   (zerodark-setup-modeline-format))
 
