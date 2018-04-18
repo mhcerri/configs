@@ -219,6 +219,13 @@
 (use-package pcre2el
   :ensure t)
 
+;; Async
+(use-package async
+  :ensure t
+  :config
+  (dired-async-mode 1)
+  (async-bytecomp-package-mode 1))
+
 ;; Add numbers to lines
 ;; nlinum might be efficient but it doesn't play well with git-gutter.
 (use-package linum
