@@ -449,7 +449,12 @@
   :demand
   :diminish
   :bind
-  (("C-c =" . git-gutter:popup-hunk))
+  (("C-c ="   . git-gutter:popup-hunk)
+   ("C-c g h" . git-gutter:popup-hunk)
+   ("C-c g n" . git-gutter:next-hunk)
+   ("C-c g p" . git-gutter:previous-hunk)
+   ("C-c g S" . git-gutter:stage-hunk)
+   ("C-c g R" . git-gutter:revert-hunk))
   :config
   (setq git-gutter:update-interval 0)
   (global-git-gutter-mode 1)
