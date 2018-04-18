@@ -479,7 +479,7 @@
   ;; Allow user to type a value that is not listed in the completion.
   (setq company-require-match nil)
   ;; Trigger auto completion on some characters
-  (set company-auto-complete t))
+  (setq company-auto-complete t))
 
 ;; clang based completion server
 (use-package irony
