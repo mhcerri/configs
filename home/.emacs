@@ -441,9 +441,14 @@
   :ensure t
   :if (executable-find "git")
   :commands
-  (magit-status magit-blame)
+  (magit-commit-popup
+   magit-status
+   magit-blame
+   magit-log-current
+   magit-log-all)
   :bind
-  (("C-c g s" . magit-status)
+  (("C-c g c" . magit-commit-popup)
+   ("C-c g s" . magit-status)
    ("C-c g b" . magit-blame)
    ("C-c g l" . magit-log-current)
    ("C-c g L" . magit-log-all))
@@ -456,12 +461,14 @@
 	  (yas-activate-extra-mode 'text-mode+git-commit-mode)))
   (add-hook 'git-commit-setup-hook 'my:git-commit-mode)
   ;; Binding hint
-  (which-key-add-key-based-replacements "C-c g" "magit")
+  (which-key-add-key-based-replacements "C-c g" "magit"))
+
+(use-package evil-magit
+  :ensure t
+  :after (:all evil magit)
   :config
-  (use-package evil-magit
-    :ensure t
-    :demand
-    :after (:all evil magit)))
+  ;; evil-magit fails to convert popups, that's a workaround for that:
+  (evil-set-initial-state 'magit-popup-mode 'insert))
 
 (use-package git-gutter
   :ensure t
