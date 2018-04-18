@@ -347,6 +347,10 @@
    (:map evil-normal-state-map ("<M-SPC>" . er/expand-region))
    (:map evil-visual-state-map ("<M-SPC>" . er/expand-region))))
 
+;; Editable grep buffers
+(use-package wgrep
+  :ensure t)
+
 ;; Edit multiple occurrences of a symbol at the same time
 ;; todo: try multiple-cursors.el again.
 (use-package iedit
