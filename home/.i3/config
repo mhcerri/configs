@@ -185,6 +185,9 @@ bindsym --release Caps_Lock exec pkill -SIGRTMIN+11 i3blocks
 bindsym --release Num_Lock exec pkill -SIGRTMIN+11 i3blocks
 bindsym Pause exec sh ~/.rofi-last-cmd
 
+# Load workspace layouts
+exec --no-startup-id ~/.i3/start-workspaces.sh
+
 # Custom colors
 # class                  border  backgr. text    indicator child_border
 #client.focused          #4c7899 #285577 #ffffff #2e9ef4   #285577
