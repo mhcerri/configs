@@ -95,6 +95,14 @@
 (add-hook 'ibuffer-mode-hook 'ibuffer-auto-mode)
 (defalias 'list-buffers 'ibuffer)
 
+;; Custom initial scratch message
+(defvar initial-scratch-file "~/.emacs.d/scratch")
+(if (file-exists-p initial-scratch-file)
+    (setq initial-scratch-message
+	  (with-temp-buffer
+	    (insert-file-contents initial-scratch-file)
+	    (buffer-string))))
+
 ;; Mutt specific configurations
 (defun my:mutt-mode()
   "Mutt mode"
