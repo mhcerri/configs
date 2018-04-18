@@ -33,7 +33,7 @@ URxvt*.termName:                rxvt-unicode-256color
 URxvt*.font:                    xft:monospace:size=10
 URxvt*.letterSpace:             -1
 URxvt*.background:              #202020
-URxvt*.foreground:              #ffffff
+URxvt*.foreground:              #AAAAAA
 URxvt*.saveLines:               65535
 URxvt*.scrollBar:               false
 URxvt*.visualBell:              true
