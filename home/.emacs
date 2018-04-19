@@ -4,6 +4,7 @@
 ;;; Commentary:
 ;;
 ;; To do:
+;; - Move everything possible to use-package
 ;; - Better spell checking
 ;; - Org mode and markdown
 ;; - Text-mode for files without extension (ie README)
