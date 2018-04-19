@@ -629,6 +629,19 @@
   :hook
   ((ibuffer . ibuffer-projectile-set-filter-groups)))
 
+;; Better embedded terminal
+(use-package multi-term
+  :ensure t
+  :commands
+  (multi-term
+   multi-term-next
+   multi-term-prev)
+  :bind
+  (("C-c t" . multi-term))
+  :config
+  (setq multi-term-program (getenv "SHELL"))
+  (setq multi-term-switcg-after-close 'PREVIOUS))
+
 ;; org mode
 (use-package org
   :ensure org-plus-contrib
