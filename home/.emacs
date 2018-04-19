@@ -657,7 +657,7 @@
   (("C-c t" . multi-term))
   :config
   (setq multi-term-program (getenv "SHELL"))
-  (setq multi-term-switcg-after-close 'PREVIOUS))
+  (setq multi-term-switch-after-close 'PREVIOUS))
 
 ;; org mode
 (use-package org
