@@ -255,9 +255,12 @@
   (async-bytecomp-package-mode 1))
 
 ;; Add numbers to lines
+(if (version<= "26.0.50" emacs-version)
+    (global-display-line-numbers-mode 1))
 ;; nlinum might be efficient but it doesn't play well with git-gutter.
 (use-package linum
   :ensure t
+  :if (not (version<= "26.0.50" emacs-version))
   :hook
   (((text-mode prog-mode) . my:linum-hook))
   :config
@@ -510,6 +513,7 @@
   ;; evil-magit fails to convert popups, that's a workaround for that:
   (evil-set-initial-state 'magit-popup-mode 'insert))
 
+;; Show git status on the left margin of the file.
 (use-package git-gutter
   :ensure t
   :demand
@@ -524,7 +528,8 @@
   :config
   (setq git-gutter:update-interval 0)
   (global-git-gutter-mode 1)
-  (git-gutter:linum-setup))
+  (if (not (version<= "26.0.50" emacs-version))
+      (git-gutter:linum-setup)))
 
 ;; Auto complete
 (use-package company
