@@ -91,7 +91,6 @@
 (defvaralias 'cperl-indent-level 'tab-width)
 (setq c-default-style '((other . "linux")))
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
-;;(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; Make ibuffer default. This way it's possible to switch buffers with "C-x C-b".
 (require 'ibuffer)
@@ -297,6 +296,12 @@
 	  trailing     ; Trailing blanks
 	  lines-tail)  ; Lines with columns beyond whitespace-line-column
 	))
+
+;; Remove trailing white spaces
+(use-package ws-butler
+  :ensure t
+  :hook
+  ((prog-mode . ws-butler-mode)))
 
 (use-package smart-backspace
   :ensure t
