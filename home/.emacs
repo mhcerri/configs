@@ -559,9 +559,9 @@
   ;; The minimum prefix length for idle completion.
   (setq company-minimum-prefix-length 3)
   ;; Allow user to type a value that is not listed in the completion.
-  (setq company-require-match nil)
+  (setq company-require-match 'never)
   ;; Trigger auto completion on some characters
-  (setq company-auto-complete t))
+  (setq company-auto-complete 'company-explicit-action-p))
 
 (use-package company-statistics
   :ensure t
