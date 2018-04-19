@@ -429,14 +429,12 @@
 ;; Spell checking
 (use-package flyspell
   :diminish "FlyS"
-  :after (:all flyspell-lazy)
+  :if (executable-find "aspell")
   :hook
   ((text-mode prog-mode) . flyspell-smart-mode)
   :config
-  (cond
-   ((executable-find "aspell")
-    (setq ispell-program-name "aspell")
-    (setq ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))))
+  (setq ispell-program-name "aspell")
+  (setq ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))
   ;;(setq flyspell-issue-message-flag nil)
   (defun flyspell-visible-region()
     "Check spelling only on the visible region"
