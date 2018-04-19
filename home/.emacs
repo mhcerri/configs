@@ -368,8 +368,9 @@
   :ensure t
   :config
   (setq popwin:popup-window-position 'bottom)
-  (push '("*Warnings*" :noselect t)
-	popwin:special-display-config)
+  (setq popwin:popup-window-height 0.4)
+  (push '("*Warnings*" :noselect t) popwin:special-display-config)
+  (push '("*git-gutter:diff*" :noselect t) popwin:special-display-config)
   ;; Close popups with ESC
   (add-hook 'evil-esc-hook #'popwin:close-popup-window)
   (popwin-mode 1))
