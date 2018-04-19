@@ -373,6 +373,16 @@
   (push '("*git-gutter:diff*" :noselect t) popwin:special-display-config)
   ;; Close popups with ESC
   (add-hook 'evil-esc-hook #'popwin:close-popup-window)
+  ;; Workaround for help buffers
+  ;; https://github.com/m2ym/popwin-el/issues/131#issuecomment-239221901
+  (defadvice display-buffer (around display-buffer-prevent-popwin-split last activate)
+  (let* ((buffer (ad-get-arg 0)))
+    (if (and (derived-mode-p 'help-mode)
+             (get-buffer-window buffer))
+        (let ((display-buffer-alist nil))
+	  ad-do-it)
+      ad-do-it)))
+  ;; Enable popwin
   (popwin-mode 1))
 
 ;; Highlight symbol under the cursor
