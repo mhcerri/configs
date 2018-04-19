@@ -535,6 +535,11 @@
   ;; Trigger auto completion on some characters
   (setq company-auto-complete t))
 
+(use-package company-statistics
+  :ensure t
+  :config
+  (company-statistics-mode 1))
+
 ;; clang based completion server
 (use-package irony
   :ensure t
