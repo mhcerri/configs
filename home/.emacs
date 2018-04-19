@@ -199,6 +199,23 @@
   (setq evil-want-C-i-jump nil)
   ;; Required for evil-collection
   (setq evil-want-integration nil)
+  ;; Esc hook support
+  (defvar evil-esc-hook '(t)
+        "A hook run after ESC is pressed in normal mode.")
+  (defun evil--attach-escape-hook ()
+    "Run the `evil-esc-hook'."
+    (cond
+     ((minibuffer-window-active-p (minibuffer-window))
+      ;; Quit the minibuffer if open
+      (abort-recursive-edit))
+     ((evil-ex-hl-active-p 'evil-ex-search)
+      ;; Disable ex search buffer highlights
+      (evil-ex-nohighlight))
+     (t
+      ;; Run all escape hooks. If any returns non-nil, then stop there.
+      (run-hook-with-args-until-success 'evil-esc-hook))))
+  (advice-add #'evil-force-normal-state
+	      :after #'evil--attach-escape-hook)
   :config
   (evil-mode 1))
 
