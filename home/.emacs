@@ -305,7 +305,10 @@
 	 ([escape] . minibuffer-keyboard-quit))
    )
   :config
+  ;; Add recent files to buffer switch
   (setq ivy-use-virtual-buffers t)
+  ;; Do not use ^ as initial input
+  (setq ivy-initial-inputs-alist nil)
   (ivy-mode 1))
 
 (use-package swiper
