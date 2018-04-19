@@ -175,6 +175,12 @@
   (setq zerodark-use-paddings-in-mode-line nil)
   (zerodark-setup-modeline-format))
 
+;; Highlight current line when jumping with the cursor.
+(use-package beacon
+  :ensure t
+  :config
+  (beacon-mode 1))
+
 ;; Extensible vi layer
 (use-package evil
   :ensure t
