@@ -346,6 +346,17 @@
   (which-key-mode)
   (which-key-setup-side-window-bottom))
 
+;; Control how popups are handled
+(use-package popwin
+  :ensure t
+  :config
+  (setq popwin:popup-window-position 'bottom)
+  (push '("*Warnings*" :noselect t)
+	popwin:special-display-config)
+  ;; Close popups with ESC
+  (add-hook 'evil-esc-hook #'popwin:close-popup-window)
+  (popwin-mode 1))
+
 ;; Highlight symbol under the cursor
 (use-package highlight-symbol
   :ensure t
