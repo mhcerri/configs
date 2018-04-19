@@ -44,6 +44,10 @@
  mouse-wheel-follow-mouse 't)
 (put 'narrow-to-region 'disabled nil)   ; Allow narrowing a region
 
+;; No customization in this file.
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file 'noerror)
+
 ;; ediff options
 (require 'ediff)
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
