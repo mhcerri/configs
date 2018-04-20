@@ -108,7 +108,7 @@
 
 ;; Mutt specific configurations
 (defun my:mutt-mode()
-  "Mutt mode"
+  "Mutt mode."
   (interactive)
   (progn
     (mail-mode)
@@ -257,8 +257,10 @@
   :config
   (evil-collection-init))
 
+;; C-, for all bindings
 (use-package evil-nerd-commenter
   :ensure t
+  :after evil
   :config
   (evilnc-default-hotkeys))
 
