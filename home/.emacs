@@ -262,6 +262,13 @@
   :config
   (evilnc-default-hotkeys))
 
+;; Improved %
+(use-package evil-matchit
+  :ensure t
+  :after evil
+  :config
+  (global-evil-matchit-mode 1))
+
 ;; PCRE regular expression style
 ;; Use `pcre-mode' to enable it.
 (use-package pcre2el
