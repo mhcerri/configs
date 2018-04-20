@@ -442,6 +442,15 @@
   :config
   (setq highlight-symbol-idle-delay 0.1))
 
+;; Highlight text affected by operations
+(use-package volatile-highlights
+  :ensure t
+  :config
+  (vhl/define-extension 'evil 'evil-paste-after 'evil-paste-before
+			'evil-paste-pop 'evil-move)
+  (vhl/install-extension 'evil)
+  (volatile-highlights-mode t))
+
 ;; Select based on context
 (use-package expand-region
   :ensure t
