@@ -275,6 +275,13 @@
               (lambda (&rest args)
                 (evil-visual-mark-render))))
 
+;; Better Home and C-k
+(use-package crux
+  :ensure t
+  :bind
+  (([remap move-beginning-of-line] . crux-move-beginning-of-line)
+   ("C-k"                          . crux-smart-kill-line)))
+
 ;; PCRE regular expression style
 ;; Use `pcre-mode' to enable it.
 (use-package pcre2el
