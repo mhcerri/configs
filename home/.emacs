@@ -26,7 +26,6 @@
 ;; Sane defaults
 (show-paren-mode 1)                     ; Highlight matching parenthesis
 (column-number-mode 1)                  ; Show column number with line number
-(cua-mode 1)                            ; Regular Ctrl-C/Ctrl-X/Ctrl-V
 (setq vc-follow-symlinks t)             ; Follow symlinks under version control
 (prefer-coding-system 'utf-8)           ; Use utf8 by default
 (fset 'yes-or-no-p 'y-or-n-p)           ; Lazy prompt
@@ -193,7 +192,14 @@
    (:map evil-normal-state-map
 	 ("g T"     . previous-buffer)
 	 ("g t"     . next-buffer)
-	 ("C-e"     . move-end-of-line)))
+	 ("C-e"     . move-end-of-line))
+   (:map evil-insert-state-map
+	 ;; cua-mode just for insert
+	 ("C-c"     . cua-copy-region)
+	 ("C-v"     . cua-paste)
+	 ("C-x"     . cua-cut-region)
+	 ("C-z"     . undo-tree-undo)
+	 ("C-y"     . undo-tree-redo)))
   :init
   ;; Use default emacs bindings for insert vim mode
   (setq-default evil-disable-insert-state-bindings t)
