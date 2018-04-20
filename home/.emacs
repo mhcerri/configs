@@ -158,6 +158,13 @@
 ;; Hide modes from status bar (used it use-package)
 (use-package diminish :ensure t)
 
+;; Async
+(use-package async
+  :ensure t
+  :config
+  (dired-async-mode 1)
+  (async-bytecomp-package-mode 1))
+
 ;; zerodark-theme
 ;; This theme uses all-the-icons.el which needs "Ubuntu mono"
 ;; to work in the terminal.
@@ -178,6 +185,14 @@
   :ensure t
   :config
   (beacon-mode 1))
+
+;; Better package manager
+(use-package paradox
+  :ensure t
+  :init
+  (setq paradox-execute-asynchronously t)
+  :config
+  (paradox-enable))
 
 ;; Extensible vi layer
 (use-package evil
@@ -251,13 +266,6 @@
 ;; Use `pcre-mode' to enable it.
 (use-package pcre2el
   :ensure t)
-
-;; Async
-(use-package async
-  :ensure t
-  :config
-  (dired-async-mode 1)
-  (async-bytecomp-package-mode 1))
 
 ;; Add numbers to lines
 (if (version<= "26.0.50" emacs-version)
