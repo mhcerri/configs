@@ -180,12 +180,6 @@
   (setq zerodark-use-paddings-in-mode-line nil)
   (zerodark-setup-modeline-format))
 
-;; Highlight current line when jumping with the cursor.
-(use-package beacon
-  :ensure t
-  :config
-  (beacon-mode 1))
-
 ;; Better package manager
 (use-package paradox
   :ensure t
@@ -425,6 +419,12 @@
       ad-do-it)))
   ;; Enable popwin
   (popwin-mode 1))
+
+;; Highlight current line when jumping with the cursor.
+(use-package beacon
+  :ensure t
+  :config
+  (beacon-mode 1))
 
 ;; Highlight symbol under the cursor
 (use-package highlight-symbol
