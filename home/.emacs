@@ -535,13 +535,15 @@
    magit-status
    magit-blame
    magit-log-current
-   magit-log-all)
+   magit-log-all
+   magit-diff-popup)
   :bind
   (("C-c g c" . magit-commit-popup)
    ("C-c g s" . magit-status)
    ("C-c g b" . magit-blame)
    ("C-c g l" . magit-log-current)
-   ("C-c g L" . magit-log-all))
+   ("C-c g L" . magit-log-all)
+   ("C-c g d" . magit-diff-popup))
   :init
   ;; Set YASnippet mode
   (defun my:git-commit-mode ()
