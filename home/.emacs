@@ -405,8 +405,11 @@
   :config
   (setq popwin:popup-window-position 'bottom)
   (setq popwin:popup-window-height 0.4)
-  (push '("*Warnings*" :noselect t) popwin:special-display-config)
-  (push '("*git-gutter:diff*" :noselect t) popwin:special-display-config)
+  (setq popwin:special-display-config
+	(append popwin:special-display-config
+		'(("*Warnings*" :noselect t)
+		  ("*git-gutter:diff*" :noselect t)
+		  ("*Apropos*"))))
   ;; Close popups with ESC
   (add-hook 'evil-esc-hook #'popwin:close-popup-window)
   ;; Workaround for help buffers
