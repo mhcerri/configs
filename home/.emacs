@@ -415,7 +415,8 @@
    ("C-c /"   . counsel-ag)
    ("C-c o"   . counsel-find-file-extern)
    ("C-S-s"   . counsel-ag)
-   ("C-c l"   . counsel-locate)))
+   ("C-c l"   . counsel-locate)
+   ("C-h b"   . counsel-descbinds)))
 
 ;; Show hints about shortcuts
 (use-package which-key
