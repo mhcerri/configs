@@ -166,6 +166,12 @@
   (dired-async-mode 1)
   (async-bytecomp-package-mode 1))
 
+;; Keep track of recent files
+(use-package recentf
+  :config
+  (setq recentf-max-saved-items 100)
+  (recentf-mode 1))
+
 ;; zerodark-theme
 ;; This theme uses all-the-icons.el which needs "Ubuntu mono"
 ;; to work in the terminal.
