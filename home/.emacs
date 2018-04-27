@@ -276,6 +276,17 @@
               (lambda (&rest args)
                 (evil-visual-mark-render))))
 
+;; Multiple cursors
+(use-package evil-mc
+  :ensure t
+  :diminish "MC"
+  :after (evil)
+  :config
+  ;; Use a proper face for cursors
+  (setq evil-mc-cursor-current-face '(:reverse-video t))
+  ;; Enable globally to make vim-like binding (ie gr*) available
+  (global-evil-mc-mode 1))
+
 ;; Better Home and C-k
 (use-package crux
   :ensure t
