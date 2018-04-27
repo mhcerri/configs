@@ -282,6 +282,7 @@
   :diminish "MC"
   :after (evil)
   :config
+  (setq-default evil-mc-enable-bar-cursor nil)
   ;; Use a proper face for cursors
   (setq evil-mc-cursor-current-face '(:reverse-video t))
   ;; Enable globally to make vim-like binding (ie gr*) available
