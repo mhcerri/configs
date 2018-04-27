@@ -377,13 +377,17 @@
   :diminish
   :bind
   ((:map ivy-minibuffer-map
-	 ([escape] . minibuffer-keyboard-quit))
-   )
+	 ([escape] . minibuffer-keyboard-quit)))
   :config
   ;; Add recent files to buffer switch
   (setq ivy-use-virtual-buffers t)
   ;; Do not use ^ as initial input
   (setq ivy-initial-inputs-alist nil)
+  ;; configure regexp engine.
+  (setq ivy-re-builders-alist
+	;; allow input not in order
+        '((t . ivy--regex-ignore-order)))
+  ;; Enable it
   (ivy-mode 1))
 
 (use-package swiper
