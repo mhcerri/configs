@@ -73,3 +73,6 @@ rofi.sidebar-mode:      true
 rofi.fixed-num-lines:   true
 rofi.location:          0
 
+! emacs
+Emacs*font:             Monospace 9
+!!Emacs*cursorColor:      white
