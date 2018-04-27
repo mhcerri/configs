@@ -108,7 +108,7 @@
 	    (buffer-string))))
 
 ;; Mutt specific configurations
-(defun my:mutt-mode()
+(defun ~mutt-mode()
   "Mutt mode."
   (interactive)
   (progn
@@ -119,7 +119,7 @@
     (whitespace-mode -1)
     (re-search-forward "^$")
     (forward-char 1)))
-(add-to-list 'auto-mode-alist '("/mutt" . my:mutt-mode))
+(add-to-list 'auto-mode-alist '("/mutt" . ~mutt-mode))
 
 ;; Shortcuts
 ;;------------------------------------------------------------------------------
@@ -133,11 +133,11 @@
 ;; Kill line backwards
 ;; Use C-u u to delete from cursor to beginning of line, similarly
 ;; to C-u used by vim and bash/readline.
-(defun backward-kill-line (arg)
+(defun ~backward-kill-line (arg)
   "Kill ARG lines backward."
   (interactive "p")
   (kill-line (- 1 arg)))
-(global-set-key (kbd "C-c u") 'backward-kill-line)
+(global-set-key (kbd "C-c u") '~backward-kill-line)
 
 ;; Package manager
 (require 'package)
@@ -226,10 +226,10 @@
   ;; Required for evil-collection
   (setq evil-want-integration nil)
   ;; Esc hook support
-  (defvar evil-esc-hook '(t)
+  (defvar ~evil-esc-hook '(t)
         "A hook run after ESC is pressed in normal mode.")
-  (defun evil--attach-escape-hook ()
-    "Run the `evil-esc-hook'."
+  (defun ~evil-attach-escape-hook ()
+    "Run the `~evil-esc-hook'."
     (cond
      ((minibuffer-window-active-p (minibuffer-window))
       ;; Quit the minibuffer if open
@@ -239,9 +239,9 @@
       (evil-ex-nohighlight))
      (t
       ;; Run all escape hooks. If any returns non-nil, then stop there.
-      (run-hook-with-args-until-success 'evil-esc-hook))))
+      (run-hook-with-args-until-success '~evil-esc-hook))))
   (advice-add #'evil-force-normal-state
-	      :after #'evil--attach-escape-hook)
+	      :after #'~evil-attach-escape-hook)
   :config
   (evil-mode 1))
 
@@ -296,16 +296,16 @@
   :ensure t
   :if (not (version<= "26.0.50" emacs-version))
   :hook
-  (((text-mode prog-mode) . my:linum-hook))
+  (((text-mode prog-mode) . ~linum-hook))
   :config
   ;; Avoid performance issues
-  (defun my:is-buffer-too-big ()
+  (defun ~is-buffer-too-big ()
     "Check buffer size"
     (or (> (buffer-size) (* 10000 80))
 	(> (line-number-at-pos (point-max)) 10000)))
-  (defun my:linum-hook ()
+  (defun ~linum-hook ()
     "Disable linum if buffer is too big"
-    (if (my:is-buffer-too-big)
+    (if (~is-buffer-too-big)
 	(progn
 	  (message "Buffer is too big! Disabling line numbers...")
 	  (linum-mode -1))
@@ -415,7 +415,7 @@
 		  ("*git-gutter:diff*" :noselect t)
 		  ("*Apropos*"))))
   ;; Close popups with ESC
-  (add-hook 'evil-esc-hook #'popwin:close-popup-window)
+  (add-hook '~evil-esc-hook #'popwin:close-popup-window)
   ;; Workaround for help buffers
   ;; https://github.com/m2ym/popwin-el/issues/131#issuecomment-239221901
   (defadvice display-buffer (around display-buffer-prevent-popwin-split last activate)
@@ -481,21 +481,21 @@
   ;; Define key bindings here since it's necessary to
   ;; use evil-iedit-state/iedit-mode instead
   (("C-c E" . evil-iedit-state/iedit-mode)
-   ("C-c e" . iedit-local-mode)
+   ("C-c e" . ~iedit-local-mode)
    (:map evil-iedit-state-map
 	 ([backspace] . nil)
 	 ("t"         . iedit-toggle-selection))
    (:map evil-insert-state-map
 	 ("C-c E" . evil-iedit-state/iedit-mode)
-	 ("C-c e" . iedit-local-mode))
+	 ("C-c e" . ~iedit-local-mode))
    (:map evil-normal-state-map
 	 ("C-c E" . evil-iedit-state/iedit-mode)
-	 ("C-c e" . iedit-local-mode))
+	 ("C-c e" . ~iedit-local-mode))
    (:map evil-visual-state-map
 	 ("C-c E" . evil-iedit-state/iedit-mode)
-	 ("C-c e" . iedit-local-mode)))
+	 ("C-c e" . ~iedit-local-mode)))
   :config
-  (defun iedit-local-mode()
+  (defun ~iedit-local-mode()
     "iedit-mode on the current function."
     (interactive)
     (evil-iedit-state/iedit-mode 0)))
@@ -514,16 +514,16 @@
   :diminish "FlyS"
   :if (executable-find "aspell")
   :hook
-  ((text-mode prog-mode) . flyspell-smart-mode)
+  ((text-mode prog-mode) . ~flyspell-smart-mode)
   :config
   (setq ispell-program-name "aspell")
   (setq ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))
   ;;(setq flyspell-issue-message-flag nil)
-  (defun flyspell-visible-region()
+  (defun ~flyspell-visible-region()
     "Check spelling only on the visible region"
     (interactive)
     (flyspell-region (window-start) (window-end)))
-  (defun flyspell-smart-mode()
+  (defun ~flyspell-smart-mode()
     "Enable flyspell based on the current major mode."
     (interactive)
     (progn
@@ -533,7 +533,7 @@
       ;; fixme: workaround to avoid checking the entire buffer and blocking
       ;; It might be possible to call that after scrolling the buffer
       ;;(flyspell-buffer)
-      ;;(flyspell-visible-region)
+      ;;(~flyspell-visible-region)
       )))
 
 ;; Syntax check
@@ -568,12 +568,12 @@
    ("C-c g d" . magit-diff-popup))
   :init
   ;; Set YASnippet mode
-  (defun my:git-commit-mode ()
+  (defun ~git-commit-mode ()
 	"Run when entering git-commit mode"
 	(interactive)
 	(when (derived-mode-p 'text-mode)
 	  (yas-activate-extra-mode 'text-mode+git-commit-mode)))
-  (add-hook 'git-commit-setup-hook 'my:git-commit-mode)
+  (add-hook 'git-commit-setup-hook '~git-commit-mode)
   ;; Binding hint
   (which-key-add-key-based-replacements "C-c g" "magit"))
 
@@ -742,10 +742,10 @@
   :config
   ;; Auto-complete
   ;; https://emacs.stackexchange.com/questions/21171/company-mode-completion-for-org-keywords
-  (defun org-keyword-backend (command &optional arg &rest ignored)
+  (defun ~org-keyword-backend (command &optional arg &rest ignored)
     (interactive (list 'interactive))
     (cl-case command
-      (interactive (company-begin-backend 'org-keyword-backend))
+      (interactive (company-begin-backend '~org-keyword-backend))
       (prefix (and (eq major-mode 'org-mode)
 		   (cons (company-grab-line "^#\\+\\(\\w*\\)" 1)
 			 t)))
@@ -755,7 +755,7 @@
 			   (pcomplete-completions))))
       (ignore-case t)
       (duplicates t)))
-  (add-to-list 'company-backends 'org-keyword-backend))
+  (add-to-list 'company-backends '~org-keyword-backend))
 
 (use-package evil-org
   :ensure t
