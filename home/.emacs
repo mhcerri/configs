@@ -342,7 +342,15 @@
   :ensure t
   :diminish
   :config
-  (define-key evil-insert-state-map [?\C-?] 'smart-backspace))
+  (defun ~smart-backspace (n &optional killflag)
+    "Check for active regions first."
+    (interactive "p\nP")
+    (if (use-region-p)
+	(delete-active-region killflag)
+      (smart-backspace n killflag)))
+  (setq evil-mc-custom-known-commands
+	'((~smart-backspace . ((:default . evil-mc-execute-default-call-with-count)))))
+  (define-key evil-insert-state-map [?\C-?] '~smart-backspace))
 
 (use-package smartparens-config
   :ensure smartparens
