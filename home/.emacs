@@ -719,6 +719,15 @@
   :init
   (which-key-add-key-based-replacements "C-c p" "Projectile")
   :config
+  (defun ~projectile-get-project-name (project-root)
+    "Default function used create project name to be displayed based on the value of PROJECT-ROOT."
+    (let ((default (file-name-nondirectory (directory-file-name project-root))))
+      (if (not (equal default "git"))
+	  default
+	(file-name-nondirectory
+	 (directory-file-name
+	  (file-name-directory (directory-file-name project-root)))))))
+  (setq projectile-project-name-function '~projectile-get-project-name)
   (setq projectile-mode-line
 	'(:eval (format " Proj[%s]" (projectile-project-name))))
   (projectile-mode))
