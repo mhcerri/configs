@@ -21,7 +21,8 @@
 (if (fboundp 'tool-bar-mode)
     (tool-bar-mode 0))
 (menu-bar-mode 0)
-(set-face-attribute 'default nil :height 105)
+;; Handle default font via ~/.Xresources.
+(setq inhibit-x-resources nil)
 
 ;; Sane defaults
 (show-paren-mode 1)                     ; Highlight matching parenthesis
