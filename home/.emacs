@@ -346,6 +346,7 @@
 ;; Remove trailing white spaces
 (use-package ws-butler
   :ensure t
+  :diminish
   :hook
   ((prog-mode . ws-butler-mode)))
 
@@ -450,6 +451,7 @@
 ;; Highlight current line when jumping with the cursor.
 (use-package beacon
   :ensure t
+  :diminish
   :config
   (beacon-mode 1))
 
@@ -465,6 +467,7 @@
 ;; Highlight text affected by operations
 (use-package volatile-highlights
   :ensure t
+  :diminish
   :config
   (vhl/define-extension 'evil 'evil-paste-after 'evil-paste-before
 			'evil-paste-pop 'evil-move)
@@ -524,6 +527,7 @@
 
 (use-package yasnippet
   :ensure t
+  :diminish (yas-minor-mode . "Yas")
   :demand
   :config
   (yas-global-mode 1))
@@ -624,7 +628,7 @@
 ;; Auto complete
 (use-package company
   :ensure t
-  :diminish "Company"
+  :diminish "Comp"
   :commands (company-mode)
   :hook
   ((after-init . global-company-mode))
