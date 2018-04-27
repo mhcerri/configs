@@ -204,12 +204,12 @@
 	 ("g t"     . next-buffer)
 	 ("C-e"     . move-end-of-line))
    (:map evil-insert-state-map
-	 ;; cua-mode just for insert
-	 ("C-c"     . cua-copy-region)
-	 ("C-v"     . cua-paste)
-	 ("C-x"     . cua-cut-region)
-	 ("C-z"     . undo-tree-undo)
-	 ("C-y"     . undo-tree-redo)))
+	 ;; cua-mode-ish for insert
+	 ("C-S-c"   . kill-ring-save)
+	 ("C-S-x"   . kill-region)
+	 ("C-S-v"   . yank)
+	 ("C-S-p"   . yank-pop)
+	 ("C-z"     . undo-tree-undo)))
   :init
   ;; Use default emacs bindings for insert vim mode
   (setq-default evil-disable-insert-state-bindings t)
