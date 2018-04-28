@@ -366,20 +366,7 @@
   :hook
   ((prog-mode . ws-butler-mode)))
 
-(use-package smart-backspace
-  :ensure t
-  :diminish
-  :config
-  (defun ~smart-backspace (n &optional killflag)
-    "Check for active regions first."
-    (interactive "p\nP")
-    (if (use-region-p)
-	(delete-active-region killflag)
-      (smart-backspace n killflag)))
-  (setq evil-mc-custom-known-commands
-	'((~smart-backspace . ((:default . evil-mc-execute-default-call-with-count)))))
-  (define-key evil-insert-state-map [?\C-?] '~smart-backspace))
-
+;; Smartly add and ignore closing marks
 (use-package smartparens-config
   :ensure smartparens
   :config
