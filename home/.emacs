@@ -297,6 +297,9 @@
   (setq-default evil-mc-enable-bar-cursor nil)
   ;; Use a proper face for cursors
   (setq evil-mc-cursor-current-face '(:reverse-video t))
+  ;; Non standard commands that need to be hinted:
+  (setq evil-mc-custom-known-commands
+	'((crux-move-beginning-of-line . ((:default . evil-mc-execute-default-call-with-count)))))
   ;; Enable globally to make vim-like binding (ie gr*) available
   (global-evil-mc-mode 1))
 
