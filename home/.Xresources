@@ -73,6 +73,14 @@ rofi.sidebar-mode:      true
 rofi.fixed-num-lines:   true
 rofi.location:          0
 
+! rofi - new color format
+! State:           'bg',     'fg',     'bgalt',  'hlbg',   'hlfg'
+rofi.color-normal: #222222,  #888888,  #222222,  #285577,  #ffffff
+rofi.color-urgent: #222222,  #dc322f,  #222222,  #dc322f,  #ffffff
+rofi.color-active: #222222,  #cccccc,  #222222,  #cccccc,  #222222
+!                  'background', 'border', 'separator'
+rofi.color-window: #222222,      #333333,  #333333
+
 ! emacs
 Emacs*font:             Monospace 9
 !!Emacs*cursorColor:      white
