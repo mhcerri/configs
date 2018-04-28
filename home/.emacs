@@ -175,6 +175,8 @@
 ;; zerodark-theme
 ;; This theme uses all-the-icons.el which needs "Ubuntu mono"
 ;; to work in the terminal.
+(use-package all-the-icons
+  :require t)
 (use-package zerodark-theme
   :ensure t
   :config
