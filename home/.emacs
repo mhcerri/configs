@@ -467,6 +467,12 @@
   :config
   (beacon-mode 1))
 
+;; Set background color for color value in the buffer
+(use-package rainbow-mode
+  :ensure t
+  :config
+  (rainbow-mode 1))
+
 ;; Highlight symbol under the cursor
 (use-package highlight-symbol
   :ensure t
