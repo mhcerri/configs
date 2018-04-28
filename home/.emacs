@@ -372,6 +372,10 @@
   :config
   (smartparens-global-mode))
 
+;; Usage: M-x ialign RET
+(use-package ialign
+  :ensure t)
+
 ;; ivy, swiper and counsel - Better "M-x", "C-s" and "C-x f"
 (use-package ivy
   :ensure t
