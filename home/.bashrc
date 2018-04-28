@@ -167,9 +167,9 @@ fi
 #
 # Man pages in vim
 #
-if which vim &>/dev/null; then
-	export MANPAGER="/bin/sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu noma' -\""
-fi
+#if which vim &>/dev/null; then
+#	export MANPAGER="/bin/sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu noma' -\""
+#fi
 
 #
 # Path
