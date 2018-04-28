@@ -260,6 +260,10 @@
   :config
   (evil-collection-init))
 
+;; Show information about searches
+(use-package evil-anzu
+  :ensure t)
+
 ;; C-, for all bindings
 (use-package evil-nerd-commenter
   :ensure t
