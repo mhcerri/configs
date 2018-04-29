@@ -172,11 +172,12 @@
   (setq recentf-max-saved-items 100)
   (recentf-mode 1))
 
-;; zerodark-theme
-;; This theme uses all-the-icons.el which needs "Ubuntu mono"
-;; to work in the terminal.
+;; Icons support for GUI and terminal (GTK based).
+;; It's necessary to install the fonts provided by the package.
 (use-package all-the-icons
-  :require t)
+  :ensure t)
+
+;; zerodark-theme
 (use-package zerodark-theme
   :ensure t
   :config
