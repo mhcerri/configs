@@ -181,14 +181,15 @@
 (use-package zerodark-theme
   :ensure t
   :config
+  (setq zerodark-use-paddings-in-mode-line nil)
   (load-theme 'zerodark t)
+  (zerodark-setup-modeline-format)
+  ;; Fix line highlight in the terminal
   (if (not (display-graphic-p))
       (set-face-attribute
        'hl-line nil
        :background "gray22"
-       :foreground nil))
-  (setq zerodark-use-paddings-in-mode-line nil)
-  (zerodark-setup-modeline-format))
+       :foreground nil)))
 
 ;; Better package manager
 (use-package paradox
