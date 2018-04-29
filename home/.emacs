@@ -191,6 +191,30 @@
        :background "gray22"
        :foreground nil)))
 
+;; Mode line
+(use-package telephone-line
+  :ensure t
+  :config
+  ;; Plain separators
+  (setq telephone-line-primary-left-separator 'telephone-line-nil
+	telephone-line-secondary-left-separator 'telephone-line-nil
+	telephone-line-primary-right-separator 'telephone-line-nil
+	telephone-line-secondary-right-separator 'telephone-line-nil)
+  (setq telephone-line-lhs
+	'((evil   . (telephone-line-evil-tag-segment))
+	  (accent . (telephone-line-buffer-segment))
+	  (accent . (telephone-line-position-segment))
+	  (accent . (telephone-line-vc-segment
+		     telephone-line-erc-modified-channels-segment
+		     telephone-line-process-segment))
+	  (nil    . (telephone-line-major-mode-segment
+		     telephone-line-minor-mode-segment))))
+  (setq telephone-line-rhs
+	'((nil    . (telephone-line-flycheck-segment
+		     telephone-line-misc-info-segment))))
+    ;; Enable mode line
+  (telephone-line-mode 1))
+
 ;; Better package manager
 (use-package paradox
   :ensure t
