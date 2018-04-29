@@ -220,6 +220,7 @@
   :ensure t
   :init
   (setq paradox-execute-asynchronously t)
+  (setq paradox-column-width-package 30)
   :config
   (paradox-enable))
 
