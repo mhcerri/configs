@@ -193,7 +193,7 @@ exec --no-startup-id ~/.i3/start-workspaces.sh
 
 # Custom colors
 # class                  border  backgr. text    indicator child_border
-client.focused           #333333 #555555 #ffffff #292d2e   #555555
+client.focused           #333333 #666666 #ffffff #292d2e   #555555
 client.focused_inactive  #333333 #222222 #ffffff #292d2e   #2a2a2a
 client.unfocused         #333333 #222222 #888888 #292d2e   #2a2a2a
 client.urgent            #2f343a #900000 #ffffff #900000   #900000
