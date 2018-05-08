@@ -1,0 +1,26 @@
+#!/bin/bash
+
+filename=".clang_complete"
+
+prompt() {
+	local answer
+	while true; do
+		read -p "$* [N/y] " answer
+		case "$answer" in
+			y|Y)    return 0;;
+			''|n|N) return 1;;
+		esac
+	done
+	echo
+}
+
+if ! prompt "Create \"$filename\"?"; then
+	echo "Aborting..."
+	exit
+fi
+
+content=$(find . -type d -a -name include \
+	       -exec echo "-I{}" \;)
+echo "$content" > "$filename"
+echo "$(wc -l "$filename" | cut -d ' ' -f 1) include paths" \
+     "added to \"$(readlink -f "$PWD")/$filename\""
