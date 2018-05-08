@@ -468,6 +468,42 @@
   (which-key-mode)
   (which-key-setup-side-window-bottom))
 
+(use-package hydra
+  :ensure t
+  :bind
+  (("C-c g g" . hydra-git-gutter/body)
+   ("C-c m"   . hydra-evil-mc/body))
+  :config
+  ;; Hydra mini state for git-gutter
+  (defhydra hydra-git-gutter (:color pink :base-map (make-sparse-keymap))
+    "Git gutter"
+    ("C-q" nil "quit")
+    ("C-c C-c" git-gutter:popup-hunk "show change" :column "General")
+    ("C-n" git-gutter:next-hunk "next" :column "Change")
+    ("C-p" git-gutter:previous-hunk "previous")
+    ("C-s" git-gutter:stage-hunk "stage change" :column "Actions")
+    ("C-r" git-gutter:revert-hunk "revert change"))
+  ;; Hydra mini state for multiple cursors
+  (defhydra hydra-evil-mc (:color pink :post (evil-mc-undo-all-cursors)
+				  :base-map (make-sparse-keymap))
+    "Evil Multiple Cursors"
+    ("C-q" nil "quit")
+    ("C-c a" evil-mc-make-all-cursors "mark all" :column "General")
+    ("C-c q" evil-mc-undo-all-cursors "undo all")
+    ("M-n" evil-mc-make-and-goto-next-match "next" :column "Make cursor and match")
+    ("M-p" evil-mc-make-and-goto-prev-match "previous")
+    ("C-c n" evil-mc-skip-and-goto-next-match "next" :column "Skip and match")
+    ("C-c p" evil-mc-skip-and-goto-prev-match "previous")
+    ("C-n" evil-mc-make-cursor-move-next-line "next line" :column "Make cursor and move to")
+    ("C-p" evil-mc-make-cursor-move-prev-line "prev line")))
+
+(use-package ivy-hydra
+  :ensure t
+  :after (ivy hydra)
+  :bind
+  ((:map ivy-minibuffer-map
+	 ("C-o" . hydra-ivy/body))))
+
 ;; Control how popups are handled
 (use-package popwin
   :ensure t
