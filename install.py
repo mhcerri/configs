@@ -13,6 +13,7 @@ except:
 
 orig_dir = path.abspath('./home')
 dest_dir = path.expanduser('~')
+recurse_ext = ".recurse"
 
 def answer(question):
   while True:
@@ -29,8 +30,26 @@ def answer(question):
     else:
       print('Please respond with "yes" or "no" (or "y" or "n").')
 
+orig_entries=[]
 for entry in os.listdir(orig_dir):
-  orig_entry = path.realpath(path.join(orig_dir, entry))
+  entry = path.realpath(path.join(orig_dir, entry))
+  if entry.endswith(recurse_ext):
+    continue
+  if not path.isdir(entry):
+    orig_entries.append(entry)
+  else:
+    flag = entry + recurse_ext
+    if not path.exists(flag):
+      orig_entries.append(entry)
+    else:
+      for dirpath, _, filenames in os.walk(entry):
+        for f in filenames:
+          sub_entry = path.join(dirpath, f)
+          if path.isfile(sub_entry):
+            orig_entries.append(sub_entry)
+
+for orig_entry in orig_entries:
+  entry=path.relpath(orig_entry, orig_dir)
   dest_entry = path.join(dest_dir, entry)
   print('Entry "%s" -> "%s"' % (entry, dest_entry))
 
@@ -59,6 +78,9 @@ for entry in os.listdir(orig_dir):
   else:
     print('Creating symbolic link "%s" pointing to "%s".' % (dest_entry, orig_entry))
     try:
+      dirname = path.dirname(dest_entry)
+      if not path.exists(dirname):
+        os.makedirs(dirname)
       os.symlink(orig_entry, dest_entry)
     except Exception as e:
       print('Failed to create symbolic link "%s": %s"' % (dest_entry, str(e)))
