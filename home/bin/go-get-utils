@@ -2,6 +2,10 @@
 set -e # Exit on error
 echo "GOPATH=$GOPATH"
 set -x # Show commands
+# Go related
+go get github.com/nsf/gocode
+go get github.com/skelterjohn/wgo
+# Misc
 go get github.com/cespare/reflex
 go get github.com/peco/peco/...
 go get github.com/miolini/jsonf
