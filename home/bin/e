@@ -1,0 +1,8 @@
+#!/bin/bash
+if [[ -t 1 ]]; then
+	# Terminal
+	emacsclient -a '' -t "$@"
+else
+	# Not-a-terminal
+	emacsclient -a '' -c "$@"
+fi
