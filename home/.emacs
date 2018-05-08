@@ -166,6 +166,12 @@
   (dired-async-mode 1)
   (async-bytecomp-package-mode 1))
 
+;; Fix env (important for go-mode with emacsclient)
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (exec-path-from-shell-initialize))
+
 ;; Keep track of recent files
 (use-package recentf
   :config
