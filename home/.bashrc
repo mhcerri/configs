@@ -164,13 +164,6 @@ if [ -f ~/.bash_aliases ]; then
 fi
 
 #
-# Man pages in vim
-#
-#if which vim &>/dev/null; then
-#	export MANPAGER="/bin/sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu noma' -\""
-#fi
-
-#
 # Path
 #
 
@@ -254,13 +247,6 @@ do
 done
 if declare -f _todo 2>&1 >/dev/null; then
 	complete -F _todo t
-fi
-
-#
-# Use neovim instead if it's available.
-#
-if which nvim &> /dev/null; then
-	alias vim=nvim
 fi
 
 #
