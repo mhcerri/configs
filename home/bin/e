@@ -1,4 +1,17 @@
 #!/bin/bash
+if [[ $TERM == eterm* ]]; then
+	if [[ $# -eq 0 ]]; then
+		echo "No file given from eshell. Aborting..." >&2
+		exit 1
+	fi
+	if [[ $# -gt 1 ]]; then
+		echo "Opening file from eshell. Using just the first file name..."
+		sleep 1
+	fi
+	arg=$(echo "$1" | sed -e 's/"/\\"/g')
+	emacsclient --eval '(find-file "'"$arg"'")'
+	exit
+fi
 if [[ -t 1 ]]; then
 	# Terminal
 	emacsclient -a '' -t "$@"
