@@ -264,9 +264,18 @@ if which nvim &> /dev/null; then
 fi
 
 #
-# Local customizations
+# Customizations
 #
-
-if [ -f ~/.bash_local ]; then
-	. ~/.bash_local
+bashrcd=~/.bashrc.d
+if [[ -d $bashrcd ]]; then
+	while read script; do
+		source "$script"
+	done < <(
+		find "$bashrcd" \
+		     -mindepth 1 \
+		     -maxdepth 1 \
+		     ! -type d |
+			sort
+	)
 fi
+unset bashrcd
