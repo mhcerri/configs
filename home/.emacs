@@ -32,7 +32,6 @@
 (fset 'yes-or-no-p 'y-or-n-p)           ; Lazy prompt
 (savehist-mode)                         ; Persistent history
 (xterm-mouse-mode)                      ; Support mouse inside terminal
-(global-hl-line-mode 1)                 ; Highlight current line
 (setq scroll-step 1)                    ; Scroll one line at a time
 (setq scroll-margin 5)                  ; Show N lines at the edge when scrolling
 (setq                                   ; Scroll one line at a time
@@ -190,6 +189,7 @@
 ;; zerodark-theme
 (use-package zerodark-theme
   :ensure t
+  :after (hl-line)
   :config
   (setq zerodark-use-paddings-in-mode-line nil)
   (load-theme 'zerodark t)
@@ -351,6 +351,15 @@
 ;; Use `pcre-mode' to enable it.
 (use-package pcre2el
   :ensure t)
+
+;; Highlight current line
+(use-package hl-line
+  :config
+  (defun ~enable-hl-line-mode ()
+    ""
+    (if (not (derived-mode-p 'term-mode))
+	(hl-line-mode 1)))
+  (add-hook 'after-change-major-mode-hook '~enable-hl-line-mode))
 
 ;; Add numbers to lines
 (if (version<= "26.0.50" emacs-version)
@@ -856,7 +865,9 @@
     (display-line-numbers-mode -1)
     (linum-mode -1)
     ;; Scroll up to the end of the screen
-    (setq scroll-margin 0))
+    (setq scroll-margin 0)
+    ;; Disable line highlighting
+    (hl-line-mode -1))
   :config
   (setq multi-term-program (getenv "SHELL"))
   (setq multi-term-switch-after-close 'PREVIOUS))
