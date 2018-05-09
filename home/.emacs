@@ -128,7 +128,11 @@
 (global-set-key (kbd "C-x Q") 'save-buffers-kill-emacs)
 
 ;; Cycle between the last two buffers
-(global-set-key (kbd "M-o")  'mode-line-other-buffer)
+(defun ~switch-to-other-buffer ()
+  "Switch to the last buffer visited but ignore ibuffer."
+  (interactive)
+  (switch-to-buffer (other-buffer (get-buffer "*Ibuffer*")) nil t))
+(global-set-key (kbd "M-o")  '~switch-to-other-buffer)
 
 ;; Kill line backwards
 ;; Use C-u u to delete from cursor to beginning of line, similarly
