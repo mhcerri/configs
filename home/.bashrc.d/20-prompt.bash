@@ -25,6 +25,11 @@ if [ -n "$color_prompt_when_supported" ]; then
 	fi
 fi
 
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+	debian_chroot=$(cat /etc/debian_chroot)
+fi
+
 # Define prompt fragments
 jobs_ps1='$(
 	N="$(jobs 2> /dev/null | wc -l)"
