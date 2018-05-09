@@ -195,11 +195,9 @@
   (load-theme 'zerodark t)
   (zerodark-setup-modeline-format)
   ;; Fix line highlight in the terminal
-  (if (not (display-graphic-p))
-      (set-face-attribute
-       'hl-line nil
-       :background "gray22"
-       :foreground nil)))
+  (set-face-background
+   'hl-line
+   (face-background 'line-number)))
 
 ;; Mode line
 (use-package telephone-line
