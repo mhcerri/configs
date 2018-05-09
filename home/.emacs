@@ -844,6 +844,15 @@
    multi-term-prev)
   :bind
   (("C-c t" . multi-term))
+  :hook
+  ((term-mode . ~term-mode))
+  :init
+  (defun ~term-mode ()
+    ;; Disable line numbers (whatever it's using)
+    (display-line-numbers-mode -1)
+    (linum-mode -1)
+    ;; Scroll up to the end of the screen
+    (setq scroll-margin 0))
   :config
   (setq multi-term-program (getenv "SHELL"))
   (setq multi-term-switch-after-close 'PREVIOUS))
