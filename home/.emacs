@@ -193,7 +193,6 @@
   :config
   (setq zerodark-use-paddings-in-mode-line nil)
   (load-theme 'zerodark t)
-  (zerodark-setup-modeline-format)
   ;; Fix line highlight in the terminal
   (set-face-background
    'hl-line
