@@ -916,5 +916,10 @@
   :config
   (add-to-list 'company-backends 'company-go))
 
+(use-package go-eldoc
+  :ensure t
+  :hook
+  ((go-mode . go-eldoc-setup)))
+
 (provide '.emacs)
 ;;; .emacs ends here
