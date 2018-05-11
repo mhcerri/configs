@@ -1,0 +1,22 @@
+# General GMail configs using Maildir
+#
+# Configurations that include credentials are not defined here on purpose. That
+# includes `smtp_pass` and `imap_pass`. `from` is used for SMTP and IMAP users.
+#
+
+# SMTP
+set smtp_url   = "smtp://$from@smtp.gmail.com:587/"
+#set smtp_pass = ''
+
+# Mail
+#set folder    = ~/.mail/
+set mbox_type  = Maildir
+set spoolfile  = "=Inbox"
+set mbox       = '=Inbox'
+set postponed  = "=[Gmail]/.Drafts"
+set trash      = '=[Gmail]/.Trash'
+set record     = '' # Gmail smpt handles that #'imaps://imap.gmail.com/[Gmail]/Sent Mail'
+
+# Mailboxes - Use an script to filter and sort the mail boxes based on
+# the mail dirs.
+mailboxes `~/.mutt/sort-mailboxes.sh ~/.mail/canonical/`
