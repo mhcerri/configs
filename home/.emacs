@@ -761,6 +761,11 @@
   :config
   (add-to-list 'company-backends 'company-irony))
 
+(use-package irony-eldoc
+  :ensure t
+  :hook
+  ((irony-mode . irony-eldoc)))
+
 ;; C headers completion based on the irony server
 (use-package company-irony-c-headers
   :ensure t
