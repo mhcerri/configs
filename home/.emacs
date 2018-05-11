@@ -407,7 +407,7 @@
   :ensure t
   :diminish
   :hook
-  ((prog-mode . ws-butler-mode)))
+  (((text-mode prog-mode) . ws-butler-mode)))
 
 ;; Smartly add and ignore closing marks
 (use-package smartparens-config
