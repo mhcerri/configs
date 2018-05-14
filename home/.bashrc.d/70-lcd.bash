@@ -10,6 +10,7 @@ _lcd_prefix=linux-
 #
 _lcd() {
 	local i cur prev opts
+	[[ ! -d $_lcd_ws ]] && return 1
 	cur="${COMP_WORDS[COMP_CWORD]}"
 	prev="${COMP_WORDS[COMP_CWORD-1]}"
 	opts=$(
@@ -36,6 +37,14 @@ complete -F _lcd lcd
 #
 lcd() {
 	local d
+	if [[ ! -d $_lcd_ws ]]; then
+		echo "\"$_lcd_ws\" directory does not exist." >&2
+		return 1
+	fi
+	if [[ $# -eq 0 ]]; then
+		cd "$_lcd_ws"
+		return 0
+	fi
 	for d in \
 		"$_lcd_ws/$1/$_lcd_dir" \
 		"$_lcd_ws/$_lcd_prefix$1/$_lcd_dir"
