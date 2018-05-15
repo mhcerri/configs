@@ -197,7 +197,7 @@
   ;; Fix line highlight in the terminal
   (set-face-background
    'hl-line
-   (face-background 'line-number)))
+   "#222222"))
 
 ;; Mode line
 (use-package telephone-line
