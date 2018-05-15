@@ -170,6 +170,10 @@
   (dired-async-mode 1)
   (async-bytecomp-package-mode 1))
 
+;; Run async external commands with status on the message line
+(use-package bpr
+  :ensure t)
+
 ;; Fix env (important for go-mode with emacsclient)
 (use-package exec-path-from-shell
   :ensure t
