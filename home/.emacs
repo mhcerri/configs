@@ -360,8 +360,14 @@
   (add-hook 'after-change-major-mode-hook '~enable-hl-line-mode))
 
 ;; Add numbers to lines
-(if (version<= "26.0.50" emacs-version)
-    (global-display-line-numbers-mode 1))
+(use-package display-line-numbers
+  :demand
+  :if (version<= "26.0.50" emacs-version)
+  :hook
+  (((text-mode prog-mode) . ~enable-line-number))
+  :config
+  (defun ~enable-line-number () (display-line-numbers-mode 1)))
+
 ;; nlinum might be efficient but it doesn't play well with git-gutter.
 (use-package linum
   :ensure t
