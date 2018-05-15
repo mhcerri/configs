@@ -141,6 +141,7 @@
   (interactive "p")
   (kill-line (- 1 arg)))
 (global-set-key (kbd "C-c u") '~backward-kill-line)
+(global-set-key (kbd "C-c C-u") '~backward-kill-line)
 
 ;; Package manager
 (require 'package)
