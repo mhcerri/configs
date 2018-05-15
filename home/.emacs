@@ -800,7 +800,7 @@
 ;; support for creating and updating tags files.
 (use-package counsel-gtags
   :ensure t
-  :after (:all evil counsel)
+  :after (:all evil counsel bpr)
   :diminish "Gtags"
   :hook
   ((prog-mode . counsel-gtags-mode))
@@ -813,7 +813,20 @@
    ;; Emulate etags/ctags return to previous location
    ("C-t" . counsel-gtags-go-backward)
    (:map evil-normal-state-map ("C-t" . counsel-gtags-go-backward))
-   (:map evil-insert-state-map ("C-t" . counsel-gtags-go-backward))))
+   (:map evil-insert-state-map ("C-t" . counsel-gtags-go-backward)))
+  :config
+  ;; Replace the internals to not block when generating the tag file
+  (defun counsel-gtags--generate-tags ()
+    "Generate tags in background."
+    (if (not (yes-or-no-p "File GTAGS not found. Run 'gtags'? "))
+   	(error "Abort generating tag files")
+      (let* ((root (read-directory-name "Root Directory: "))
+             (label (counsel-gtags--select-gtags-label))
+             (bpr-process-directory root)
+	     (bpr-show-progress nil)
+   	     (bpr-close-after-success t))
+   	(bpr-spawn (concat "gtags -q --gtagslabel=" label))
+   	(error "Gtags is generating tags")))))
 
 ;; Tag-like jump without any support
 (use-package dumb-jump
