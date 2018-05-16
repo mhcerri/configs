@@ -160,8 +160,13 @@
       (package-install 'use-package)))
 (require 'use-package)
 
-;; Hide modes from status bar (used it use-package)
-(use-package diminish :ensure t)
+;; Hide modes from status bar (used with use-package)
+(use-package diminish
+  :ensure t
+  :config
+  ;; Only diminish built-in modes here
+  (dolist (m '(eldoc-mode))
+    (diminish m)))
 
 ;; Async
 (use-package async
@@ -189,6 +194,11 @@
   :config
   (setq recentf-max-saved-items 100)
   (recentf-mode 1))
+
+;; Show undo tree with "C-x u"
+(use-package undo-tree
+  :ensure t
+  :diminish)
 
 ;; Icons support for GUI and terminal (GTK based).
 ;; It's necessary to install the fonts provided by the package.
@@ -334,7 +344,7 @@
 ;; Multiple cursors
 (use-package evil-mc
   :ensure t
-  :diminish "MC"
+  :diminish
   :after (evil)
   :init
   ;; To avoid conflicts with other packages, keep only the g*
@@ -450,6 +460,7 @@
 ;; Smartly add and ignore closing marks
 (use-package smartparens-config
   :ensure smartparens
+  :diminish smartparens-mode
   :config
   (smartparens-global-mode))
 
@@ -662,7 +673,7 @@
 
 (use-package yasnippet
   :ensure t
-  :diminish (yas-minor-mode . "Yas")
+  :diminish yas-minor-mode
   :demand
   :config
   (yas-global-mode 1))
