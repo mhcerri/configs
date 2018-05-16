@@ -174,6 +174,10 @@
 (use-package bpr
   :ensure t)
 
+;; Function decorator library
+(use-package noflet
+  :ensure t)
+
 ;; Fix env (important for go-mode with emacsclient)
 (use-package exec-path-from-shell
   :ensure t
@@ -970,7 +974,48 @@
 	   (file+headline "~/Dropbox/org/week.org" "Current")
 	   "** %?\n  %u\n  %a"
 	   :empty-lines 1)
-	  )))
+	  ))
+  ;; The following is a workaround to open an org-capture frame
+  ;; directly from the desktop.
+  ;;
+  ;; To open a new GUI frame use:
+  ;;     emacsclient --display "$DISPLAY" -ne '(~org-capture-make-frame)'
+  ;;
+  ;; However, that somehow messes up with i3 after the frame is
+  ;; closed. So an alternative is to use a terminal instead:
+  ;;
+  ;;     for_window [instance=org-capture-frame] floating enable
+  ;;     bindsym $mod+c exec --no-startup-id terminator -u \
+  ;;         --name org-capture-frame \
+  ;;         -x /opt/emacs26/bin/emacsclient \
+  ;;         -te '(~org-capture-make-frame)'
+
+  ;; Close the frame when a capture is completed.
+  (defadvice org-capture-finalize
+      (after delete-capture-frame activate)
+    "Advise capture-finalize to close the frame"
+    (if (equal "org-capture-frame" (frame-parameter nil 'name))
+	  (save-buffers-kill-terminal)))
+  ;; Close the frame when a capture is aborted.
+  (defadvice org-capture-destroy
+      (after delete-capture-frame activate)
+    "Advise capture-destroy to close the frame"
+    (if (equal "org-capture-frame" (frame-parameter nil 'name))
+	  (save-buffers-kill-terminal)))
+  ;; Function to be called by emacsclient to create the capture frame
+  (defun ~org-capture-make-frame ()
+    "Create a new frame and run org-capture."
+    (interactive)
+    ;; That name will be used by the advices above to kill the frame
+    ;; when necessary.
+    (make-frame '((name . "org-capture-frame")))
+    (select-frame-by-name "org-capture-frame")
+    (delete-other-windows)
+    ;; Replace only for this call the behavior of the function that
+    ;; splits and jumps to the other window. That will force the
+    ;; org-capture selection screen to use the entire screen.
+    (noflet ((org-switch-to-buffer-other-window (buf) (switch-to-buffer buf)))
+      (org-capture))))
 
 ;; GoLang
 (use-package go-mode
