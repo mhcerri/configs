@@ -924,6 +924,7 @@
 ;; org mode
 (use-package org
   :ensure org-plus-contrib
+  :after (company)
   :defer t
   :mode ("\\.org$" . org-mode)
   :config
