@@ -952,6 +952,26 @@
   ((org-mode      . evil-org-mode)
    (evil-org-mode . evil-org-set-key-theme)))
 
+(use-package org-capture
+  :ensure org-plus-contrib
+  :demand
+  :after (noflet)
+  :bind
+  (("C-c c" . org-capture))
+  :config
+  ;;templates
+  (setq org-capture-templates
+	'(
+	  ("t" "Todo" entry
+	   (file "~/Dropbox/org/todos.org")
+	   "* TODO %?\n  %u\n  %a"
+	   :empty-lines 1)
+	  ("w" "Week" entry
+	   (file+headline "~/Dropbox/org/week.org" "Current")
+	   "** %?\n  %u\n  %a"
+	   :empty-lines 1)
+	  )))
+
 ;; GoLang
 (use-package go-mode
   :ensure t
