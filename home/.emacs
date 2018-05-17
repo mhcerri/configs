@@ -1016,6 +1016,15 @@
 	   (file+headline "~/Dropbox/org/week.org" "Current")
 	   "** %?\n  %u\n  %a"
 	   :empty-lines 1)
+	  ("p" "Personal notes")
+	  ("pt" "Todo" entry
+	   (file "~/Dropbox/org/personal-todos.org")
+	   "* TODO %?\n  %u\n  %a"
+	   :empty-lines 1)
+	  ("pp" "Projects/ideas" entry
+	   (file "~/Dropbox/org/personal-projects.org")
+	   "* TODO %?\n  %u\n  %a"
+	   :empty-lines 1)
 	  ))
   ;; The following is a workaround to open an org-capture frame
   ;; directly from the desktop.
