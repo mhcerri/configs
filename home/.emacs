@@ -974,6 +974,9 @@
   :defer t
   :mode ("\\.org$" . org-mode)
   :config
+  ;; Use regular background for code blocks
+  (dolist (f '(org-block-begin-line org-block org-block-end-line))
+    (set-face-background f (face-background 'org-default)))
   ;; Auto-complete
   ;; https://emacs.stackexchange.com/questions/21171/company-mode-completion-for-org-keywords
   (defun ~org-keyword-backend (command &optional arg &rest ignored)
