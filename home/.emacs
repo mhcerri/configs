@@ -250,28 +250,6 @@
   :config
   (paradox-enable))
 
-;; Vim leader bindings. Load it first and before evil.
-(use-package evil-leader
-  :ensure t
-  :init
-  ;; Required for evil-collection
-  (setq evil-want-integration nil)
-  :config
-  (global-evil-leader-mode)
-  (evil-leader/set-key
-    ;; Leader twice
-    evil-leader/leader 'ivy-switch-buffer
-    "f"  'counsel-find-file
-    "r"  'counsel-recentf
-    "p"  'projectile-find-file
-    "P"  'projectile-switch-project
-    "b"  'list-buffers
-    "c"  'company-complete
-    "qq" 'save-buffers-kill-terminal
-    "qQ" 'save-buffers-kill-emacs
-    "k"  'kill-current-buffer
-    "w"  'evil-window-delete))
-
 ;; Extensible vi layer
 (use-package evil
   :ensure t
@@ -326,6 +304,31 @@
   (advice-add #'evil-force-normal-state
 	      :after #'~evil-attach-escape-hook)
   :config
+  ;; Vim leader bindings.
+  ;; Note: it looks like that evil-leader directly loads evil. Because
+  ;; of that, there's no way of using the use-package :after property
+  ;; to force evil-leader to load after evil:init and before
+  ;; evil:config. The alternative would be to move everything in
+  ;; evil:init to evil-leader:init.
+  (use-package evil-leader
+    :ensure t
+    :demand
+    :config
+    (global-evil-leader-mode)
+    (evil-leader/set-key
+     ;; Leader twice
+     evil-leader/leader 'ivy-switch-buffer
+     "f"  'counsel-find-file
+     "r"  'counsel-recentf
+     "p"  'projectile-find-file
+     "P"  'projectile-switch-project
+     "b"  'list-buffers
+     "c"  'company-complete
+     "qq" 'save-buffers-kill-terminal
+     "qQ" 'save-buffers-kill-emacs
+     "k"  'kill-current-buffer
+     "w"  'evil-window-delete))
+  ;; Fix emacs
   (evil-mode 1))
 
 (use-package evil-collection
