@@ -605,6 +605,7 @@
 	   ("*Apropos*" :stick t)
 	   ;; Information buffers shouldn't be selected by default:
 	   ("*Warnings*" :noselect t)
+	   ("*Backtrace*" :noselect t)
 	   ("*git-gutter:diff*" :noselect t))
 	 popwin:special-display-config))
   ;; Close popups with ESC
