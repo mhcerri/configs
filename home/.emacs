@@ -250,6 +250,28 @@
   :config
   (paradox-enable))
 
+;; Vim leader bindings. Load it first and before evil.
+(use-package evil-leader
+  :ensure t
+  :init
+  ;; Required for evil-collection
+  (setq evil-want-integration nil)
+  :config
+  (global-evil-leader-mode)
+  (evil-leader/set-key
+    ;; Leader twice
+    evil-leader/leader 'ivy-switch-buffer
+    "f"  'counsel-find-file
+    "r"  'counsel-recentf
+    "p"  'projectile-find-file
+    "P"  'projectile-switch-project
+    "b"  'list-buffers
+    "c"  'company-complete
+    "qq" 'save-buffers-kill-terminal
+    "qQ" 'save-buffers-kill-emacs
+    "k"  'kill-current-buffer
+    "w"  'evil-window-delete))
+
 ;; Extensible vi layer
 (use-package evil
   :ensure t
