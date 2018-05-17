@@ -926,6 +926,7 @@
   (setq projectile-project-name-function '~projectile-get-project-name)
   (setq projectile-mode-line
 	'(:eval (format " Proj[%s]" (projectile-project-name))))
+  (setq projectile-completion-system 'ivy)
   (projectile-mode))
 
 (use-package ibuffer-projectile
