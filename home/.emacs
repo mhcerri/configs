@@ -1008,6 +1008,8 @@
   :bind
   (("C-c c" . org-capture))
   :config
+  ;; Start a capture in insert mode
+  (add-hook 'org-capture-mode-hook 'evil-insert-state)
   ;;templates
   (setq org-capture-templates
 	'(
