@@ -591,11 +591,19 @@
   :config
   (setq popwin:popup-window-position 'bottom)
   (setq popwin:popup-window-height 0.4)
+  ;; Prepend the custom entries so they take precedence
   (setq popwin:special-display-config
-	(append popwin:special-display-config
-		'(("*Warnings*" :noselect t)
-		  ("*git-gutter:diff*" :noselect t)
-		  ("*Apropos*"))))
+	(append
+	 '(;; Help like buffers should be selected and shouldn't be
+	   ;; dismissed when jumping to another window. It's still
+	   ;; possible to dismiss them hitting ESC.
+	   (help-mode :stick t)
+	   (godoc-mode :stick t)
+	   ("*Apropos*" :stick t)
+	   ;; Information buffers shouldn't be selected by default:
+	   ("*Warnings*" :noselect t)
+	   ("*git-gutter:diff*" :noselect t))
+	 popwin:special-display-config))
   ;; Close popups with ESC
   (add-hook '~evil-esc-hook #'popwin:close-popup-window)
   ;; Workaround for help buffers
