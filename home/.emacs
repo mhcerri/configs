@@ -1025,6 +1025,10 @@
 	   (file+headline "~/Dropbox/org/week.org" "Current")
 	   "** %?\n  %u\n  %a"
 	   :empty-lines 1)
+	  ("s" "Snippets (refile to the correct headline)" entry
+	   (file+headline "~/Dropbox/org/snippets.org" "Unsorted")
+	   "* %?\n#+BEGIN_SRC \n%i\n#+END_SRC"
+	   :empty-lines 1)
 	  ("p" "Personal notes")
 	  ("pt" "Todo" entry
 	   (file "~/Dropbox/org/personal-todos.org")
