@@ -1015,27 +1015,28 @@
   ;; Start a capture in insert mode
   (add-hook 'org-capture-mode-hook 'evil-insert-state)
   ;;templates
+  (defvar ~org-capture-root "~/Dropbox/org/")
   (setq org-capture-templates
-	'(
+	`(
 	  ("t" "Todo" entry
-	   (file "~/Dropbox/org/todos.org")
+	   (file ,(concat ~org-capture-root "todos.org"))
 	   "* TODO %?\n  %u\n  %a"
 	   :empty-lines 1)
 	  ("w" "Week" entry
-	   (file+headline "~/Dropbox/org/week.org" "Current")
+	   (file+headline ,(concat ~org-capture-root "week.org") "Current")
 	   "** %?\n  %u\n  %a"
 	   :empty-lines 1)
 	  ("s" "Snippets (refile to the correct headline)" entry
-	   (file+headline "~/Dropbox/org/snippets.org" "Unsorted")
+	   (file+headline ,(concat ~org-capture-root "snippets.org") "Unsorted")
 	   "* %?\n#+BEGIN_SRC \n%i\n#+END_SRC"
 	   :empty-lines 1)
 	  ("p" "Personal notes")
 	  ("pt" "Todo" entry
-	   (file "~/Dropbox/org/personal-todos.org")
+	   (file ,(concat ~org-capture-root "personal-todos.org"))
 	   "* TODO %?\n  %u\n  %a"
 	   :empty-lines 1)
 	  ("pp" "Projects/ideas" entry
-	   (file "~/Dropbox/org/personal-projects.org")
+	   (file ,(concat ~org-capture-root "personal-projects.org"))
 	   "* TODO %?\n  %u\n  %a"
 	   :empty-lines 1)
 	  ))
