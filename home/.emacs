@@ -978,6 +978,8 @@
   :defer t
   :mode ("\\.org$" . org-mode)
   :config
+  ;; Use org indent
+  (setq org-startup-indented t)
   ;; Use regular background for code blocks
   (dolist (f '(org-block-begin-line org-block org-block-end-line))
     (set-face-background f (face-background 'org-default)))
