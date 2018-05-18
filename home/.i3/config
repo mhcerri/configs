@@ -41,7 +41,7 @@ bindsym $mod+shift+d exec dmenu_run
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
-bindsym $mod+d exec --no-startup-id rofi -show run
+bindsym $mod+d exec --no-startup-id rofi -show run -run-command "$HOME/bin/rofi-run.sh {cmd}"
 
 # change focus
 #bindsym $mod+j focus left
@@ -186,7 +186,7 @@ bindsym $mod+Shift+z move container to workspace back_and_forth; workspace back_
 bindsym Control+mod1+l exec xautolock -locknow
 bindsym --release Caps_Lock exec pkill -SIGRTMIN+11 i3blocks
 bindsym --release Num_Lock exec pkill -SIGRTMIN+11 i3blocks
-bindsym Pause exec sh ~/.rofi-last-cmd
+bindsym Pause exec exec `cat ~/.rofi-last-cmd`
 
 # Load workspace layouts
 exec --no-startup-id ~/.i3/start-workspaces.sh
