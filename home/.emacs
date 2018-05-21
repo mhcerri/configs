@@ -1116,5 +1116,150 @@
   :hook
   ((go-mode . go-eldoc-setup)))
 
+; Mail
+(use-package message
+  :config
+  ;; This is needed to allow msmtp to do its magic:
+  (setq message-sendmail-f-is-evil 't)
+  ;; Need to tell msmtp which account we're using
+  (setq message-sendmail-extra-arguments '("--read-envelope-from"))
+  ;; Use msmtp as sendmail
+  (setq-default sendmail-program "msmtp")
+  ;; Use sendmail
+  (setq message-send-mail-function 'message-send-mail-with-sendmail)
+  ;; Read email address from msmtp configuration.
+  (let ((from (shell-command-to-string
+	       (concat "echo | msmtp -P | awk '$1 == \"from\" "
+		       "{ printf(\"%s\", $3); exit }'"))))
+    (if (string-match
+	 "^[a-za-z0-9_.+-]+@[a-za-z0-9-]+\\.[a-za-z0-9-.]+$" from)
+	(setq-default user-mail-address from)
+      (message "Invalid email from msmtp configuration: '%s'" from))))
+
+(use-package mu4e
+  ;; Always use custom mu binaries:
+  :load-path "~/workspace/mu/mu4e/"
+  :bind
+  (("<C-f12>" . mu4e))
+  :hook
+  (((mu4e-main-mode mu4e-headers-mode mu4e-view-mode) .
+    (lambda () (display-line-numbers-mode -1))))
+  :commands
+  (mu4e)
+  :config
+  ;; Use my custom mu
+  (setq mu4e-mu-binary "~/workspace/mu/mu/mu")
+  ;; Use mu4e for e-mail in emacs
+  (setq mail-user-agent 'mu4e-user-agent)
+  ;; Use ivy for prompts
+  (setq mu4e-completing-read-function 'ivy-completing-read)
+
+  ;; Path to Maildir directory
+  (setq mu4e-maildir "~/.mail/")
+
+  ;; Utility function to get a maildir path from `mu4e-maildir'.
+  (defun ~mu4e-get-maildir (pattern)
+    "Get a maildir path relative to `mu4e-maildir' based on PATTERN."
+    ;; TODO: fix it for non linux platforms.
+    (if (not mu4e-maildir)
+	(error "Variable mu4e-maildir is not set"))
+    (let ((dir (expand-file-name mu4e-maildir)))
+      (require 's)
+      (dolist (exe '("find" "sort" "head"))
+	(if (not (executable-find exe))
+	    (error "Required tool not found in path: %s" exe)))
+      (s-chop-prefix
+       (directory-file-name dir)
+       (s-trim
+	(shell-command-to-string
+	 (format
+	  "find %s -type d -a -iname '*'%s'*' | sort | head -n1"
+	  (shell-quote-argument dir)
+	  (shell-quote-argument pattern)))))))
+
+  ;; The next are relative to `mu4e-maildir'
+  ;; instead of strings, they can be functions too, see
+  ;; their docstring or the chapter 'Dynamic folders'
+  (setq mu4e-sent-folder   (~mu4e-get-maildir "sent")
+	mu4e-drafts-folder (~mu4e-get-maildir "draft")
+	mu4e-trash-folder  (~mu4e-get-maildir "trash"))
+
+  ;; Headers
+  (setq mu4e-headers-results-limit -1)
+  (setq mu4e-headers-include-related t)
+  (setq mu4e-headers-fields
+	'((:human-date     . 12)
+	  (:flags          .  4)
+	  (:from-or-to     . 22)
+	  (:thread-subject . nil)))
+
+  ;; Bookmarks (works better than mu4e-maildir-shortcuts)
+  ;; Avoid appending since for some reason use-package is evaluating :config
+  ;; twice for mu4e
+  (setq mu4e-bookmarks
+	`(,(make-mu4e-bookmark
+	    :name "Inbox" :key ?i
+	    :query (format "maildir:\"%s\"" (~mu4e-get-maildir "inbox")))
+	  ,(make-mu4e-bookmark
+	    :name "Draft" :key ?d
+	    :query (format "maildir:\"%s\"" mu4e-drafts-folder))
+	  ,(make-mu4e-bookmark
+	    :name "Sent" :key ?s
+	    :query (format "maildir:\"%s\"" mu4e-sent-folder))))
+
+  ;; Faces
+  ;; Do not highlight replied messages because that is too confusing...
+  (custom-set-faces
+   '(mu4e-replied-face ((t (:inherit default)))))
+
+  ;; Configure compose mode
+  (add-hook
+   'mu4e-compose-mode-hook
+   '(lambda ()
+      (orgstruct++-mode)
+      (orgtbl-mode)
+      (auto-fill-mode 1)
+      (whitespace-mode -1)))
+
+  ;; Mail view
+  (setq mu4e-view-show-addresses t)
+  (setq mu4e-view-show-images t)
+  (setq mu4e-view-prefer-html nil)
+  ;; Required by mbsync
+  (setq mu4e-change-filenames-when-moving t))
+
+;; Evil mode support
+(use-package evil-mu4e
+  :ensure t
+  :after (mu4e evil))
+
+(use-package mu4e-alert
+  :ensure t
+  :after (mu4e)
+  :config
+  (mu4e-alert-set-default-style 'libnotify)
+  (add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
+  (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display))
+
+(use-package mu4e-jump-to-list
+  :ensure t
+  :after (mu4e))
+
+(use-package mu4e-maildirs-extension
+  :ensure t
+  :after (mu4e)
+  :config
+  (setq mu4e-maildirs-extension-maildir-default-prefix " ")
+  (mu4e-maildirs-extension))
+
+(use-package mu4e-query-fragments
+  :ensure t
+  :after (mu4e)
+  :init
+  (setq mu4e-query-fragments-list
+	'(("%junk" . "maildir:/Junk OR subject:SPAM")
+	  ("%hidden" . "flag:trashed OR %junk")))
+  (setq mu4e-query-fragments-append "AND NOT %hidden"))
+
 (provide '.emacs)
 ;;; .emacs ends here
