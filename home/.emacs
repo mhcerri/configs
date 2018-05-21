@@ -734,12 +734,22 @@
 ;; Spell checking
 (use-package flyspell
   :diminish "FlyS"
-  :if (executable-find "aspell")
   :hook
   ((text-mode prog-mode) . ~flyspell-smart-mode)
   :config
-  (setq ispell-program-name "aspell")
-  (setq ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))
+  ;; $ apt install aspell
+  (when (executable-find "aspell")
+    (setq ispell-program-name "aspell")
+    (setq ispell-extra-args '("--sug-mode=ultra"))
+    (setq ispell-dictionary "en_US"))
+  ;; $ apt install hunspell hunspell-pt-br
+  (when (executable-find "hunspell")
+    (setq ispell-program-name "hunspell")
+    (setq ispell-dictionary "en_US,pt_BR")
+    ;; ispell-set-spellchecker-params has to be called before
+    ;; ispell-hunspell-add-multi-dic is set.
+    (ispell-set-spellchecker-params)
+    (ispell-hunspell-add-multi-dic ispell-dictionary))
   ;;(setq flyspell-issue-message-flag nil)
   (defun ~flyspell-visible-region()
     "Check spelling only on the visible region"
