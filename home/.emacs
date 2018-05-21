@@ -200,6 +200,21 @@
   :ensure t
   :diminish)
 
+;; Use simpleclip-copy, simpleclip-paste and simpleclip-cut to
+;; interact with the system clipboard.
+(use-package simpleclip
+  :ensure t
+  :config
+  (defalias 'copy-to-clipboard 'simpleclip-copy)
+  (defalias 'paste-from-clipboard 'simpleclip-paste)
+  (defalias 'cut-to-clipboard 'simpleclip-cut)
+  (simpleclip-mode 1))
+
+(use-package xclip
+  :ensure t
+  :config
+  (xclip-mode 1))
+
 ;; Icons support for GUI and terminal (GTK based).
 ;; It's necessary to install the fonts provided by the package.
 (use-package all-the-icons
