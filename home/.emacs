@@ -768,6 +768,14 @@
       ;;(~flyspell-visible-region)
       )))
 
+;; Show spelling options via ivy.
+(use-package flyspell-correct-ivy
+  :ensure t
+  :after flyspell
+  :bind
+  (:map flyspell-mode-map
+        ("C-c $" . flyspell-correct-word-generic)))
+
 ;; Syntax check
 (use-package flycheck
   :ensure t
