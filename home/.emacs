@@ -168,6 +168,10 @@
   (dolist (m '(eldoc-mode))
     (diminish m)))
 
+;; Async library
+(use-package s
+  :ensure t)
+
 ;; Async
 (use-package async
   :ensure t
