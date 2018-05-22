@@ -483,10 +483,13 @@
 ;; Highlight trailing spaces
 (use-package whitespace
   :ensure t
+  :after (flyspell)
   :diminish
   :hook
   (((text-mode prog-mode) . whitespace-mode))
   :config
+  ;; Use a face that plays nicer with the cursor.
+  (copy-face 'flyspell-incorrect 'whitespace-trailing)
   (setq whitespace-line-column 78)
   (setq whitespace-style
 	'(face         ;
