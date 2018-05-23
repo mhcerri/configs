@@ -151,7 +151,7 @@
   :ensure t
   :config
   ;; Only diminish built-in modes here
-  (dolist (m '(eldoc-mode))
+  (dolist (m '(eldoc-mode auto-revert-mode))
     (diminish m)))
 
 ;; Async library
