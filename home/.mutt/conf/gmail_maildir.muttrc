@@ -19,4 +19,4 @@ set record     = '' # Gmail smpt handles that #'imaps://imap.gmail.com/[Gmail]/S
 
 # Mailboxes - Use an script to filter and sort the mail boxes based on
 # the mail dirs.
-mailboxes `~/.mutt/sort-mailboxes.sh ~/.mail/canonical/`
+source "~/.mutt/sort-mailboxes.sh $folder |"
