@@ -338,7 +338,6 @@
 
 (use-package evil-collection
   :ensure t
-  :load-path "~/.emacs.d/evil-collection"
   :after evil
   :config
   (evil-collection-init))
