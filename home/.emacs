@@ -106,20 +106,6 @@
 	    (insert-file-contents initial-scratch-file)
 	    (buffer-string))))
 
-;; Mutt specific configurations
-(defun ~mutt-mode()
-  "Mutt mode."
-  (interactive)
-  (progn
-    (mail-mode)
-    (orgstruct++-mode)
-    (orgtbl-mode)
-    (auto-fill-mode 1)
-    (whitespace-mode -1)
-    (re-search-forward "^$")
-    (forward-char 1)))
-(add-to-list 'auto-mode-alist '("/mutt" . ~mutt-mode))
-
 ;; Shortcuts
 ;;------------------------------------------------------------------------------
 
@@ -1285,6 +1271,22 @@
 	'(("%junk" . "maildir:/Junk OR subject:SPAM")
 	  ("%hidden" . "flag:trashed OR %junk")))
   (setq mu4e-query-fragments-append "AND NOT %hidden"))
+
+;; Mutt specific configurations
+(defun ~mutt-mode()
+  "Mutt mode."
+  (interactive)
+  ;; Enable mail and org modes
+  (mail-mode)
+  (orgstruct++-mode)
+  (orgtbl-mode)
+  ;; Arrange paragraphs and ignore white space issues
+  (auto-fill-mode 1)
+  (whitespace-mode -1)
+  ;; Move the cursor to the right position
+  (re-search-forward "^$")
+  (forward-char 1))
+(add-to-list 'auto-mode-alist '("/mutt" . ~mutt-mode))
 
 (provide '.emacs)
 ;;; .emacs ends here
