@@ -839,8 +839,11 @@
   ((after-init . global-company-mode))
   :bind
   ((:map company-active-map
-	 ("<next>"  . company-next-page)
-	 ("<prior>" . company-previous-page)))
+	 ("<escape>" . company-abort)
+	 ("<down>"   . company-select-next)
+	 ("<up>"     . company-select-previous)
+	 ("<next>"   . company-next-page)
+	 ("<prior>"  . company-previous-page)))
   :config
   (company-mode)
   ;; Time before completion starts
