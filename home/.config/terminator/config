@@ -23,6 +23,7 @@
   go_prev = None
   go_right = F8
   go_up = F7
+  help = None
   hide_window = None
   layout_launcher = None
   new_tab = F2
