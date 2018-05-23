@@ -11,10 +11,10 @@ set smtp_url   = "smtp://$from@smtp.gmail.com:587/"
 # Mail
 #set folder    = ~/.mail/
 set mbox_type  = Maildir
-set spoolfile  = "=Inbox"
-set mbox       = '=Inbox'
-set postponed  = "=[Gmail]/.Drafts"
-set trash      = '=[Gmail]/.Trash'
+set spoolfile  = "=INBOX"
+set mbox       = '=INBOX'
+set postponed  = "=Drafts"
+set trash      = '=Trash'
 set record     = '' # Gmail smpt handles that #'imaps://imap.gmail.com/[Gmail]/Sent Mail'
 
 # Mailboxes - Use an script to filter and sort the mail boxes based on
