@@ -1,0 +1,31 @@
+[general]
+pythonfile = ~/.offlineimap.py
+accounts = work
+maxsyncaccounts = 1
+ui = basic
+
+[Account work]
+localrepository = work-local
+remoterepository = work-remote
+autorefresh = 5
+quick = 10
+
+[Repository work-local]
+type = Maildir
+localfolders = ~/.mail/work/
+
+[Repository work-remote]
+type = Gmail
+# Password
+# Set it directly or use an encrypted file:
+# $  echo 'password' > ~/.mail_pass
+# $ gpg -e -r 'your-id' ~/.mail_pass
+# $ shred -xu ~/.mail_pass
+remoteusereval = gpg_read("~/.mail_user.gpg")
+remotepasseval = gpg_read("~/.mail_pass.gpg")
+foldersort = folder_cmp
+folderfilter = folder_filter
+nametrans = folder_transform
+createfolders = False
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+idlefolders = ['INBOX']
