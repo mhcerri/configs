@@ -1,4 +1,30 @@
 #!/bin/bash
+
+# Check is emacs server is running
+is_server_running() {
+	emacsclient -a false -e 't' &> /dev/null
+}
+
+# emacsclient wrapper
+_emacsclient() {
+	if ! is_server_running; then
+		echo "Waiting for emacs server (use C-c to abort) "
+		while ! is_server_running; do
+			echo -n "."
+			sleep 0.2
+		done
+		echo
+	fi
+	emacsclient "$@"
+}
+
+# Check if emacsclient is installed
+if ! which emacsclient &> /dev/null; then
+	echo "emacsclient is not available in PATH." >&2
+	exit 1
+fi
+
+# If running from within emacs, just open a new buffer
 if [[ $TERM == eterm* ]]; then
 	if [[ $# -eq 0 ]]; then
 		echo "No file given from eshell. Aborting..." >&2
@@ -9,13 +35,15 @@ if [[ $TERM == eterm* ]]; then
 		sleep 1
 	fi
 	arg=$(echo "$1" | sed -e 's/"/\\"/g')
-	emacsclient --eval '(find-file "'"$arg"'")'
+	_emacsclient --eval '(find-file "'"$arg"'")'
 	exit
 fi
+
+# Run emacsclient gui only when this is scripts is not called from a terminal
 if [[ -t 1 ]]; then
 	# Terminal
-	emacsclient -a '' -t "$@"
+	_emacsclient -a '' -t "$@"
 else
 	# Not-a-terminal
-	emacsclient -a '' -c "$@"
+	_emacsclient -a '' -c "$@"
 fi
