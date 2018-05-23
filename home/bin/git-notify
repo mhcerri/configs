@@ -64,6 +64,11 @@ if [ "$FLOCKER" != "$0" ]; then
 	exit "$?"
 fi
 
+if [[ $(nmcli networking connectivity) != "full" ]]; then
+	#error "No network connectivity. Aborting..."
+	exit 1
+fi
+
 for i in "${!REPO[@]}"; do
 	repo="${REPO[$i]}"
 	name="${NAME[$i]:-$(basename "$repo")}"
