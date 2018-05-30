@@ -1049,6 +1049,22 @@
   ((org-mode      . evil-org-mode)
    (evil-org-mode . evil-org-set-key-theme)))
 
+;; org-agenda
+;;
+;; Tips and tricks:
+;; 1. To create a new entry use "M-RET" to create a new outline/item.
+;; 2. To add a timestamp use "C-c .".
+;;    1. To pick a date use "S-<arrows>"
+;;    2. To pick a time, simply type:
+;;       - "<start>-<end>" (ie: "10:00-11:00"), or
+;;       - "<start>+<hours>" (ie: "10:00+1")
+;; Or use an org-capture template.
+(use-package org-agenda
+  :ensure org-plus-contrib
+  :config
+  (setq org-agenda-files
+	(directory-files "~/Dropbox/org/" t "\\.org$")))
+
 (use-package org-capture
   :ensure org-plus-contrib
   :demand
