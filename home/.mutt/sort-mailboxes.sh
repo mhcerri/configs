@@ -43,5 +43,5 @@ sorted+=("${mdirs[@]}")
 
 # Print the final list
 for d in "${sorted[@]}"; do
-	echo "mailboxes '$d'"
+	echo "mailboxes '=$d'"
 done
