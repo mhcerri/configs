@@ -119,6 +119,15 @@
   (switch-to-buffer (other-buffer (get-buffer "*Ibuffer*")) nil t))
 (global-set-key (kbd "M-o")  '~switch-to-other-buffer)
 
+;; Use text-mode by default for files.
+(defun ~text-mode-auto-detected-p ()
+  "Use `text-mode' as the default mode for any file instead of \
+`fundamental-mode'."
+  (if (equal major-mode 'fundamental-mode)
+      (not (null (buffer-file-name)))))
+(add-to-list 'magic-fallback-mode-alist
+	     '(~text-mode-auto-detected-p . text-mode))
+
 ;; Kill line backwards
 ;; Use C-u u to delete from cursor to beginning of line, similarly
 ;; to C-u used by vim and bash/readline.
