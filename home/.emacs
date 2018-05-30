@@ -851,7 +851,9 @@
 	 ("RET"      . company-complete-selection)
 	 ("<escape>" . company-abort)
 	 ("<down>"   . company-select-next)
+	 ("C-n"      . company-select-next)
 	 ("<up>"     . company-select-previous)
+	 ("C-p"      . company-select-previous)
 	 ("<next>"   . company-next-page)
 	 ("<prior>"  . company-previous-page)))
   :config
