@@ -848,6 +848,7 @@
   ((after-init . global-company-mode))
   :bind
   ((:map company-active-map
+	 ("RET"      . company-complete-selection)
 	 ("<escape>" . company-abort)
 	 ("<down>"   . company-select-next)
 	 ("<up>"     . company-select-previous)
