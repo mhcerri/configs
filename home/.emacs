@@ -580,10 +580,10 @@
 			      :base-map (make-sparse-keymap))
     "Git gutter"
     ("C-q" nil "quit")
-    ("C-c C-c" git-gutter:popup-hunk "show change" :column "General")
+    ("C-c C-c" magit-commit-popup "commit" :column "General")
     ("C-n" git-gutter:next-hunk "next" :column "Change")
     ("C-p" git-gutter:previous-hunk "previous")
-    ("C-s" git-gutter:stage-hunk "stage change" :column "Actions")
+    ("C-s" git-gutter:stage-hunk "stage/show change" :column "Actions")
     ("C-r" git-gutter:revert-hunk "revert change"))
   ;; Hydra mini state for multiple cursors
   (defhydra hydra-evil-mc (:color pink :post (evil-mc-undo-all-cursors)
