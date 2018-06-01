@@ -47,13 +47,6 @@
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)
 
-;; ediff options
-(require 'ediff)
-(setq ediff-window-setup-function 'ediff-setup-windows-plain)
-(setq ediff-split-window-function 'split-window-horizontally)
-(setq ediff-merge-split-window-function 'split-window-horizontally)
-(setq ediff-diff-options "")
-
 ;; Remember cursor position
 (if (version< emacs-version "25.0")
     (progn
@@ -501,6 +494,14 @@
 ;; Usage: M-x ialign RET
 (use-package ialign
   :ensure t)
+
+;; ediff options
+(use-package ediff
+  :config
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+  (setq ediff-split-window-function 'split-window-horizontally)
+  (setq ediff-merge-split-window-function 'split-window-horizontally)
+  (setq ediff-diff-options ""))
 
 (use-package dired
   :bind
