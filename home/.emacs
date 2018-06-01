@@ -91,13 +91,6 @@
 (setq c-default-style '((other . "linux")))
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
-;; Make ibuffer default. This way it's possible to switch buffers with "C-x C-b".
-(require 'ibuffer)
-(setq ibuffer-expert t) ; Do not ask to delete buffer
-(setq-default ibuffer-show-empty-filter-groups nil)
-(add-hook 'ibuffer-mode-hook 'ibuffer-auto-mode)
-(defalias 'list-buffers 'ibuffer)
-
 ;; Custom initial scratch message
 (defvar initial-scratch-file "~/.emacs.d/scratch")
 (if (file-exists-p initial-scratch-file)
@@ -522,6 +515,14 @@
   :init
   ;; Enable dired-find-alternate-file
   (put 'dired-find-alternate-file 'disabled nil))
+
+(use-package ibuffer
+  :config
+  ;; Make ibuffer default. This way it's possible to switch buffers with "C-x C-b".
+  (setq ibuffer-expert t) ; Do not ask to delete buffer
+  (setq-default ibuffer-show-empty-filter-groups nil)
+  (add-hook 'ibuffer-mode-hook 'ibuffer-auto-mode)
+  (defalias 'list-buffers 'ibuffer))
 
 ;; ivy, swiper and counsel - Better "M-x", "C-s" and "C-x f"
 (use-package ivy
