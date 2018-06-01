@@ -1101,6 +1101,10 @@
 	   (file ,(concat ~org-capture-root "personal-projects.org"))
 	   "* TODO %?\n  %u\n  %a"
 	   :empty-lines 1)
+	  ("a" "Agenda" entry
+	   (file ,(concat ~org-capture-root "cal.org"))
+	   "* %?\n  %^T"
+	   :empty-lines 1)
 	  ))
   ;; The following is a workaround to open an org-capture frame
   ;; directly from the desktop.
