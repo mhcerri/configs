@@ -1320,5 +1320,12 @@
   (forward-char 1))
 (add-to-list 'auto-mode-alist '("/mutt" . ~mutt-mode))
 
+;; Load custom el files
+(let* ((dir "~/.emacs.d/custom.d/")
+       (dir (file-name-as-directory dir)))
+  (if (file-directory-p dir)
+      (mapc (lambda (file) (load-file file))
+	    (directory-files dir t "\\.el$"))))
+
 (provide '.emacs)
 ;;; .emacs ends here
