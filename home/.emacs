@@ -575,7 +575,9 @@
    ("C-c m"   . hydra-evil-mc/body))
   :config
   ;; Hydra mini state for git-gutter
-  (defhydra hydra-git-gutter (:color pink :base-map (make-sparse-keymap))
+  (defhydra hydra-git-gutter (:color pink
+			      :pre (git-gutter-mode 1)
+			      :base-map (make-sparse-keymap))
     "Git gutter"
     ("C-q" nil "quit")
     ("C-c C-c" git-gutter:popup-hunk "show change" :column "General")
