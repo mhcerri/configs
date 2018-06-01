@@ -509,6 +509,20 @@
 (use-package ialign
   :ensure t)
 
+(use-package dired
+  :bind
+  (:map dired-mode-map
+	;; Do not open a new buffer when navigating with dired
+	;; <return> is for gui and RET for terminal
+	("<return>" . dired-find-alternate-file)
+	("RET" . dired-find-alternate-file)
+	;; evil counterparts
+	("<normal-state> <return>" . dired-find-alternate-file)
+	("<normal-state> RET" . dired-find-alternate-file))
+  :init
+  ;; Enable dired-find-alternate-file
+  (put 'dired-find-alternate-file 'disabled nil))
+
 ;; ivy, swiper and counsel - Better "M-x", "C-s" and "C-x f"
 (use-package ivy
   :ensure t
