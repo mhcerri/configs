@@ -1024,7 +1024,11 @@
     ;; Scroll up to the end of the screen
     (setq scroll-margin 0)
     ;; Disable line highlighting
-    (hl-line-mode -1))
+    (hl-line-mode -1)
+    ;; Override term bindings
+    (dolist (key '("M-o"))
+      (define-key term-raw-map (kbd key)
+	(lookup-key (current-global-map) (kbd key)))))
   :config
   (setq multi-term-program (getenv "SHELL"))
   (setq multi-term-switch-after-close 'PREVIOUS))
