@@ -8,21 +8,35 @@
 	abbrev = 12
 
 [alias]
-	a        = add
-	d        = diff
-	s        = status
-	ss       = show --stat
-	co       = checkout
-	pick	 = cherry-pick
-	l        = log --oneline --decorate=full
-	l1       = log --oneline --decorate=full -1
+	# Extended operations:
+	amend    = commit --amend --no-edit
 	list     = log --oneline --decorate=full
 	list-all = log --oneline --decorate=full --graph --all
 	fixes    = log --pretty=fixes
-	amend    = commit --amend --no-edit
+	pick     = cherry-pick
+	# Patch submission:
+	format-patch      = format-patch --from
 	send-email-to-ckt = send-email --suppress-cc=all --to=kernel-team@lists.ubuntu.com
-	send-email-to-me = send-email --suppress-cc=all --to=marcelo.cerri@canonical.com
-	format-patch = format-patch --from
+	send-email-to-me  = send-email --suppress-cc=all --to=marcelo.cerri@canonical.com
+	# Short shortcuts
+	a  = add
+	d  = diff
+	s  = status
+	ss = show --stat
+	co = checkout
+	pi = cherry-pick
+	l  = log --oneline --decorate=full
+	# List shortcuts:
+	l1  = log --oneline --decorate=full -1
+	l2  = log --oneline --decorate=full -2
+	l3  = log --oneline --decorate=full -3
+	l4  = log --oneline --decorate=full -4
+	l5  = log --oneline --decorate=full -5
+	l6  = log --oneline --decorate=full -6
+	l7  = log --oneline --decorate=full -7
+	l8  = log --oneline --decorate=full -8
+	l9  = log --oneline --decorate=full -9
+	l10 = log --oneline --decorate=full -10
 
 [pretty]
 	fixes = Fixes: %h (\"%s\")
@@ -30,7 +44,11 @@
 [format]
 	pretty = fuller
 
+[diff]
+	wsErrorHighlight = all
+
 [url "git+ssh://mhcerri@git.launchpad.net/"]
 	pushinsteadof = lp:
+
 [url "git://git.launchpad.net/"]
 	insteadof = lp:
