@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# Check is emacs server is running
+args=("$@")
+
+# Check if emacs server is running
 is_server_running() {
 	emacsclient -a false -e 't' &> /dev/null
 }
@@ -24,17 +26,25 @@ if ! which emacsclient &> /dev/null; then
 	exit 1
 fi
 
+# Check if it's necessary to read from stdin
+if [[ -p /dev/stdin ]]; then
+	tmp=$(mktemp)
+	echo "Reading from stdin to \"$tmp\"..."
+	cat > "$tmp"
+	args+=("$tmp")
+fi
+
 # If running from within emacs, just open a new buffer
 if [[ $TERM == eterm* ]]; then
-	if [[ $# -eq 0 ]]; then
+	if [[ ${#args[@]} -eq 0 ]]; then
 		echo "No file given from eshell. Aborting..." >&2
 		exit 1
 	fi
-	if [[ $# -gt 1 ]]; then
+	if [[ ${#args[@]} -gt 1 ]]; then
 		echo "Opening file from eshell. Using just the first file name..."
 		sleep 1
 	fi
-	arg=$(echo "$1" | sed -e 's/"/\\"/g')
+	arg=$(echo "${args[0]}" | sed -e 's/"/\\"/g')
 	_emacsclient --eval '(find-file "'"$arg"'")'
 	exit
 fi
@@ -42,8 +52,8 @@ fi
 # Run emacsclient gui only when this is scripts is not called from a terminal
 if [[ -t 1 ]]; then
 	# Terminal
-	_emacsclient -a '' -t "$@"
+	_emacsclient -a '' -t "${args[@]}"
 else
 	# Not-a-terminal
-	_emacsclient -a '' -c "$@"
+	_emacsclient -a '' -c "${args[@]}"
 fi
