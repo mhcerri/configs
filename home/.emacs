@@ -93,7 +93,6 @@
 	    (buffer-string))))
 
 ;; Shortcuts
-;;------------------------------------------------------------------------------
 
 ;; Kills emacs server
 (global-set-key (kbd "C-x Q") 'save-buffers-kill-emacs)
