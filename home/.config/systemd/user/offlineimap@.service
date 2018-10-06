@@ -3,7 +3,7 @@ Description=Offlineimap Service for account %i
 Documentation=man:offlineimap(1)
 
 [Service]
-ExecStart=/usr/bin/offlineimap -a %i -u basic
+ExecStart=/bin/sh -c "PATH=\"$PATH:$HOME/bin\" /usr/bin/offlineimap -a %i -u basic"
 Restart=on-failure
 RestartSec=60
 
