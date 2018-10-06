@@ -1222,7 +1222,8 @@
   (((mu4e-main-mode mu4e-headers-mode mu4e-view-mode) .
     (lambda () (display-line-numbers-mode -1))))
   :commands
-  (mu4e)
+  (mu4e
+   mu4e-update-index)
   :config
   ;; Use my custom mu
   (setq mu4e-mu-binary "~/workspace/mu/mu/mu")
@@ -1262,7 +1263,8 @@
 	mu4e-trash-folder  (~mu4e-get-maildir "trash"))
 
   ;; Headers
-  (setq mu4e-headers-results-limit -1)
+  ;; (setq mu4e-headers-results-limit -1)
+  (setq mu4e-headers-results-limit 1000)
   (setq mu4e-headers-include-related t)
   (setq mu4e-headers-fields
 	'((:human-date     . 12)
