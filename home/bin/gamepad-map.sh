@@ -2,7 +2,8 @@
 
 INPUT_DEV_DIR=/dev/input
 SYS_DEV_DIR=/sys/devices
-FILTER='Gamepad'
+#FILTER='Gamepad'
+FILTER='8Bitdo'
 
 EVS=''
 _IFS="$IFS"
