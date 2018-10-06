@@ -9,6 +9,7 @@ localrepository = work-local
 remoterepository = work-remote
 autorefresh = 5
 quick = 10
+postsynchook = emacsclient -e '(mu4e-update-index)'
 
 [Repository work-local]
 type = Maildir
@@ -28,4 +29,4 @@ folderfilter = folder_filter
 nametrans = folder_transform
 createfolders = False
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
-idlefolders = ['INBOX']
+idlefolders = ['INBOX', 'Public/Kernel Team', 'Canonical Kernel Team']
