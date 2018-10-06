@@ -42,6 +42,7 @@ bindsym $mod+shift+d exec dmenu_run
 # installed.
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 bindsym $mod+d exec --no-startup-id rofi -show run -run-command "$HOME/bin/rofi-run.sh {cmd}"
+bindsym $mod+x exec --no-startup-id rofi -show window
 
 # change focus
 #bindsym $mod+j focus left
