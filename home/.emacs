@@ -1189,6 +1189,10 @@
   :hook
   ((go-mode . go-eldoc-setup)))
 
+(use-package yaml-mode
+  :ensure t
+  :mode "\\.yaml\\'")
+
 ; Mail
 (use-package message
   :config
