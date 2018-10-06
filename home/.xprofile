@@ -9,6 +9,9 @@ if [[ -n "$XDG_SESSION_DESKTOP" && "$XDG_SESSION_DESKTOP" != "i3" ]]; then
     return
 fi
 
+# Fake mate desktop environment
+XDG_CURRENT_DESKTOP=mate
+
 # Un comment for debug:
 #exec &> >(tee ~/.xprofile.log)
 #set -x
