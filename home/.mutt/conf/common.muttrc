@@ -21,6 +21,9 @@ alternative_order text/plain text/html
 # Set an external alias file
 set alias_file              = ~/.mutt/alias
 
+# Use mbox as default when saving patches
+set mbox_type               = mbox
+
 # Additional settings
 set ts_enabled              = yes   # set terminal title
 set beep_new                = no    # no alert on new messages
@@ -31,7 +34,7 @@ set pager_stop              = yes   # Stop at the end instead jumping to next em
 set pager_context           = 3     # Show context lines when going to next page
 set signature               = "echo 'Regards,\nMarcelo\n'|" # Signature
 set sig_on_top              = yes   # Signature before any quoted or forwarded text
-set menu_scroll             = yes   # Do not use pages in index
+set menu_scroll             = no    # Scroll each page instead of each line
 set markers                 = no    # Remove '+' markers in wrapped lines
 set sleep_time              = 0     # Speed up folders switch
 set forward_format          = "Fwd: %s" # Forwarded message subject
