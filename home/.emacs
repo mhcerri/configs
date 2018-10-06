@@ -1173,6 +1173,11 @@
   :hook
   ((before-save . gofmt-before-save)))
 
+(use-package elpy
+  :ensure t
+  :config
+  (elpy-enable))
+
 (use-package company-go
   :ensure t
   :after (company)
