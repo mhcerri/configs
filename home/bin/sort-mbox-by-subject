@@ -1,0 +1,15 @@
+#!/usr/bin/python2
+import os
+import sys
+import mailbox
+
+if __name__ ==  "__main__":
+   args = sys.argv[1:]
+   if len(args) != 1:
+      print("Usage: %s <mbox>" % sys.argv[0])
+      sys.exit(1)
+   the_mailbox = mailbox.mbox(*args)
+   sorted_mails = sorted(the_mailbox, key=lambda e: e.get("Subject"))
+   the_mailbox.update(enumerate(sorted_mails))
+   the_mailbox.flush()
+   os.system("grep ^Subject \"%s\"" % args[0])
