@@ -1,0 +1,3 @@
+#!/bin/bash
+trap 'echo -ne "\a"' 0
+eval "$@"
