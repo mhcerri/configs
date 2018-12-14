@@ -171,6 +171,8 @@
 (use-package exec-path-from-shell
   :ensure t
   :config
+  (dolist (var '("GOPATH" "GOROOT" "NVM_BIN" "PATH"))
+    (add-to-list 'exec-path-from-shell-variables var))
   (exec-path-from-shell-initialize))
 
 ;; Keep track of recent files
@@ -1171,7 +1173,32 @@
 (use-package go-mode
   :ensure t
   :hook
-  ((before-save . gofmt-before-save)))
+  ((before-save . gofmt-before-save))
+  :config
+  (defun setup-go-mode-env ()
+    ""
+    (interactive)
+    (message "setup-go-mode-env")
+    (make-local-variable 'process-environment)
+    (let ((val (shell-command-to-string "wgo env GOPATH")))
+      (if (not (string= val "no workspace"))
+	  (setenv "GOPATH" val)
+	)
+      )
+    )
+  (add-hook 'go-mode-hook 'setup-go-mode-env)
+
+  (defun her-apply-function (orig-fun name)
+    ""
+    (interactive)
+    (message "her-apply-function")
+    (let ((res (funcall orig-fun name)))
+      (if (or (string= name "*gocode*") (string= name "*compilation*"))
+	  (setup-go-mode-env)
+	)
+      res))
+  (advice-add 'generate-new-buffer :around #'her-apply-function)
+  )
 
 (use-package elpy
   :ensure t
