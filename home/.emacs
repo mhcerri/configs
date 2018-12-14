@@ -286,7 +286,8 @@
   ;; Make TAB work with evil-org
   (setq evil-want-C-i-jump nil)
   ;; Required for evil-collection
-  (setq evil-want-integration nil)
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
   ;; Esc hook support
   (defvar ~evil-esc-hook '(t)
         "A hook run after ESC is pressed in normal mode.")
@@ -868,7 +869,7 @@
   :bind
   ((:map company-active-map
 	 ("RET"      . company-complete-selection)
-	 ("<escape>" . company-abort)
+	 ("<escape>" . ~company-abort)
 	 ("<down>"   . company-select-next)
 	 ("C-n"      . company-select-next)
 	 ("<up>"     . company-select-previous)
@@ -876,6 +877,12 @@
 	 ("<next>"   . company-next-page)
 	 ("<prior>"  . company-previous-page)))
   :config
+  (defun ~company-abort ()
+    (interactive)
+    "Abort completion and return to normal state."
+    (company-abort)
+    (if (boundp 'evil-mode)
+	(evil-force-normal-state)))
   (company-mode)
   ;; Time before completion starts
   (setq company-idle-delay 0.1)
