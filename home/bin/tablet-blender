@@ -1,0 +1,16 @@
+#!/bin/bash
+
+touch="UGEE DECO 01 Mouse touch"
+stylus="UGEE DECO 01 Pen stylus"
+pad="UGEE DECO 01 Pad pad"
+
+i=1
+for orig in 1 2 3 8 9 10 11 12; do
+    eval "button$i"=\$orig
+    i=$(( $i + 1 ))
+done
+
+xsetwacom set "$pad" Button "$button5" 'key ctrl z'
+xsetwacom set "$pad" Button "$button6" 'key f'
+xsetwacom set "$pad" Button "$button7" 'key +shift'
+xsetwacom set "$pad" Button "$button8" 'key +ctrl'

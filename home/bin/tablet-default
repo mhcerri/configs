@@ -1,0 +1,9 @@
+#!/bin/bash
+
+touch="UGEE DECO 01 Mouse touch"
+stylus="UGEE DECO 01 Pen stylus"
+pad="UGEE DECO 01 Pad pad"
+
+for button in 1 2 3 8 9 10 11 12; do
+    xsetwacom set "$pad" Button "$button"
+done
