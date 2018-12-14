@@ -1,0 +1,4 @@
+#!/bin/bash
+url='https://uc13c0cadc7c8691a2a60bfb5cca.dl.dropboxusercontent.com/cd/0/get/AWx9grfEHN6yEa8WkGlCp_ZufJB3fQoaj1gJ4IDMnjVS5T22Wk8DzXlWuzx2rcQ0dCVH_vBLOefNOCsO_o4Ld0ADeHQg9t2GKo9yW-0dUL2jHpXL0G84xLMoXD6PKCEcGNm46LuGSJqfzRM76j00axYkldYsQvKYHFulFxmk5TxY3HZn-v6hi_mbdxUeCnesdnM/file?_download_id=58168870261922157679138602698379179243447749015246733856022922422&_notify_domain=www.dropbox.com&dl=1'
+install_dir=~/.brogue-tiles.wine/
+source "$(dirname "$0")/brogue-wine.sh"

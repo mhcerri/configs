@@ -1,0 +1,25 @@
+#!/bin/bash -e
+exe="${exe-brogue.exe}"
+install_dir="${install_dir-"$HOME/.brogue-wine/"}"
+url="${url-"https://sites.google.com/site/broguegame/Brogue-windows-v1.7.5.zip?attredirects=0&d=1"}"
+tmp_pkg="${tmp_pkg-"/tmp/brogue-tmp.zip"}"
+
+# Download game
+if ! [ -e "$install_dir" ]; then
+	echo "Install directory not found. Creating it..."
+	mkdir "$install_dir"
+	echo "Downloading zip file..."
+	wget "$url" -O "$tmp_pkg"
+	echo "Extracting zip file..."
+	unzip "$tmp_pkg" -d "$install_dir"
+fi
+
+# Start game
+echo "Finding exe file..."
+exe_path=$(find "$install_dir" -name "$exe")
+echo "Exe file found: $exe_path"
+echo "Starting game..."
+(
+	cd $(dirname "$exe_path")
+	wine "$exe"
+)
