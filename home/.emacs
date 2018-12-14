@@ -979,6 +979,7 @@
    ("C-c j x" . dumb-jump-go-prefer-external)
    ("C-c j z" . dumb-jump-go-prefer-external-other-window))
   :config
+  (delete "Makefile" dumb-jump-project-denoters)
   (setq dumb-jump-selector 'ivy))
 
 ;; Code and project navigation
