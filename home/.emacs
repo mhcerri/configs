@@ -1228,6 +1228,9 @@
   :ensure t
   :mode "\\.yaml\\'")
 
+(use-package arduino-mode
+  :ensure t)
+
 ; Mail
 (use-package message
   :config
