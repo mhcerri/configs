@@ -1,0 +1,30 @@
+#!/bin/bash -e
+INSTALL_DIR="$HOME/.platformio/env"
+
+install() {
+	echo "Installing platformio at \"$INSTALL_DIR\"..."
+	rm -rf "$INSTALL_DIR"
+	mkdir -p "$INSTALL_DIR"
+	virtualenv -p python2 "$INSTALL_DIR"
+	activate
+	pip install platformio
+}
+
+activate() {
+	source "$INSTALL_DIR/bin/activate"
+}
+
+# Check deps
+for prog in virtualenv; do
+	if ! which "$prog" &> /dev/null; then
+		echo "Cannot find \"$prog\"." >&2
+		exit 1
+	fi
+done
+
+# Activate or install
+[ -e "$INSTALL_DIR" ] && activate || install
+
+# Run
+"$INSTALL_DIR/bin/platformio" "$@"
+exit $?
