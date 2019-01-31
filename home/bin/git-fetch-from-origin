@@ -1,0 +1,16 @@
+#!/bin/bash
+set -e
+branch=$(git rev-parse --abbrev-ref HEAD)
+case "$branch" in
+*@*)
+	# Handling special kernel branch...
+	remote="${branch#*@}"
+	remote_branch="${branch%%@*}"
+	;;
+*)
+	remote="origin"
+	remote_branch="$branch"
+	;;
+esac
+echo git fetch "$@" "$remote"
+     git fetch "$@" "$remote"
