@@ -10,18 +10,19 @@
 use strict;
 open(GROUPS, "gpg --with-colons --list-config group |") or die;
 while (<GROUPS>) {
-		if (/^cfg:group:([^:]*):(.*)/){
+	if (/^cfg:group:([^:]*):(.*)/){
 		my $group = $1;
 		my @addrs = split(";", $2);
 		for my $addr (@addrs) {
-			open(KEY, "gpg --list-key \"$addr\" |") or die;
+			open(KEY, "gpg --with-colons --list-key \"$addr\" |") or die;
 			while (<KEY>) {
-				if (/^pub\s+.*\/([[:xdigit:]]+)/) {
-					next if (/expired:/);
-					printf("crypt-hook %s 0x%s # %s\n",
-					$group, $1, $addr);
-					last;
-				}
+				my @parts = split(":");
+				next if ($parts[0] ne "pub");
+				next if ($parts[1] eq "e");
+				next if ($parts[4] eq "");
+				printf("crypt-hook %s 0x%s # %s\n",
+					$group, $parts[4], $addr);
+				last;
 			}
 			close(KEY);
 		}
