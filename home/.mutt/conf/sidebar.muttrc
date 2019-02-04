@@ -10,24 +10,21 @@ color sidebar_new yellow default
 # ctrl-o to open selected folder
 
 ## Regular usage:
-#bind index \CP sidebar-prev
-#bind index \CN sidebar-next
-#bind index \CO sidebar-open
-#bind pager \CP sidebar-prev
-#bind pager \CN sidebar-next
-#bind pager \CO sidebar-open
+#bind index,pager \Cp sidebar-prev
+#bind index,pager \Cn sidebar-next
+#bind index,pager \Co sidebar-open
 
 ## Open and close the sidebar on demand:
-macro index \CP '<enter-command>set sidebar_visible = yes<enter><sidebar-prev>'
-macro index \CN '<enter-command>set sidebar_visible = yes<enter><sidebar-next>'
-macro index \CO '<enter-command>set sidebar_visible = no<enter><sidebar-open>'
-macro pager \CP '<enter-command>set sidebar_visible = yes<enter><sidebar-prev>'
-macro pager \CN '<enter-command>set sidebar_visible = yes<enter><sidebar-next>'
-macro pager \CO '<enter-command>set sidebar_visible = no<enter><sidebar-open>'
+macro index,pager \Cp '<enter-command>set sidebar_visible = yes<enter><sidebar-prev>'
+macro index,pager \Cn '<enter-command>set sidebar_visible = yes<enter><sidebar-next>'
+macro index,pager \Co '<sidebar-open><enter-command>set sidebar_visible=no<enter>'
+
+macro index,pager \ep '<enter-command>set sidebar_visible = yes<enter><sidebar-prev-new>'
+macro index,pager \en '<enter-command>set sidebar_visible = yes<enter><sidebar-next-new>'
+macro index,pager \eo '<sidebar-open><enter-command>set sidebar_visible=no<enter>'
 
 # b toggles sidebar visibility
-macro index b '<enter-command>toggle sidebar_visible<enter>'
-macro pager b '<enter-command>toggle sidebar_visible<enter>'
+macro index,pager b '<enter-command>toggle sidebar_visible<enter>'
 
 # Remap bounce-message function to “B”
 bind index B bounce-message
