@@ -1,5 +1,17 @@
 #!/bin/bash
 set -e
+
+yesno() {
+	local answer
+	while true; do
+		read -r -p "$1 [y/N] " answer
+		case "$answer" in
+		[yY]) return 0;;
+		*)    return 1;;
+		esac
+	done
+}
+
 branch=$(git rev-parse --abbrev-ref HEAD)
 case "$branch" in
 *@*)
@@ -12,15 +24,21 @@ case "$branch" in
 	remote_branch="$branch"
 	;;
 esac
-prompt="Reset local branch \"$branch\" to \"$remote/$remote_branch\"? [y/N] "
-while true; do
-	read -p "$prompt" answer
-	case "$answer" in
-	[yY]) break;;
-	*) echo "Aborting..."; exit 1;;
-	esac
-done
+
+if ! yesno "Reset local branch \"$branch\" to \"$remote/$remote_branch\"?"; then
+	echo "Aborting..."
+	exit 1
+fi
+
 echo git fetch "$remote"
      git fetch "$remote"
+
+if ! git merge-base --is-ancestor "$branch" "$remote/$remote_branch"; then
+	if ! yesno "Local branch \"$branch\" is not part of \"$remote/$remote_branch\". Continue with reset?"; then
+		echo "Aborting..."
+		exit 1
+	fi
+fi
+
 echo git reset --hard "$remote/$remote_branch"
      git reset --hard "$remote/$remote_branch"

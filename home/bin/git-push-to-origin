@@ -1,5 +1,17 @@
 #!/bin/bash
 set -e
+
+yesno() {
+	local answer
+	while true; do
+		read -r -p "$1 [y/N] " answer
+		case "$answer" in
+		[yY]) return 0;;
+		*)    return 1;;
+		esac
+	done
+}
+
 branch=$(git rev-parse --abbrev-ref HEAD)
 case "$branch" in
 *@*)
@@ -12,13 +24,18 @@ case "$branch" in
 	remote_branch="$branch"
 	;;
 esac
-prompt="Push local branch \"$branch\" to \"$remote/$remote_branch\"? [y/N] "
-while true; do
-	read -p "$prompt" answer
-	case "$answer" in
-	[yY]) break;;
-	*) echo "Aborting..."; exit 1;;
-	esac
-done
+if ! yesno "Push local branch \"$branch\" to \"$remote/$remote_branch\"?"; then
+	echo "Aborting..."
+	exit 1
+fi
 echo git push "$@" "$remote" "$branch":"$remote_branch"
      git push "$@" "$remote" "$branch":"$remote_branch"
+
+tags=()
+read -r -a tags < <(git tag -l --points-at "$branch")
+for tag in "${tags[@]}"; do
+	[[ "$tag" = Ubuntu-* ]] || continue
+	yesno "Push tag \"$tag\" to \"$remote\"?" || continue
+	echo git push "$remote" "$tag"
+	     git push "$remote" "$tag"
+done
