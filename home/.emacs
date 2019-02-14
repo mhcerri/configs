@@ -19,6 +19,12 @@
  (lambda ()
    (setq gc-cons-threshold (* 2 1000 1000))))
 
+;; Disable special file name handlers, such as tramp, during the startup.
+(defvar ~file-name-handler-alist file-name-handler-alist)
+(setq file-name-handler-alist nil)
+(add-hook 'emacs-startup-hook
+  (lambda () (setq file-name-handler-alist ~file-name-handler-alist)))
+
 ;; Show how long it took to startup
 (add-hook
  'emacs-startup-hook
@@ -135,6 +141,7 @@
 ;; Package manager
 (require 'package)
 (package-initialize)
+(setq package-enable-at-startup nil)
 (setq package-archives
       '(("marmalade"    . "https://marmalade-repo.org/packages/")
 	("melpa"        . "https://melpa.org/packages/") ; Assume ssl
@@ -284,7 +291,7 @@
 ;; Better package manager
 (use-package paradox
   :ensure t
-  :defer t ; it supports autoload
+  :defer 1
   :init
   (setq paradox-execute-asynchronously t)
   (setq paradox-column-width-package 30)
@@ -412,7 +419,7 @@
 (use-package evil-mc
   :ensure t
   :diminish
-  :after (evil)
+  :after (evil which-key)
   :bind
   ((:map evil-normal-state-map
 	 ("grm" . evil-mc-make-all-cursors)
