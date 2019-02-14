@@ -3,17 +3,31 @@
 ;;
 ;;; Commentary:
 ;;
-;; To do:
-;; - Move everything possible to use-package
-;; - Better spell checking
-;; - Org mode and markdown
-;; - Text-mode for files without extension (ie README)
-;; - Email
+;; Average startup with emacs26 -nw: 0.34s
 
 ;;; Code:
 
 ;; Suppress welcome screen
 (setq inhibit-startup-screen t)
+(put 'inhibit-startup-echo-area-message 'saved-value t)
+(setq inhibit-startup-echo-area-message (user-login-name))
+
+;; Tune garbage collector during startup
+(setq gc-cons-threshold (* 50 1000 1000))
+(add-hook
+ 'emacs-startup-hook
+ (lambda ()
+   (setq gc-cons-threshold (* 2 1000 1000))))
+
+;; Show how long it took to startup
+(add-hook
+ 'emacs-startup-hook
+ (lambda ()
+   (let ((secs (float-time
+		(time-subtract after-init-time before-init-time))))
+     (message "Emacs ready in %s with %d garbage collections."
+	      (format "%.2f seconds" secs)
+	      gcs-done))))
 
 ;; Hide tool and menu bars and use reasonable font size
 (if (fboundp 'scroll-bar-mode)
@@ -71,18 +85,13 @@
  version-control t)
 
 ;; Default indentation settings
-(require 'cc-mode)
 (setq-default indent-tabs-mode t)
-(setq backward-delete-char-untabify-method 'hungry)
 (setq tab-width 8)
-(setq c-block-comment-prefix "* ")
 (defvaralias 'c-indent 'tab-width)
 (defvaralias 'c-basic-offset 'tab-width)
 (defvaralias 'sh-indentation 'tab-width)
 (defvaralias 'sh-basic-offset 'tab-width)
 (defvaralias 'cperl-indent-level 'tab-width)
-(setq c-default-style '((other . "linux")))
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 ;; Custom initial scratch message
 (defvar initial-scratch-file "~/.emacs.d/scratch")
@@ -125,20 +134,21 @@
 
 ;; Package manager
 (require 'package)
+(package-initialize)
 (setq package-archives
       '(("marmalade"    . "https://marmalade-repo.org/packages/")
 	("melpa"        . "https://melpa.org/packages/") ; Assume ssl
 	("melpa-stable" . "https://stable.melpa.org/packages/")
 	("gnu"          . "https://elpa.gnu.org/packages/")
 	("org"          . "http://orgmode.org/elpa/")))
-(package-initialize)
 
 ;; Auto install mechanism
 (if (not (package-installed-p 'use-package))
     (progn
       (package-refresh-contents)
       (package-install 'use-package)))
-(require 'use-package)
+(eval-when-compile
+  (require 'use-package))
 
 ;; Hide modes from status bar (used with use-package)
 (use-package diminish
@@ -147,6 +157,11 @@
   ;; Only diminish built-in modes here
   (dolist (m '(eldoc-mode auto-revert-mode))
     (diminish m)))
+
+;; List library
+(use-package cl
+  :ensure t
+  :defer t)
 
 ;; Async library
 (use-package s
@@ -161,66 +176,90 @@
 
 ;; Run async external commands with status on the message line
 (use-package bpr
-  :ensure t)
+  :ensure t
+  :commands (bpr-process-directory
+             bpr-show-progress
+             bpr-close-after-success
+             bpr-spawn))
 
 ;; Function decorator library
 (use-package noflet
-  :ensure t)
+  :ensure t
+  :defer t)
 
 ;; Fix env (important for go-mode with emacsclient)
 (use-package exec-path-from-shell
   :ensure t
+  :if (daemonp)
   :config
   (dolist (var '("GOPATH" "GOROOT" "NVM_BIN" "PATH"))
     (add-to-list 'exec-path-from-shell-variables var))
   (exec-path-from-shell-initialize))
 
+(use-package simple
+  ;; builtin
+  :config
+  (setq backward-delete-char-untabify-method 'hungry)
+  (add-hook 'text-mode-hook 'turn-on-auto-fill))
+
 ;; Keep track of recent files
 (use-package recentf
+  ;; builtin
+  :defer 1
   :config
   (setq recentf-max-saved-items 100)
-  (recentf-mode 1))
+  (let ((inhibit-message t))
+    (recentf-mode 1)))
 
 ;; Show undo tree with "C-x u"
 (use-package undo-tree
   :ensure t
-  :diminish)
+  :diminish
+  :defer 1)
 
 ;; Use simpleclip-copy, simpleclip-paste and simpleclip-cut to
 ;; interact with the system clipboard.
 (use-package simpleclip
   :ensure t
+  :commands (copy-to-clipboard
+	     paste-from-clipboard
+	     cut-to-clipboard)
   :config
+  (require 'xclip)
   (defalias 'copy-to-clipboard 'simpleclip-copy)
   (defalias 'paste-from-clipboard 'simpleclip-paste)
   (defalias 'cut-to-clipboard 'simpleclip-cut)
   (simpleclip-mode 1))
 
+;; xclip is necessary for simpleclip to work
 (use-package xclip
   :ensure t
+  :defer t
   :config
   (xclip-mode 1))
 
-;; Icons support for GUI and terminal (GTK based).
-;; It's necessary to install the fonts provided by the package.
-(use-package all-the-icons
-  :ensure t)
+;; Highlight current line
+(use-package hl-line
+  :hook (after-change-major-mode . ~enable-hl-line-mode)
+  :config
+  (defun ~enable-hl-line-mode ()
+    "Enable hl-line-mode skipping some modes."
+    (if (not (derived-mode-p 'term-mode))
+	(hl-line-mode 1)))
+  ;; Customize color according to theme.
+  (set-face-background 'hl-line "#222222"))
 
 ;; zerodark-theme
 (use-package zerodark-theme
   :ensure t
-  :after (hl-line)
   :config
   (setq zerodark-use-paddings-in-mode-line nil)
-  (load-theme 'zerodark t)
-  ;; Fix line highlight in the terminal
-  (set-face-background
-   'hl-line
-   "#222222"))
+  (load-theme 'zerodark t))
 
 ;; Mode line
 (use-package telephone-line
   :ensure t
+  :after (evil)
   :config
   ;; Plain separators
   (setq telephone-line-primary-left-separator 'telephone-line-nil
@@ -239,12 +278,13 @@
   (setq telephone-line-rhs
 	'((nil    . (telephone-line-flycheck-segment
 		     telephone-line-misc-info-segment))))
-    ;; Enable mode line
+  ;; Enable mode line
   (telephone-line-mode 1))
 
 ;; Better package manager
 (use-package paradox
   :ensure t
+  :defer t ; it supports autoload
   :init
   (setq paradox-execute-asynchronously t)
   (setq paradox-column-width-package 30)
@@ -254,7 +294,7 @@
 ;; Extensible vi layer
 (use-package evil
   :ensure t
-  :demand
+  :defer .1
   :bind
   ((:map evil-window-map
 	 ("<left>"  . evil-window-left)
@@ -290,7 +330,7 @@
   (setq evil-want-keybinding nil)
   ;; Esc hook support
   (defvar ~evil-esc-hook '(t)
-        "A hook run after ESC is pressed in normal mode.")
+    "A hook run after ESC is pressed in normal mode.")
   (defun ~evil-attach-escape-hook ()
     "Run the `~evil-esc-hook'."
     (cond
@@ -314,22 +354,27 @@
   ;; evil:init to evil-leader:init.
   (use-package evil-leader
     :ensure t
-    :demand
     :config
     (global-evil-leader-mode)
     (evil-leader/set-key
-     ;; Leader twice
-     evil-leader/leader 'ivy-switch-buffer
-     "f"  'counsel-find-file
-     "r"  'counsel-recentf
-     "p"  'projectile-find-file
-     "P"  'projectile-switch-project
-     "b"  'list-buffers
-     "c"  'company-complete
-     "qq" 'save-buffers-kill-terminal
-     "qQ" 'save-buffers-kill-emacs
-     "k"  'kill-current-buffer
-     "w"  'evil-window-delete))
+      ;; Leader twice
+      evil-leader/leader 'ivy-switch-buffer
+      "f"  'counsel-find-file
+      "r"  'counsel-recentf
+      "p"  'projectile-find-file
+      "P"  'projectile-switch-project
+      "b"  'list-buffers
+      "c"  'company-complete
+      "qq" 'save-buffers-kill-terminal
+      "qQ" 'save-buffers-kill-emacs
+      "k"  'kill-this-buffer
+      "w"  'evil-window-delete))
+  ;; When deferring evil (and thus evil-collection), some fix ups will fail
+  ;; to be applied to special modes that are loaded right after emacs is
+  ;; started. One example is git-rebase-mode, that is invoked when emacs is
+  ;; set as the editor for git.
+  ;; Force the insert start for those mode as an workaroud:
+  (evil-set-initial-state 'git-rebase-mode 'insert)
   ;; Fix emacs
   (evil-mode 1))
 
@@ -341,18 +386,13 @@
 
 ;; Show information about searches
 (use-package evil-anzu
-  :ensure t)
-
-;; C-, for all bindings
-(use-package evil-nerd-commenter
   :ensure t
-  :after evil
-  :config
-  (evilnc-default-hotkeys))
+  :defer 1)
 
 ;; Improved %
 (use-package evil-matchit
   :ensure t
+  :defer t ; Supports autoload
   :after evil
   :config
   (global-evil-matchit-mode 1))
@@ -360,6 +400,7 @@
 ;; Show evil marks
 (use-package evil-visual-mark-mode
   :ensure t
+  :defer 1
   :after evil
   :config
   (evil-visual-mark-mode 1)
@@ -372,36 +413,33 @@
   :ensure t
   :diminish
   :after (evil)
+  :bind
+  ((:map evil-normal-state-map
+	 ("grm" . evil-mc-make-all-cursors)
+	 ("gru" . evil-mc-undo-all-cursors)
+	 ("grs" . evil-mc-pause-cursors)
+	 ("grr" . evil-mc-resume-cursors)
+	 ("grf" . evil-mc-make-and-goto-first-cursor)
+	 ("grl" . evil-mc-make-and-goto-last-cursor)
+	 ("grh" . evil-mc-make-cursor-here)
+	 ("grj" . evil-mc-make-cursor-move-next-line)
+	 ("grk" . evil-mc-make-cursor-move-prev-line)
+	 ("M-n" . evil-mc-make-and-goto-next-cursor)
+	 ("grN" . evil-mc-skip-and-goto-next-cursor)
+	 ("grP" . evil-mc-skip-and-goto-prev-cursor)
+	 ("grn" . evil-mc-skip-and-goto-next-match)
+	 ("grp" . evil-mc-skip-and-goto-prev-match)))
   :init
-  ;; To avoid conflicts with other packages, keep only the g*
-  ;; bindings:
-  (setq evil-mc-key-map
-	(let ((map (make-sparse-keymap))
-              (keys '(("grm" . evil-mc-make-all-cursors)
-                      ("gru" . evil-mc-undo-all-cursors)
-                      ("grs" . evil-mc-pause-cursors)
-                      ("grr" . evil-mc-resume-cursors)
-                      ("grf" . evil-mc-make-and-goto-first-cursor)
-                      ("grl" . evil-mc-make-and-goto-last-cursor)
-                      ("grh" . evil-mc-make-cursor-here)
-                      ("grj" . evil-mc-make-cursor-move-next-line)
-                      ("grk" . evil-mc-make-cursor-move-prev-line)
-                      ("M-n" . evil-mc-make-and-goto-next-cursor)
-                      ("grN" . evil-mc-skip-and-goto-next-cursor)
-                      ("grP" . evil-mc-skip-and-goto-prev-cursor)
-                      ("grn" . evil-mc-skip-and-goto-next-match)
-                      ("grp" . evil-mc-skip-and-goto-prev-match))))
-	  (dolist (key-data keys)
-	    (evil-define-key 'normal map (kbd (car key-data)) (cdr key-data))
-	    (evil-define-key 'visual map (kbd (car key-data)) (cdr key-data)))
-	  map))
+  (which-key-add-key-based-replacements "gr" "evil multi-cursor")
+  ;; To avoid conflicts with other packages, disable the internal map.
+  (setq evil-mc-key-map nil)
   :config
   (setq-default evil-mc-enable-bar-cursor nil)
   ;; Use a proper face for cursors
   (setq evil-mc-cursor-current-face '(:reverse-video t))
   ;; Non standard commands that need to be hinted:
-  (setq evil-mc-custom-known-commands
-	'((crux-move-beginning-of-line . ((:default . evil-mc-execute-default-call-with-count)))))
+  (setq-default evil-mc-custom-known-commands
+		'((crux-move-beginning-of-line . ((:default . evil-mc-execute-default-call-with-count)))))
   ;; Enable globally to make vim-like binding (ie gr*) available
   (global-evil-mc-mode 1))
 
@@ -415,16 +453,8 @@
 ;; PCRE regular expression style
 ;; Use `pcre-mode' to enable it.
 (use-package pcre2el
-  :ensure t)
-
-;; Highlight current line
-(use-package hl-line
-  :config
-  (defun ~enable-hl-line-mode ()
-    ""
-    (if (not (derived-mode-p 'term-mode))
-	(hl-line-mode 1)))
-  (add-hook 'after-change-major-mode-hook '~enable-hl-line-mode))
+  :ensure t
+  :commands (pcre-mode))
 
 ;; Add numbers to lines
 (use-package display-line-numbers
@@ -433,7 +463,8 @@
   :hook
   (((text-mode prog-mode) . ~enable-line-number))
   :config
-  (defun ~enable-line-number () (display-line-numbers-mode 1)))
+  (defun ~enable-line-number () (display-line-numbers-mode 1))
+  (defun ~disable-line-number () (display-line-numbers-mode -1)))
 
 ;; nlinum might be efficient but it doesn't play well with git-gutter.
 (use-package linum
@@ -460,15 +491,17 @@
   ;; Hide fringe in gui mode for consistency
   (add-to-list 'default-frame-alist '(left-fringe . 0))
   (add-to-list 'default-frame-alist '(right-fringe . 0))
-  (setq-default left-fringe-width 0))
+  (setq-default left-fringe-width 0)
+  ;; Compatibility
+  (defun ~enable-line-number () (linum-mode 1))
+  (defun ~disable-line-number () (linum-mode -1)))
 
 ;; Highlight trailing spaces
 (use-package whitespace
   :ensure t
-  :after (flyspell)
   :diminish
-  :hook
-  (((text-mode prog-mode) . whitespace-mode))
+  :after (flyspell)
+  :hook ((text-mode prog-mode) . whitespace-mode)
   :config
   ;; Use a face that plays nicer with the cursor.
   (copy-face 'flyspell-incorrect 'whitespace-trailing)
@@ -483,22 +516,22 @@
 (use-package ws-butler
   :ensure t
   :diminish
-  :hook
-  (((text-mode prog-mode) . ws-butler-mode)))
+  :hook ((text-mode prog-mode) . ws-butler-mode))
 
 ;; Smartly add and ignore closing marks
 (use-package smartparens-config
   :ensure smartparens
   :diminish smartparens-mode
-  :config
-  (smartparens-global-mode))
+  :commands (smartparens-mode))
 
 ;; Usage: M-x ialign RET
 (use-package ialign
-  :ensure t)
+  :ensure t
+  :commands (ialign))
 
 ;; ediff options
 (use-package ediff
+  :defer t ; Supports autoload
   :config
   (setq ediff-window-setup-function 'ediff-setup-windows-plain)
   (setq ediff-split-window-function 'split-window-horizontally)
@@ -506,32 +539,34 @@
   (setq ediff-diff-options ""))
 
 (use-package dired
-  :bind
-  (:map dired-mode-map
-	;; Do not open a new buffer when navigating with dired
-	;; <return> is for gui and RET for terminal
-	("<return>" . dired-find-alternate-file)
-	("RET" . dired-find-alternate-file)
-	;; evil counterparts
-	("<normal-state> <return>" . dired-find-alternate-file)
-	("<normal-state> RET" . dired-find-alternate-file))
   :init
   ;; Enable dired-find-alternate-file
   (put 'dired-find-alternate-file 'disabled nil))
 
+(use-package dired-single
+  :ensure t
+  :after (dired)
+  :bind
+  ((:map dired-mode-map
+	 ("<return>" . 'dired-single-buffer)
+	 ("RET"      . 'dired-single-buffer)
+	 ("^"        . 'dired-single-up-directory))))
+
 (use-package ibuffer
+  :hook (ibuffer-mode . ibuffer-auto-mode)
+  :commands (ibuffer)
+  :init
+  (defalias 'list-buffers 'ibuffer)
   :config
   ;; Make ibuffer default. This way it's possible to switch buffers with "C-x C-b".
   (setq ibuffer-expert t) ; Do not ask to delete buffer
-  (setq-default ibuffer-show-empty-filter-groups nil)
-  (add-hook 'ibuffer-mode-hook 'ibuffer-auto-mode)
-  (defalias 'list-buffers 'ibuffer))
+  (setq-default ibuffer-show-empty-filter-groups nil))
 
 ;; ivy, swiper and counsel - Better "M-x", "C-s" and "C-x f"
 (use-package ivy
   :ensure t
-  :demand
   :diminish
+  :defer .1
   :bind
   ((:map ivy-minibuffer-map
 	 ([escape] . minibuffer-keyboard-quit)))
@@ -556,6 +591,7 @@
 (use-package counsel
   :ensure t
   :diminish
+  :after (ivy)
   :bind
   (("M-x"     . counsel-M-x)
    ("C-x C-f" . counsel-find-file)
@@ -573,6 +609,7 @@
 (use-package which-key
   :ensure t
   :diminish
+  :defer .1
   :init
   (setq which-key-sort-order 'which-key-prefix-then-key-order
 	which-key-popup-type 'side-window
@@ -594,8 +631,8 @@
   :config
   ;; Hydra mini state for git-gutter
   (defhydra hydra-git-gutter (:color pink
-			      :pre (git-gutter-mode 1)
-			      :base-map (make-sparse-keymap))
+				     :pre (git-gutter-mode 1)
+				     :base-map (make-sparse-keymap))
     "Git gutter"
     ("C-q" nil "quit")
     ("C-c C-c" magit-commit-popup "commit" :column "General")
@@ -649,12 +686,12 @@
   ;; Workaround for help buffers
   ;; https://github.com/m2ym/popwin-el/issues/131#issuecomment-239221901
   (defadvice display-buffer (around display-buffer-prevent-popwin-split last activate)
-  (let* ((buffer (ad-get-arg 0)))
-    (if (and (derived-mode-p 'help-mode)
-             (get-buffer-window buffer))
-        (let ((display-buffer-alist nil))
-	  ad-do-it)
-      ad-do-it)))
+    (let* ((buffer (ad-get-arg 0)))
+      (if (and (derived-mode-p 'help-mode)
+	       (get-buffer-window buffer))
+	  (let ((display-buffer-alist nil))
+	    ad-do-it)
+	ad-do-it)))
   ;; Enable popwin
   (popwin-mode 1))
 
@@ -662,12 +699,14 @@
 (use-package beacon
   :ensure t
   :diminish
+  :defer 1
   :config
   (beacon-mode 1))
 
 ;; Set background color for color value in the buffer
 (use-package rainbow-mode
   :ensure t
+  :defer .1
   :config
   (rainbow-mode 1))
 
@@ -675,8 +714,7 @@
 (use-package highlight-symbol
   :ensure t
   :diminish
-  :hook
-  ((prog-mode . highlight-symbol-mode))
+  :hook ((prog-mode . highlight-symbol-mode))
   :config
   (setq highlight-symbol-idle-delay 0.1))
 
@@ -684,6 +722,7 @@
 (use-package volatile-highlights
   :ensure t
   :diminish
+  :defer 1
   :config
   (vhl/define-extension 'evil 'evil-paste-after 'evil-paste-before
 			'evil-paste-pop 'evil-move)
@@ -701,12 +740,14 @@
 
 ;; Editable grep buffers
 (use-package wgrep
+  :mode "\\*grep\\*"
   :ensure t)
 
 ;; Edit multiple occurrences of a symbol at the same time
 ;; todo: try multiple-cursors.el again.
 (use-package iedit
   :ensure t
+  :defer t ; Should be explicitly required
   :config
   (if (display-graphic-p)
       (set-face-attribute 'iedit-occurrence nil :box t)
@@ -714,7 +755,6 @@
 
 (use-package evil-iedit-state
   :ensure t
-  :after (:all iedit)
   :bind
   ;; Define key bindings here since it's necessary to
   ;; use evil-iedit-state/iedit-mode instead
@@ -733,26 +773,29 @@
 	 ("C-c E" . evil-iedit-state/iedit-mode)
 	 ("C-c e" . ~iedit-local-mode)))
   :config
+  (require 'iedit)
   (defun ~iedit-local-mode()
     "iedit-mode on the current function."
     (interactive)
     (evil-iedit-state/iedit-mode 0)))
 
-;; Snippets
-(use-package yasnippet-snippets :ensure t)
+;;;; Snippets
+(use-package yasnippet-snippets
+  :ensure t
+  :defer t)
 
 (use-package yasnippet
   :ensure t
   :diminish yas-minor-mode
-  :demand
+  :defer t
   :config
   (yas-global-mode 1))
 
 ;; Spell checking
 (use-package flyspell
+  ;; builtin
   :diminish "FlyS"
-  :hook
-  ((text-mode prog-mode) . ~flyspell-smart-mode)
+  :hook ((text-mode prog-mode) . ~flyspell-smart-mode)
   :config
   ;; $ apt install aspell
   (when (executable-find "aspell")
@@ -767,23 +810,17 @@
     ;; ispell-hunspell-add-multi-dic is set.
     (ispell-set-spellchecker-params)
     (ispell-hunspell-add-multi-dic ispell-dictionary))
-  ;;(setq flyspell-issue-message-flag nil)
-  (defun ~flyspell-visible-region()
-    "Check spelling only on the visible region"
-    (interactive)
-    (flyspell-region (window-start) (window-end)))
   (defun ~flyspell-smart-mode()
     "Enable flyspell based on the current major mode."
     (interactive)
-    (progn
-      (if (derived-mode-p 'prog-mode)
-	  (flyspell-prog-mode)
-	(flyspell-mode 1))
-      ;; fixme: workaround to avoid checking the entire buffer and blocking
-      ;; It might be possible to call that after scrolling the buffer
-      ;;(flyspell-buffer)
-      ;;(~flyspell-visible-region)
-      )))
+    ;; Do not block when opening a file.
+    (run-at-time
+     "1 sec" nil
+     '(lambda ()
+	(let ((inhibit-message t))
+	  (if (derived-mode-p 'prog-mode)
+	      (flyspell-prog-mode)
+	    (flyspell-mode 1)))))))
 
 ;; Show spelling options via ivy.
 (use-package flyspell-correct-ivy
@@ -796,6 +833,7 @@
 ;; Syntax check
 (use-package flycheck
   :ensure t
+  :defer .1
   :config
   (global-flycheck-mode))
 
@@ -803,7 +841,8 @@
 ;; Use `aggressive-indent-mode' to enable it.
 (use-package aggressive-indent
   :ensure t
-  :diminish "AI")
+  :diminish "AI"
+  :commands (aggressive-indent))
 
 ;; Git support
 (use-package magit
@@ -826,10 +865,10 @@
   :init
   ;; Set YASnippet mode
   (defun ~git-commit-mode ()
-	"Run when entering git-commit mode"
-	(interactive)
-	(when (derived-mode-p 'text-mode)
-	  (yas-activate-extra-mode 'text-mode+git-commit-mode)))
+    "Run when entering git-commit mode"
+    (interactive)
+    (when (derived-mode-p 'text-mode)
+      (yas-activate-extra-mode 'text-mode+git-commit-mode)))
   (add-hook 'git-commit-setup-hook '~git-commit-mode)
   ;; Binding hint
   (which-key-add-key-based-replacements "C-c g" "magit"))
@@ -838,14 +877,15 @@
   :ensure t
   :after (:all evil magit)
   :config
+  (evil-magit-init)
   ;; evil-magit fails to convert popups, that's a workaround for that:
   (evil-set-initial-state 'magit-popup-mode 'insert))
 
 ;; Show git status on the left margin of the file.
 (use-package git-gutter
   :ensure t
-  :demand
   :diminish
+  :defer .1
   :bind
   (("C-c ="   . git-gutter:popup-hunk)
    ("C-c g h" . git-gutter:popup-hunk)
@@ -863,9 +903,7 @@
 (use-package company
   :ensure t
   :diminish "Comp"
-  :commands (company-mode)
-  :hook
-  ((after-init . global-company-mode))
+  :defer .1
   :bind
   ((:map company-active-map
 	 ("RET"      . company-complete-selection)
@@ -894,7 +932,9 @@
   ;; Allow user to type a value that is not listed in the completion.
   (setq company-require-match 'never)
   ;; Trigger auto completion on some characters
-  (setq company-auto-complete 'company-explicit-action-p))
+  (setq company-auto-complete 'company-explicit-action-p)
+  ;; Enable it globally.
+  (global-company-mode))
 
 ;; clang based completion server
 (use-package irony
@@ -925,21 +965,25 @@
    '(company-irony-c-headers company-irony)))
 
 ;; Basic support for etags if gtags is not available:
-(use-package etags :ensure t
+(use-package etags
+  :ensure t
+  :defer .1
   :config
   ;; Don't ask before re-reading the TAGS files if they have changed
   (setq tags-revert-without-query t)
   ;; Don't warn when TAGS files are large
   (setq large-file-warning-threshold nil))
 
-(use-package counsel-etags :ensure t)
+(use-package counsel-etags
+  :ensure t
+  :after (:all counsel etags))
 
 ;; counsel-gtags completely replaces ggtags.el and offers better
 ;; support for creating and updating tags files.
 (use-package counsel-gtags
   :ensure t
-  :after (:all evil counsel bpr)
   :diminish "Gtags"
+  :after (:all evil counsel bpr)
   :hook
   ((prog-mode . counsel-gtags-mode))
   :bind
@@ -979,7 +1023,10 @@
    ("C-c j x" . dumb-jump-go-prefer-external)
    ("C-c j z" . dumb-jump-go-prefer-external-other-window))
   :config
+  (require 'cl)
   (delete "Makefile" dumb-jump-project-denoters)
+  (setq dumb-jump-force-searcher 'git-grep-plus-ag)
+  (setq dumb-jump-max-find-time 20)
   (setq dumb-jump-selector 'ivy))
 
 ;; Code and project navigation
@@ -1028,8 +1075,7 @@
   :init
   (defun ~term-mode ()
     ;; Disable line numbers (whatever it's using)
-    (display-line-numbers-mode -1)
-    (linum-mode -1)
+    (~disable-line-number)
     ;; Scroll up to the end of the screen
     (setq scroll-margin 0)
     ;; Disable line highlighting
@@ -1046,7 +1092,6 @@
 (use-package org
   :ensure org-plus-contrib
   :after (company)
-  :defer t
   :mode ("\\.org$" . org-mode)
   :config
   ;; Use org indent
@@ -1092,17 +1137,17 @@
 ;; Or use an org-capture template.
 (use-package org-agenda
   :ensure org-plus-contrib
+  :defer t
   :config
   (setq org-agenda-files
 	(directory-files "~/Dropbox/org/" t "\\.org$")))
 
 (use-package org-capture
   :ensure org-plus-contrib
-  :demand
-  :after (noflet)
   :bind
   (("C-c c" . org-capture))
   :config
+  (require 'noflet)
   ;; Start a capture in insert mode
   (add-hook 'org-capture-mode-hook 'evil-insert-state)
   ;;templates
@@ -1155,13 +1200,13 @@
       (after delete-capture-frame activate)
     "Advise capture-finalize to close the frame"
     (if (equal "org-capture-frame" (frame-parameter nil 'name))
-	  (save-buffers-kill-terminal)))
+	(save-buffers-kill-terminal)))
   ;; Close the frame when a capture is aborted.
   (defadvice org-capture-destroy
       (after delete-capture-frame activate)
     "Advise capture-destroy to close the frame"
     (if (equal "org-capture-frame" (frame-parameter nil 'name))
-	  (save-buffers-kill-terminal)))
+	(save-buffers-kill-terminal)))
   ;; Function to be called by emacsclient to create the capture frame
   (defun ~org-capture-make-frame ()
     "Create a new frame and run org-capture."
@@ -1175,13 +1220,27 @@
     ;; splits and jumps to the other window. That will force the
     ;; org-capture selection screen to use the entire screen.
     (noflet ((org-switch-to-buffer-other-window (buf) (switch-to-buffer buf)))
-      (org-capture))))
+	    (org-capture))))
+
+;; C and C-like
+(use-package cc-mode
+  :defer t
+  :config
+  (setq c-block-comment-prefix "* ")
+  (setq c-default-style '((other . "linux"))))
+
+;; Python
+(use-package elpy
+  :ensure t
+  :mode ("\\.py\\'" . python-mode)
+  :interpreter "python"
+  :config
+  (elpy-enable))
 
 ;; GoLang
 (use-package go-mode
   :ensure t
-  :hook
-  ((before-save . gofmt-before-save))
+  :mode ("\\.go\\'" . go-mode)
   :config
   (defun setup-go-mode-env ()
     ""
@@ -1195,23 +1254,17 @@
       )
     )
   (add-hook 'go-mode-hook 'setup-go-mode-env)
+  (add-hook 'before-save 'gofmt-before-save)
 
   (defun her-apply-function (orig-fun name)
-    ""
+    "wgo support"
     (interactive)
-    (message "her-apply-function")
     (let ((res (funcall orig-fun name)))
       (if (or (string= name "*gocode*") (string= name "*compilation*"))
 	  (setup-go-mode-env)
 	)
       res))
-  (advice-add 'generate-new-buffer :around #'her-apply-function)
-  )
-
-(use-package elpy
-  :ensure t
-  :config
-  (elpy-enable))
+  (advice-add 'generate-new-buffer :around #'her-apply-function))
 
 (use-package company-go
   :ensure t
@@ -1229,10 +1282,16 @@
   :mode "\\.yaml\\'")
 
 (use-package arduino-mode
-  :ensure t)
+  :ensure t
+  :after (irony)
+  :mode "\\.ino\\'"
+  :config
+  (add-to-list 'irony-supported-major-modes 'arduino-mode)
+  (add-to-list 'irony-lang-compile-option-alist '(arduino-mode . "c++")))
 
-; Mail
+					; Mail
 (use-package message
+  :defer t
   :config
   ;; This is needed to allow msmtp to do its magic:
   (setq message-sendmail-f-is-evil 't)
@@ -1258,7 +1317,7 @@
   (("<C-f12>" . mu4e))
   :hook
   (((mu4e-main-mode mu4e-headers-mode mu4e-view-mode) .
-    (lambda () (display-line-numbers-mode -1))))
+    (lambda () (~disable-line-number))))
   :commands
   (mu4e
    mu4e-update-index)
