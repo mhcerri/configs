@@ -1256,7 +1256,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 (use-package elpy
   :ensure t
   :mode ("\\.py\\'" . python-mode)
-  :interpreter "python"
+  :interpreter ("python" . python-mode)
   :config
   (elpy-enable))
 
