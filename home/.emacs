@@ -790,7 +790,8 @@
 (use-package yasnippet
   :ensure t
   :diminish yas-minor-mode
-  :defer t
+  :defer .1
+  :commands (yas-activate-extra-mode)
   :config
   (yas-global-mode 1))
 
@@ -851,17 +852,23 @@
 (use-package magit
   :ensure t
   :if (executable-find "git")
+  ;; global-git-commit-mode forces the load of both git-commit and magit. Copy
+  ;; instead the regular expression for special git file names and defer the
+  ;; package loading. Keep the :mode clause here, to enforce that magit is
+  ;; loader before than git-commit.
+  :mode ("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|\
+MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   :commands
   (magit-commit-popup
    magit-status
-   magit-blame
+   magit-blame-addition
    magit-log-current
    magit-log-all
    magit-diff-popup)
   :bind
   (("C-c g c" . magit-commit-popup)
    ("C-c g s" . magit-status)
-   ("C-c g b" . magit-blame)
+   ("C-c g b" . magit-blame-addition)
    ("C-c g l" . magit-log-current)
    ("C-c g L" . magit-log-all)
    ("C-c g d" . magit-diff-popup))
@@ -875,6 +882,10 @@
   (add-hook 'git-commit-setup-hook '~git-commit-mode)
   ;; Binding hint
   (which-key-add-key-based-replacements "C-c g" "magit"))
+
+(use-package git-commit
+  :ensure t
+  :commands (git-commit-mode))
 
 (use-package evil-magit
   :ensure t
