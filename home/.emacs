@@ -887,6 +887,15 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   :ensure t
   :commands (git-commit-mode))
 
+(use-package git-timemachine
+  :ensure t
+  :bind
+  (("C-c g t" . git-timemachine))
+  :config
+  (evil-make-overriding-map git-timemachine-mode-map 'normal)
+  ;; force update evil keymaps after git-timemachine-mode loaded
+  (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
+
 (use-package evil-magit
   :ensure t
   :after (:all evil magit)
