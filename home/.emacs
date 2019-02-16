@@ -212,7 +212,9 @@
 ;; Keep track of recent files
 (use-package recentf
   ;; builtin
-  :defer 1
+  ;; Note: Initially I was using :defer .1 to reduce startup time, but
+  ;; that seems to cause issues with Evil :wq command, when a file is
+  ;; changed under a git repository with git-gutter loaded.
   :config
   (setq recentf-max-saved-items 100)
   (let ((inhibit-message t))
@@ -709,13 +711,6 @@
   :defer 1
   :config
   (beacon-mode 1))
-
-;; Set background color for color value in the buffer
-(use-package rainbow-mode
-  :ensure t
-  :defer .1
-  :config
-  (rainbow-mode 1))
 
 ;; Highlight symbol under the cursor
 (use-package highlight-symbol
