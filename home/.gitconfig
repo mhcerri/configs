@@ -4,7 +4,8 @@
 
 [core]
 	#editor = vim +:0 -c 'set textwidth=72' -c 'set wrap' -c 'set nocp' -c 'set spell'
-	editor = emacsclient -a '' -t
+	#editor = emacsclient -a '' -t
+	editor = emacs -nw
 	abbrev = 12
 
 [alias]
@@ -14,9 +15,11 @@
 	list-all = log --oneline --decorate=full --graph --all
 	fixes    = log --pretty=fixes
 	pick     = cherry-pick
+	irebase  = rebase -i
 	# Patch submission:
 	format-patch      = format-patch --from
-	send-email-to-ckt = send-email --suppress-cc=all --to=kernel-team@lists.ubuntu.com
+	send-email-to-ukt = send-email --suppress-cc=all --to=kernel-team@lists.ubuntu.com
+	send-email-to-ckt = send-email --suppress-cc=all --to=canonical-kernel-team@lists.canonical.com
 	send-email-to-me  = send-email --suppress-cc=all --to=marcelo.cerri@canonical.com
 	# Short shortcuts
 	a  = add
@@ -26,6 +29,7 @@
 	co = checkout
 	pi = cherry-pick
 	l  = log --oneline --decorate=full
+	ff = merge --ff-only 
 	# List shortcuts:
 	l1  = log --oneline --decorate=full -1
 	l2  = log --oneline --decorate=full -2
@@ -52,3 +56,9 @@
 
 [url "git://git.launchpad.net/"]
 	insteadof = lp:
+
+[pager]
+	log =  nicediff | less
+	show = nicediff | less
+	diff = nicediff | less
+
