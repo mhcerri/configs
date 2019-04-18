@@ -321,17 +321,6 @@
   ;; Enable mode line
   (telephone-line-mode 1))
 
-;; Better package manager
-(use-package paradox
-  :ensure t
-  :defer 1
-  :init
-  (setq paradox-execute-asynchronously t)
-  (setq paradox-column-width-package 30)
-  :config
-  (let ((inhibit-message t))
-    (paradox-enable)))
-
 ;; Extensible vi layer
 (use-package evil
   :ensure t
