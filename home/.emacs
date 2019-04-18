@@ -324,7 +324,7 @@
 ;; Extensible vi layer
 (use-package evil
   :ensure t
-  :defer .1
+  :demand ;; ":defer .1" causes some issues when other packages rely on it.
   :bind
   ((:map evil-window-map
 	 ("<left>"  . evil-window-left)
