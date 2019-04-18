@@ -401,12 +401,13 @@
       "qQ" 'save-buffers-kill-emacs
       "k"  'kill-this-buffer
       "w"  'evil-window-delete))
-  ;; When deferring evil (and thus evil-collection), some fix ups will fail
+  ;; When deferring evil (and thus evil-collection), some fixes will fail
   ;; to be applied to special modes that are loaded right after emacs is
   ;; started. One example is git-rebase-mode, that is invoked when emacs is
   ;; set as the editor for git.
   ;; Force the insert start for those mode as an workaroud:
-  (evil-set-initial-state 'git-rebase-mode 'insert)
+  (dolist (mode '(git-rebase-mode dired-mode))
+    (evil-set-initial-state mode 'insert))
   ;; Fix emacs
   (evil-mode 1))
 
