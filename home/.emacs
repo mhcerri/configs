@@ -1154,6 +1154,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   :ensure org-plus-contrib
   :after (company)
   :mode ("\\.org$" . org-mode)
+  :commands (org-mode orgstruct-mode orgtbl-mode)
   :config
   ;; Use org indent
   (setq org-startup-indented t)
