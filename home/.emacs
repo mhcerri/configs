@@ -1078,6 +1078,18 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (setq dumb-jump-max-find-time 20)
   (setq dumb-jump-selector 'ivy))
 
+(use-package ag
+  :ensure t
+  :bind
+  (("C-c a a"   . ag)
+   ("C-c a f"   . ag-files)
+   ("C-c a r"   . ag-regexp)
+   ("C-c a p p" . ag-project)
+   ("C-c a p f" . ag-project-files)
+   ("C-c a p r" . ag-project-regexp))
+  :init
+  (which-key-add-key-based-replacements "C-c a" "Ag"))
+
 ;; Code and project navigation
 (use-package projectile
   :ensure t
