@@ -949,11 +949,13 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 ;; Auto complete
 (use-package company
   :ensure t
+  :demand
   :diminish "Comp"
-  :defer .1
   :bind
   ((:map company-active-map
 	 ("RET"      . company-complete-selection)
+	 ("<return>" . company-complete-selection)
+	 ("C-o"      . company-complete-selection)
 	 ("<escape>" . ~company-abort)
 	 ("<down>"   . company-select-next)
 	 ("C-n"      . company-select-next)
