@@ -709,6 +709,7 @@
 	   (help-mode :stick t)
 	   (godoc-mode :stick t)
 	   ("*Apropos*" :stick t)
+	   ("*Flycheck errors*" :stick t)
 	   ;; Information buffers shouldn't be selected by default:
 	   ("*Warnings*" :noselect t)
 	   ("*Backtrace*" :noselect t)
