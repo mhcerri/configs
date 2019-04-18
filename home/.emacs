@@ -242,6 +242,7 @@
 ;; Keep track of recent files
 (use-package recentf
   ;; builtin
+  :demand
   ;; Note: Initially I was using :defer .1 to reduce startup time, but
   ;; that seems to cause issues with Evil :wq command, when a file is
   ;; changed under a git repository with git-gutter loaded.
