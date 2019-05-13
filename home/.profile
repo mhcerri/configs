@@ -21,11 +21,4 @@ if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
 
-# Try to use any custom emacs version available at /opt
-_opt_emacs=$(find /opt -mindepth 1 -maxdepth 1 -name 'emacs*' | sort | tail -n1)
-if [[ -n $_opt_emacs ]]; then
-	export PATH="$_opt_emacs/bin/:$PATH"
-fi
-unset _opt_emacs
-
-export PATH="$HOME/.cargo/bin:$PATH"
+export PATH=$(bash -c 'echo $PATH')
