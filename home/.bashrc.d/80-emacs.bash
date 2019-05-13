@@ -9,4 +9,4 @@
 if which e &> /dev/null; then
 	alias vim=e
 fi
-alias emacs='emacs -nw'
+alias emacs='emacs -nw --no-site-file'
