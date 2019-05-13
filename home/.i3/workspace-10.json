@@ -1,5 +1,5 @@
 // vim:ts=4:sw=4:et
-//!terminator -u --name email -x bash -c 'TERM=xterm-256color mutt'
+//!terminator -u --name email -x bash -c 'TERM=xterm-256color neomutt'
 //!terminator -u --name irc   -x bash -c 'TERM=xterm-256color weechat'
 {
     // splith split container with 2 children
