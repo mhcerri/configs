@@ -4,6 +4,7 @@
 
 alias ls='ls --color=auto'
 alias ll='ls -l'
+alias lt='ls -ltrh'
 
 # Jump to the root directory of a git repository
 alias gcd='git rev-parse --show-toplevel 2> /dev/null && cd $(git rev-parse --show-toplevel) || echo "Not a git repo"'
