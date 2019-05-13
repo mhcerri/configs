@@ -7,5 +7,5 @@
 i3lock "$@"
 todo=~/Dropbox/org/todos.org
 if [ -f "$todo" ]; then
-	notify-send -a "To Dos" -t 30000 "$(grep '^\*' "$todo" | tac)"
+	notify-send -a "To Dos" -t 30000 "$(echo "$todo\n==="; grep '^\*' "$todo" | tac)"
 fi
