@@ -1,47 +1,61 @@
 [global_config]
-  enabled_plugins = InactivityWatch, ActivityWatch, TerminalShot, LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
   handle_size = 1
-  inactive_color_offset = 0.67
-  title_font = Monospace 9
   title_hide_sizetext = True
-  title_inactive_bg_color = "#000000"
-  title_inactive_fg_color = "#999999"
   title_transmit_bg_color = "#000000"
+  title_inactive_fg_color = "#999999"
+  title_inactive_bg_color = "#000000"
+  inactive_color_offset = 0.67
+  enabled_plugins = InactivityWatch, ActivityWatch, TerminalShot, LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
   title_use_system_font = False
+  title_font = Monospace 9
 [keybindings]
-  broadcast_all = None
-  broadcast_group = None
-  broadcast_off = None
-  close_term = <Primary><Shift>F4
-  close_window = None
+  new_tab = F2
   cycle_next = F12
   cycle_prev = None
-  edit_window_title = None
-  go_down = F6
-  go_left = F5
   go_next = None
   go_prev = None
-  go_right = F8
   go_up = F7
-  help = None
-  hide_window = None
-  layout_launcher = None
-  new_tab = F2
-  new_window = None
-  reset = None
-  reset_clear = None
+  go_down = F6
+  go_left = F5
+  go_right = F8
+  split_horiz = <Primary>F2
+  split_vert = <Primary><Shift>F2
+  close_term = <Primary><Shift>F4
+  toggle_scrollbar = None
+  search = F3
+  close_window = None
+  resize_up = None
   resize_down = None
   resize_left = None
   resize_right = None
-  resize_up = None
-  scaled_zoom = None
-  search = F3
-  split_horiz = <Primary>F2
-  split_vert = <Primary><Shift>F2
-  toggle_scrollbar = None
   toggle_zoom = None
+  scaled_zoom = None
+  reset = None
+  reset_clear = None
+  hide_window = None
   ungroup_all = None
   ungroup_tab = None
+  new_window = None
+  broadcast_off = None
+  broadcast_group = None
+  broadcast_all = None
+  edit_window_title = None
+  layout_launcher = None
+  help = None
+[profiles]
+  [[default]]
+    audible_bell = True
+    visible_bell = True
+    urgent_bell = True
+    background_color = "#222222"
+    cursor_color = "#aaaaaa"
+    font = Monospace 9
+    show_titlebar = False
+    scrollbar_position = hidden
+    scrollback_lines = 3000
+    palette = "#000000:#db4343:#8ae234:#fce94f:#729fcf:#ad7fa8:#00f0f0:#d3d7cf:#555753:#da4444:#8ae234:#fce94f:#729fcf:#ad7fa8:#34e2e2:#eeeeec"
+    word_chars = "-,./?%&#:_~+"
+    use_system_font = False
 [layouts]
   [[default]]
     [[[child1]]]
@@ -51,17 +65,3 @@
       parent = ""
       type = Window
 [plugins]
-[profiles]
-  [[default]]
-    audible_bell = True
-    background_color = "#222222"
-    cursor_color = "#aaaaaa"
-    font = Monospace 9
-    palette = "#000000:#cc0000:#4e9a06:#c4a000:#3465a4:#75507b:#06989a:#d3d7cf:#555753:#ef2929:#8ae234:#fce94f:#729fcf:#ad7fa8:#34e2e2:#eeeeec"
-    scrollback_lines = 3000
-    scrollbar_position = hidden
-    show_titlebar = False
-    urgent_bell = True
-    use_system_font = False
-    visible_bell = True
-    word_chars = "-,./?%&#:_~+"
