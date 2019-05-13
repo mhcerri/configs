@@ -1,0 +1,12 @@
+# Mu integration
+
+# Use mu to search for contacts
+set query_command = "~/workspace/mu/mu/mu cfind --format=mutt-ab %s | grep -v launchpad"
+
+# Mutt macros for mu (from `man mu-find`)
+# Shift<F8>
+macro index <F20> "<shell-escape>~/workspace/mu/mu/mu find --clearlinks --format=links --linksdir=~/.mail/search " \
+      "mu find"
+# Shift<F9>
+macro index <F21> "<change-folder-readonly>~/.mail/search" \
+      "mu find results"
