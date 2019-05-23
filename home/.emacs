@@ -1298,14 +1298,12 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (setq c-default-style '((other . "linux"))))
 
 ;; Python
-;; TODO improve python support
-;; apt install python3-jedi flake8 python-autopep8 yapf
+;; apt install python-jedi python3-jedi flake8 python-flake8 python3-flake8 python-autopep8 python3-autopep8 yapf python-yapf python3-yapf
 (use-package elpy
   :ensure t
-  :mode ("\\.py\\'" . python-mode)
-  :interpreter ("python" . python-mode)
-  :config
-  (elpy-enable))
+  :defer t
+  :hook
+  ((python-mode . elpy-enable)))
 
 ;; GoLang
 (use-package go-mode
