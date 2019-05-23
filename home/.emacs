@@ -1357,9 +1357,56 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (add-to-list 'irony-supported-major-modes 'arduino-mode)
   (add-to-list 'irony-lang-compile-option-alist '(arduino-mode . "c++")))
 
-					; Mail
+;; Mail
+(use-package mail
+  :defer t
+  :mode ("mutt-.*$" . mail-mode)
+  :hook
+  ((mail-mode . ~mail-mode))
+  :init
+  (defun ~mail-mode()
+    (message "TEST")
+    (font-lock-add-keywords nil
+			    '(("^[ \t]*>[ \t]*>[ \t]*>.*$"
+			       (0 'mail-multiply-quoted-text-face))
+			      ("^[ \t]*>[ \t]*>.*$"
+			       (0 'mail-double-quoted-text-face))))
+    ;; Arrange paragraphs and ignore white space issues
+    (auto-fill-mode 1)
+    (whitespace-mode -1)
+    ;; Enable spell checking
+    (flyspell-mode 1)
+    ;; Move the cursor to the right position
+    (re-search-forward "^$")
+    (forward-char 1)
+    ;; Enable org modes
+    (orgstruct-mode)
+    (orgtbl-mode)))
+
 (use-package message
   :defer t
+  ;:mode ("mutt-.*$" . message-mode)
+  :hook
+  ((message-mode . ~message-mode))
+  :init
+  (defun ~message-mode()
+    (font-lock-add-keywords nil
+			    '(("^[ \t]*>[ \t]*>[ \t]*>.*$"
+			       (0 'message-multiply-quoted-text-face))
+			      ("^[ \t]*>[ \t]*>.*$"
+			       (0 'message-double-quoted-text-face))))
+    ;; Arrange paragraphs and ignore white space issues
+    (auto-fill-mode 1)
+    (whitespace-mode -1)
+    ;; Enable spell checking
+    (flyspell-mode-on)
+    ;; Move the cursor to the right position
+    (re-search-forward "^$")
+    (forward-char 1)
+    ;; Enable org modes
+    (orgstruct-mode)
+    (orgtbl-mode)
+    )
   :config
   ;; This is needed to allow msmtp to do its magic:
   (setq message-sendmail-f-is-evil 't)
@@ -1504,22 +1551,6 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 	'(("%junk" . "maildir:/Junk OR subject:SPAM")
 	  ("%hidden" . "flag:trashed OR %junk")))
   (setq mu4e-query-fragments-append "AND NOT %hidden"))
-
-;; Mutt specific configurations
-(defun ~mutt-mode()
-  "Mutt mode."
-  (interactive)
-  ;; Enable mail and org modes
-  (mail-mode)
-  (orgstruct++-mode)
-  (orgtbl-mode)
-  ;; Arrange paragraphs and ignore white space issues
-  (auto-fill-mode 1)
-  (whitespace-mode -1)
-  ;; Move the cursor to the right position
-  (re-search-forward "^$")
-  (forward-char 1))
-(add-to-list 'auto-mode-alist '("/mutt" . ~mutt-mode))
 
 ;; Load custom el files
 (let* ((dir "~/.emacs.d/custom.d/")
