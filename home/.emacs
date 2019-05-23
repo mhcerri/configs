@@ -264,6 +264,9 @@
 ;; interact with the system clipboard.
 (use-package simpleclip
   :ensure t
+  :bind
+  (("C-c y"  . copy-to-clipboard)
+   ("C-c p"  . paste-from-clipboard))
   :commands (copy-to-clipboard
 	     paste-from-clipboard
 	     cut-to-clipboard)
