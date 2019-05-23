@@ -107,6 +107,9 @@
 	    (insert-file-contents initial-scratch-file)
 	    (buffer-string))))
 
+;; Sane undo
+(advice-add 'undo-auto--last-boundary-amalgamating-number :override #'ignore)
+
 ;; Shortcuts
 
 ;; Kills emacs server
