@@ -1,0 +1,61 @@
+#!/bin/bash -eu
+
+usage() {
+	cat <<EOF
+Usage: $(basename "$0") [-h|--help] [-d|--descending] COMMIT_ID [COMMIT_ID..]
+
+List all the given commit ids in ascending topologic order.
+
+Optional arguments:
+  -d, --descending      Invert the commits order.
+  -h, --help            Show this help message and exit.
+
+EOF
+}
+
+# Default values
+ids=()
+reverse_arg="--reverse"
+
+# Parse arguments
+for arg in "$@"; do
+	case "$arg" in
+	-h|--help)
+		usage
+		exit 0
+		;;
+	-d|--descending)
+		reverse_arg=
+		;;
+	-*)
+		echo "Invalid argument: $arg" >&2
+		echo
+		usage
+		exit 1
+		;;
+	*)
+		if ! echo "$arg" | grep -P '^[0-9a-f]{5,40}$' &> /dev/null; then
+			echo "Invalid commit id: $arg" >&2
+			exit 1
+		fi
+		ids+=("$arg")
+		;;
+	esac
+done
+
+# Validate arguments
+if [ "${#ids[@]}" -lt 1 ]; then
+	echo "No commit ids given." >&2
+	exit 1
+fi
+
+# List commit ids
+git rev-list --topo-order $reverse_arg "${ids[@]}" |
+	grep --file <(for id in "${ids[@]}"; do echo "$id"; done) \
+	     --max-count "${#ids[@]}" |
+	while read -r id; do
+		descr=$(git describe --contains "$id")
+		short=$(git log --pretty='%s' -1 "$id")
+		echo -e "$descr\\t$id\\t$short"
+	done |
+	column -t -s $'\t'
