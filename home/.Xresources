@@ -42,13 +42,10 @@ URxvt*.urgentOnBell:            true
 URxvt*.cursorBlink:             true
 URxvt*.cursorColor:             #aaaaaa
 URxvt*.cursorColor2:            #000000
-! clipboard: it needs xsel installed clipboard ext.
-URxvt*.perl-ext-common:         default,clipboard
+URxvt*.perl-ext-common:         default
 URxvt*.iso14755:                False
-URxvt*.keysym.Shift-Control-C:  perl:clipboard:copy
-URxvt*.keysym.Shift-Control-V:  perl:clipboard:paste
-URxvt*.clipboard.copycmd:       xsel -ib
-URxvt*.clipboard.pastecmd:      xsel -ob
+URxvt*.keysym.Shift-Control-V: 	eval:paste_clipboard
+URxvt*.keysym.Shift-Control-C: 	eval:selection_to_clipboard
 
 ! rofi
 rofi.quiet:             true
