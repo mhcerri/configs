@@ -30,7 +30,7 @@
 
 ! urxvt
 URxvt*.termName:                rxvt-unicode-256color
-URxvt*.font:                    xft:monospace:size=10
+URxvt*.font:                    xft:monospace:size=9
 URxvt*.letterSpace:             -1
 URxvt*.background:              #202020
 URxvt*.foreground:              #AAAAAA
