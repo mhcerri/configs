@@ -889,19 +889,19 @@
   :mode ("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|\
 MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   :commands
-  (magit-commit-popup
+  (magit-commit
    magit-status
    magit-blame-addition
    magit-log-current
    magit-log-all
-   magit-diff-popup)
+   magit-diff)
   :bind
-  (("C-c g c" . magit-commit-popup)
+  (("C-c g c" . magit-commit)
    ("C-c g s" . magit-status)
    ("C-c g b" . magit-blame-addition)
    ("C-c g l" . magit-log-current)
    ("C-c g L" . magit-log-all)
-   ("C-c g d" . magit-diff-popup))
+   ("C-c g d" . magit-diff))
   :init
   ;; Set YASnippet mode
   (defun ~git-commit-mode ()
@@ -912,6 +912,9 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (add-hook 'git-commit-setup-hook '~git-commit-mode)
   ;; Binding hint
   (which-key-add-key-based-replacements "C-c g" "magit"))
+
+(use-package transient
+  :ensure t)
 
 (use-package git-commit
   :ensure t
