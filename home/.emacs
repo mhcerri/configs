@@ -500,7 +500,7 @@
   :demand
   :if (version<= "26.0.50" emacs-version)
   :hook
-  (((text-mode prog-mode) . ~enable-line-number))
+  (((text-mode prog-mode conf-mode) . ~enable-line-number))
   :config
   (defun ~enable-line-number () (display-line-numbers-mode 1))
   (defun ~disable-line-number () (display-line-numbers-mode -1)))
