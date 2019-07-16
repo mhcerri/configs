@@ -749,7 +749,10 @@
   :diminish
   :hook ((prog-mode . highlight-symbol-mode))
   :config
-  (setq highlight-symbol-idle-delay 0.1))
+  (setq highlight-symbol-idle-delay 0.1)
+  ;; Workaround for urxvt
+  (custom-set-faces
+   '(highlight-symbol-face ((t (:background "brightblack"))))))
 
 ;; Highlight text affected by operations
 (use-package volatile-highlights
