@@ -2,32 +2,6 @@
 ! Xresources
 !
 
-! colors for urxvt and xterm (dark and light)
-! black
-*color0:                        #2E3436
-*color8:                        #555753
-! red
-*color1:                        #CC0000
-*color9:                        #EF2929
-! green
-*color2:                        #4E9A06
-*color10:                       #8AE234
-! yellow
-*color3:                        #C4A000
-*color11:                       #FCE94F
-! blue
-*color4:                        #3465A4
-*color12:                       #729FCF
-! magenta
-*color5:                        #75507B
-*color13:                       #AD7FA8
-! cyan
-*color6:                        #AD7FA8
-*color14:                       #34E2E2
-! white
-*color7:                        #D3D7CF
-*color15:                       #EEEEEC
-
 ! urxvt
 URxvt*.termName:                rxvt-unicode-256color
 URxvt*.font:                    xft:monospace:size=9
@@ -80,4 +54,29 @@ rofi.color-window: #222222,      #333333,  #333333
 
 ! emacs
 Emacs*font:             Monospace 9
-!!Emacs*cursorColor:      white
+
+! colors for urxvt and xterm (dark and light)
+! black
+*color0:                        #2E3436
+*color8:                        #555753
+! red
+*color1:                        #CC0000
+*color9:                        #EF2929
+! green
+*color2:                        #4E9A06
+*color10:                       #8AE234
+! yellow
+*color3:                        #C4A000
+*color11:                       #FCE94F
+! blue
+*color4:                        #3465A4
+*color12:                       #729FCF
+! magenta
+*color5:                        #75507B
+*color13:                       #AD7FA8
+! cyan
+*color6:                        #AD7FA8
+*color14:                       #34E2E2
+! white
+*color7:                        #D3D7CF
+*color15:                       #EEEEEC
