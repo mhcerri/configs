@@ -3,7 +3,6 @@
 !
 
 ! urxvt
-URxvt*.termName:                rxvt-unicode-256color
 URxvt*.font:                    xft:monospace:size=9
 URxvt*.letterSpace:             -1
 URxvt*.background:              #202020
@@ -16,10 +15,26 @@ URxvt*.urgentOnBell:            true
 URxvt*.cursorBlink:             true
 URxvt*.cursorColor:             #aaaaaa
 URxvt*.cursorColor2:            #000000
-URxvt*.perl-ext-common:         default
+URxvt*.scrollTtyOutput:         false
+URxvt*.scrollWithBuffer:        true
+URxvt*.scrollTtyKeypress:       true
+URxvt*.secondaryScreen:         1
+URxvt*.secondaryScroll:         0
+URxvt*.secondaryWheel:          1
+URxvt*.perl-lib:                ~/.urxvt/ext/
 URxvt*.iso14755:                False
-URxvt*.keysym.Shift-Control-V: 	eval:paste_clipboard
-URxvt*.keysym.Shift-Control-C: 	eval:selection_to_clipboard
+URxvt*.perl-ext-common:         default,searchable-scrollback,font-size,matcher,keyboard-select,-selection-to-clipboard,vtewheel
+URxvt*.keysym.C-S-V:            eval:paste_clipboard
+URxvt*.keysym.C-S-C:            eval:selection_to_clipboard
+URxvt*.keysym.M-Escape:         perl:keyboard-select:activate
+URxvt*.keysym.M-s:              perl:keyboard-select:search
+URxvt.url-launcher:             sensible-browser
+URxvt.keysym.C-Delete:          matcher:last
+URxvt.keysym.M-Delete:          matcher:list
+URxvt.keysym.C-S-Delete:        matcher:select
+URxvt.matcher.button:           1
+URxvt.matcher.pattern.1:        \\b(lp|LP):?\\s?\\#?([0-9]+)\\b
+URxvt.matcher.launcher.1:       sensible-browser https:\/\/bugs.launchpad.net\/bugs\/$2
 
 ! rofi
 rofi.quiet:             true
