@@ -87,8 +87,5 @@ run_bg nm-applet
 export PATH="$path"
 
 # Misc
-run_bg kalu &
-run_bg psensor &
 run_bg rofi -run-command "sh -c 'echo \"\$1\" > ~/.rofi-last-cmd; eval \$1 &' sh \"{cmd}\"" &
-run_bg syncthing-gtk &
 run_bg dropbox start &
