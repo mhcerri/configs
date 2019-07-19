@@ -26,6 +26,14 @@ if ! which emacsclient &> /dev/null; then
 	exit 1
 fi
 
+# Fix urxvt
+case "$TERM" in
+rxvt*)
+	TERM=xterm-256color
+	;;
+esac
+export TERM
+
 # Check if it's necessary to read from stdin
 if [[ -p /dev/stdin ]]; then
 	tmp=$(mktemp)
