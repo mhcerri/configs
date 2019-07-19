@@ -1,0 +1,11 @@
+[Unit]
+Description=automounter for removable media for Python
+After=display-manager.service
+
+[Service]
+ExecStart=udiskie
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target
