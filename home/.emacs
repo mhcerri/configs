@@ -166,10 +166,10 @@
   (interactive "p")
   (move-line (if (null n) 1 n)))
 
-(global-set-key (kbd "M-<up>") 'move-line-up)
-(global-set-key (kbd "M-p") 'move-line-up)
-(global-set-key (kbd "M-<down>") 'move-line-down)
-(global-set-key (kbd "M-n") 'move-line-down)
+(dolist (key '("M-<up>" "M-p" "ESC <up>" "ESC p"))
+  (global-set-key (kbd key) 'move-line-up))
+(dolist (key '("M-<down>" "M-n" "ESC <down>" "ESC n"))
+  (global-set-key (kbd key) 'move-line-down))
 
 ;; Package manager
 (require 'package)
