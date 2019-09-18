@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Exclude the current dir from PATH
+here=$(readlink -f "$(dirname "$0")")
+path=$(
+	IFS=: read -ra paths <<< "$PATH"
+	for path in "${paths[@]}"; do
+		abs_path=$(readlink -f "$path")
+		if [ "$abs_path" != "$here" ]; then
+			printf '%s:' "$path"
+		fi
+	done | sed 's/:$//'
+    )
+
+# Check for binaries
+for exe in neomutt mutt; do
+	if exe=$(PATH="$path" command -v "$exe"); then
+		exec "$exe" "$@"
+	fi
+done
