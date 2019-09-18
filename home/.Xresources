@@ -15,6 +15,7 @@ URxvt*.urgentOnBell:            true
 URxvt*.cursorBlink:             true
 URxvt*.cursorColor:             #aaaaaa
 URxvt*.cursorColor2:            #000000
+URxvt*fading:                   25
 URxvt*.scrollTtyOutput:         false
 URxvt*.scrollWithBuffer:        true
 URxvt*.scrollTtyKeypress:       true
