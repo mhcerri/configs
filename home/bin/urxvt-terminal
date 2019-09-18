@@ -1,0 +1,5 @@
+#!/bin/dash
+while urxvt -name "$(basename "$0")" "$@"
+do
+	sleep .1
+done

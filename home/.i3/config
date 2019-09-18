@@ -219,3 +219,8 @@ bindsym $mod+q exec --no-startup-id urxvt \
 	-geometry 50x1 \
 	-keysym.Escape 'eval:exit' \
 	-e sh -c '_LAUNCHER=1 /bin/bash'
+
+for_window [instance="urxvt-terminal"] move scratchpad
+bindsym $mod+t [instance="urxvt-terminal"] scratchpad show
+bindsym $mod+Escape [instance="urxvt-terminal"] scratchpad show
+exec --no-startup-id urxvt-terminal
