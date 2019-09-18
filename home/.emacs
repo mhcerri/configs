@@ -881,6 +881,11 @@
   :diminish "AI"
   :commands (aggressive-indent))
 
+(use-package dtrt-indent
+  :ensure t
+  :config
+  (dtrt-indent-global-mode 1))
+
 ;; Git support
 (use-package magit
   :ensure t
