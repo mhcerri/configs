@@ -8,9 +8,24 @@ term "screen-256color"
 termcapinfo xterm* ti@:te@
 
 # Use audible bell
-vbell off
+vbell on
+
+# Start at window 1
+bind c screen 1
+bind ^c screen 1
+bind 0 select 10
+screen 1
+
+# Use X scroll
+termcapinfo xterm* ti@:te@
+termcapinfo urxvt* ti@:te@
+termcapinfo rxvt* ti@:te@
 
 # Status line: http://www.gnu.org/software/screen/manual/html_node/String-Escapes.html
 #backtick 0 30 30 sh -c "uptime | sed -e 's/.*up/up/' | cut -d ',' -f '-2'"
 #hardstatus alwayslastline
 #hardstatus string "%{= gk}@%H %{= WK}%-w%{= KW}%n %t%{-}%+w %= %{= Bb} %` %{= bw} %Y-%m-%d %c:%s"
+caption always "%{= kw} %-w%{= gW} %n %t %{-}%+w %-="
+
+# Fix ESC when runing emacs+evil with screen
+maptimeout 0
