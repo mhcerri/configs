@@ -883,6 +883,7 @@
 
 (use-package dtrt-indent
   :ensure t
+  :diminish "DTRT"
   :config
   (dtrt-indent-global-mode 1))
 
