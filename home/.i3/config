@@ -214,7 +214,7 @@ exec --no-startup-id ~/.i3/start-workspaces.sh
 client.focused           #333333 #666666 #ffffff #292d2e   #555555
 client.focused_inactive  #333333 #222222 #ffffff #292d2e   #2a2a2a
 client.unfocused         #333333 #222222 #888888 #292d2e   #2a2a2a
-client.urgent            #2f343a #900000 #ffffff #900000   #900000
+client.urgent            #900000 #900000 #ffffff #900000   #900000
 client.placeholder       #000000 #0c0c0c #ffffff #000000   #0c0c0c
 client.background        #202020
 
