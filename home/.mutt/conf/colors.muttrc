@@ -19,6 +19,8 @@ color body brightwhite  default "^index [a-f0-9].*"
 color body yellow       default "^>+ @@.*"
 color body brightyellow default "^@@.*"
 
+color indicator     color234        color208
+
 # index ----------------------------------------------------------------
 #color index         color160        color234        "~D(!~p|~p)"               # deleted
 #color index         color235        color234        ~F                         # flagged
