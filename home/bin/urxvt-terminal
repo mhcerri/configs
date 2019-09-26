@@ -1,5 +1,6 @@
 #!/bin/dash
-while urxvt -name "$(basename "$0")" "$@"
+name="$(basename "$0")"
+while urxvt -name "$name" "$@" -e screen -DR "$name"
 do
 	sleep .1
 done
