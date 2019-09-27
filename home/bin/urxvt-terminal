@@ -1,6 +1,6 @@
 #!/bin/dash
 name="$(basename "$0")"
-while urxvt -name "$name" "$@" -e screen -DR "$name"
+while urxvt -name "$name" "$@" -e tmux new -A -s "$name"
 do
 	sleep .1
 done
