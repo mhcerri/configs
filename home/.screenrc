@@ -29,3 +29,8 @@ caption always "%{= kw} %-w%{= gW} %n %t %{-}%+w %-="
 
 # Fix ESC when runing emacs+evil with screen
 maptimeout 0
+
+# Fix C-Left and C-Right under urxvt. It basically replaces C-Arrow
+# M-Arrow. Character sequences obtained with `showkey -a`
+bindkey -t ^[Oc stuff ^[^[[C
+bindkey -t ^[Od stuff ^[^[[D
