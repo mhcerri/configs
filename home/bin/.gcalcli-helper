@@ -26,4 +26,11 @@ case "$cmd" in
 		args=("$cmd")
 esac
 
+# Apply default options
+case "${args[0]}" in
+	agenda|calw)
+		args+=(--nodeclined)
+		;;
+esac
+
 gcalcli "${args[@]}" "$@"
