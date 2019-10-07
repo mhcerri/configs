@@ -22,13 +22,16 @@ case "$cmd" in
 	week)
 		args=(calw)
 		;;
+	month)
+		args=(calm)
+		;;
 	*)
 		args=("$cmd")
 esac
 
 # Apply default options
 case "${args[0]}" in
-	agenda|calw)
+	agenda|calw|calm)
 		args+=(--nodeclined)
 		;;
 esac
