@@ -1,0 +1,29 @@
+#!/bin/bash
+
+if ! command -v gcalcli &> /dev/null; then
+	echo "gcalcli is not installed!" >&2
+	exit 1
+fi
+
+cmd="$(basename "$0")"
+if [[ "$cmd" == .* ]]; then
+	echo "$cmd: should not be called directly. Use a symlink instead." >&2
+	exit 1
+fi
+
+today() {
+	date '+%Y-%m-%d' -d "${1:-+0}"day
+}
+
+case "$cmd" in
+	day)
+		args=(agenda "$(today)" "$(today +1)")
+		;;
+	week)
+		args=(calw)
+		;;
+	*)
+		args=("$cmd")
+esac
+
+gcalcli "${args[@]}" "$@"
