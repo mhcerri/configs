@@ -1,6 +1,9 @@
 // vim:ts=4:sw=4:et
-//!terminator -u --name email -x bash -c 'TERM=xterm-256color neomutt'
-//!terminator -u --name irc   -x bash -c 'TERM=xterm-256color weechat'
+//!urxvt -name email -e sh -c 'mutt'
+//!urxvt -name irc -e sh -c 'weechat'
+//!urxvt -name weather -e sh -c 'nightwatch -n 3600 curl -s wttr.in/?1n'
+//!urxvt -name dashboard -e sh -c 'watch -c day'
+//!urxvt -name volume -e sh -c 'pulsemixer'
 {
     // splith split container with 2 children
     "border": "pixel",
@@ -10,11 +13,11 @@
     "type": "con",
     "nodes": [
         {
-            // stacked split container with 1 children
+            // splitv split container with 3 children
             "border": "pixel",
             "floating": "auto_off",
-            "layout": "stacked",
-            "percent": 0.5,
+            "layout": "splitv",
+            "percent": 0.33,
             "type": "con",
             "nodes": [
                 {
@@ -22,17 +25,63 @@
                     "current_border_width": 2,
                     "floating": "auto_off",
                     "geometry": {
-                       "height": 354,
-                       "width": 562,
+                       "height": 364,
+                       "width": 564,
                        "x": 0,
                        "y": 0
                     },
-                    "name": "Mutt with 4072 messages",
-                    "percent": null,
+                    "name": "Weather",
+                    "percent": 0.333333333333333,
                     "swallows": [
                        {
-                       "class": "^Email$",
-                       "instance": "^email$"
+                       // "class": "^URxvt$",
+                       // "instance": "^weather$",
+                       // "title": "^mhcerrigallifrey\\ \\/home\\/mhcerri$"
+                       "instance": "^weather$"
+                       }
+                    ],
+                    "type": "con"
+                },
+                {
+                    "border": "pixel",
+                    "current_border_width": 2,
+                    "floating": "auto_off",
+                    "geometry": {
+                       "height": 364,
+                       "width": 564,
+                       "x": 0,
+                       "y": 0
+                    },
+                    "name": "sh",
+                    "percent": 0.333176322813629,
+                    "swallows": [
+                       {
+                       // "class": "^URxvt$",
+                       // "instance": "^dashboard$",
+                       // "title": "^sh$"
+                       "instance": "^dashboard$"
+                       }
+                    ],
+                    "type": "con"
+                },
+                {
+                    "border": "pixel",
+                    "current_border_width": 2,
+                    "floating": "auto_off",
+                    "geometry": {
+                       "height": 417,
+                       "width": 460,
+                       "x": 0,
+                       "y": 0
+                    },
+                    "name": "Volume",
+                    "percent": 0.333490343853038,
+                    "swallows": [
+                       {
+                       // "class": "^URxvt$",
+                       // "instance": "^volume$",
+                       // "title": "^pulsemixer$"
+                       "instance": "^volume$"
                        }
                     ],
                     "type": "con"
@@ -40,11 +89,11 @@
             ]
         },
         {
-            // stacked split container with 1 children
+            // stacked split container with 2 children
             "border": "pixel",
             "floating": "auto_off",
             "layout": "stacked",
-            "percent": 0.5,
+            "percent": 0.67,
             "type": "con",
             "nodes": [
                 {
@@ -52,16 +101,40 @@
                     "current_border_width": 2,
                     "floating": "auto_off",
                     "geometry": {
-                       "height": 354,
-                       "width": 562,
+                       "height": 364,
+                       "width": 564,
                        "x": 0,
                        "y": 0
                     },
-                    "name": "WeeChat 1.4",
-                    "percent": 1,
+                    "name": "Mutt",
+                    "percent": 0.5,
                     "swallows": [
                        {
-                       "class": "^Irc$",
+                       // "class": "^URxvt$",
+                       // "instance": "^email$",
+                       // "title": "^NeoMutt\\ with\\ 9822\\ messages$"
+                       "instance": "^email$"
+                       }
+                    ],
+                    "type": "con"
+                },
+                {
+                    "border": "pixel",
+                    "current_border_width": 2,
+                    "floating": "auto_off",
+                    "geometry": {
+                       "height": 364,
+                       "width": 564,
+                       "x": 0,
+                       "y": 0
+                    },
+                    "name": "WeeChat",
+                    "percent": 0.5,
+                    "swallows": [
+                       {
+                       // "class": "^URxvt$",
+                       // "instance": "^irc$",
+                       // "title": "^WeeChat\\ 2\\.4$"
                        "instance": "^irc$"
                        }
                     ],
