@@ -1,0 +1,96 @@
+#!/bin/bash
+help() {
+	cat <<EOF
+Usage:
+  $(basename "$0") [options] command
+
+Options:
+  -h, --help              Show this message.
+  -n, --interval <secs>   Seconds between updates (Default: 2)
+EOF
+}
+
+# Default values
+command=()
+interval_secs=2
+
+# Parse arguments
+while [ "$#" -gt 0 ]; do
+	case "$1" in
+		-h|--help)
+			help
+			exit
+			;;
+		-n|--interval)
+			shift
+			if ! [[ $1 =~ ^[0-9]+$ ]]; then
+				echo "Invalid interval: $1" >&2
+				exit 1
+			fi
+			interval_secs="$1"
+			;;
+		-*)
+			echo "Invalid argument: $1" >&2
+			exit 1
+			;;
+		*)
+			command=("$@")
+			break
+	esac
+	shift
+done
+
+if [ -z "${command[0]}" ]; then
+	echo "Command missing." >&2
+	exit 1
+fi
+
+# State
+lines=()
+line_lengths=()
+cycle=0
+
+# Remove escape sequences
+noansi() {
+	perl -pe 's/\x1b\[[^m]+m//g;'
+}
+
+# Run the command to be displayed and parse its output
+update_command() {
+	local output line
+	lines=()
+	line_lengths=()
+	output=$("${command[@]}" 2>&1)
+	while IFS=$'\n' read -r line; do
+		lines+=("$line")
+		line_lengths+=("$(echo -n "$line" | noansi | wc -m)")
+	done <<< "$output"
+}
+
+# Update screen
+update_screen() {
+	local cols rows line length padding
+	cols=$(tput cols)
+	rows=$(tput lines)
+	tput cup 0 0
+	for ((r = 0; r < rows - 1; r++)); do
+		line="${lines[$r]}"
+		length="${line_lengths[$r]}"
+		padding=$((cols - length))
+		if [ "$padding" -lt 0 ]; then
+			padding=0
+		fi
+		# TODO: trim lines too long
+		printf "%s%*s\\n" "$line" "$padding" ""
+	done
+}
+
+# Main loop
+while true; do
+	if [ "$cycle" -eq 0 ]; then
+		update_command
+	fi
+	cycle=$(((cycle + 1)  % interval_secs))
+	update_screen
+	sleep 1
+done
