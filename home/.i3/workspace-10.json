@@ -2,7 +2,7 @@
 //!urxvt -name email -e sh -c 'mutt'
 //!urxvt -name irc -e sh -c 'weechat'
 //!urxvt -name weather -e sh -c 'nightwatch -n 3600 curl -s wttr.in/?1n'
-//!urxvt -name dashboard -e sh -c 'watch -c day'
+//!urxvt -name dashboard -e sh -c 'watch -n 120 -c day'
 //!urxvt -name volume -e sh -c 'pulsemixer'
 {
     // splith split container with 2 children
