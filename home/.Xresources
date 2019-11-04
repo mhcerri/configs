@@ -49,7 +49,7 @@ rofi.padding:           1
 rofi.bg:                #222222
 rofi.bgalt:             #222222
 rofi.fg:                #888888
-rofi.hlbg:              #285577
+rofi.hlbg:              #E95420
 rofi.hlfg:              #ffffff
 rofi.bc:                #333333
 rofi.bw:                1
@@ -62,8 +62,8 @@ rofi.location:          0
 
 ! rofi - new color format
 ! State:           'bg',     'fg',     'bgalt',  'hlbg',   'hlfg'
-rofi.color-normal: #222222,  #888888,  #222222,  #285577,  #ffffff
-rofi.color-urgent: #222222,  #dc322f,  #222222,  #dc322f,  #ffffff
+rofi.color-normal: #222222,  #888888,  #222222,  #E95420,  #ffffff
+rofi.color-urgent: #222222,  #900000,  #222222,  #900000,  #ffffff
 rofi.color-active: #222222,  #cccccc,  #222222,  #cccccc,  #222222
 !                  'background', 'border', 'separator'
 rofi.color-window: #222222,      #333333,  #333333
