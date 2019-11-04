@@ -54,8 +54,8 @@ if [ "$color_prompt" = yes ]; then
 	# No color for debian_chroot_ps1
 	[ -n "$rc_ps1"     ] &&     rc_ps1="\[\033[01;31m\]$rc_ps1\[\033[01;00m\]"
 	[ -n "$jobs_ps1"   ] &&   jobs_ps1="\[\033[01;32m\]$jobs_ps1\[\033[01;00m\]"
-	[ -n "$login_ps1"  ] &&  login_ps1="\[\033[01;32m\]$login_ps1\[\033[00m\]"
-	[ -n "$window_ps1" ] && window_ps1="\[\033[01;33m\]$window_ps1\[\033[00m\]"
+	[ -n "$login_ps1"  ] &&  login_ps1="\[\033[01;38;5;208m\]$login_ps1\[\033[00m\]"
+	[ -n "$window_ps1" ] && window_ps1="\[\033[01;32m\]$window_ps1\[\033[00m\]"
 	[ -n "$pwd_ps1"    ] &&    pwd_ps1="\[\033[01;34m\]$pwd_ps1\[\033[00m\]"
 	[ -n "$git_ps1"    ] &&    git_ps1="\[\033[01;31m\]$git_ps1\[\033[01;00m\]"
 fi
