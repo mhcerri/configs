@@ -945,7 +945,9 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
       (yas-activate-extra-mode 'text-mode+git-commit-mode)))
   (add-hook 'git-commit-setup-hook '~git-commit-mode)
   ;; Binding hint
-  (which-key-add-key-based-replacements "C-c g" "magit"))
+  (which-key-add-key-based-replacements "C-c g" "magit")
+  :config
+  (setq magit-revision-insert-related-refs nil))
 
 (use-package transient
   :ensure t)
