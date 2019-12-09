@@ -1343,6 +1343,25 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (setq c-block-comment-prefix "* ")
   (setq c-default-style '((other . "linux"))))
 
+;; Platform.io
+(use-package platformio-mode
+  :ensure t
+  :defer t
+  :hook
+  ((c++-mode . ~pio-cpp-hook)
+   (irony-mode . ~pio-irony-hook))
+  :init
+  (defun ~pio-cpp-hook()
+    (irony-mode)
+    (irony-eldoc)
+    (platformio-conditionally-enable))
+  (defun ~pio-irony-hook()
+    (define-key irony-mode-map [remap completion-at-point]
+      'irony-completion-at-point-async)
+    (define-key irony-mode-map [remap complete-symbol]
+      'irony-completion-at-point-async)
+    (irony-cdb-autosetup-compile-options)))
+
 ;; Python
 ;; apt install python-jedi python3-jedi flake8 python-flake8 python3-flake8 python-autopep8 python3-autopep8 yapf python-yapf python3-yapf
 (use-package elpy
