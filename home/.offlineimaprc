@@ -1,15 +1,15 @@
 [general]
 pythonfile = ~/.offlineimap.py
 accounts = work
-maxsyncaccounts = 1
+#maxsyncaccounts = 1
+maxconnections = 50
 ui = basic
 
 [Account work]
 localrepository = work-local
 remoterepository = work-remote
 autorefresh = 5
-quick = 10
-postsynchook = emacsclient -e '(mu4e-update-index)'
+quick = 0
 
 [Repository work-local]
 type = Maildir
