@@ -522,7 +522,13 @@
   (((text-mode prog-mode conf-mode) . ~enable-line-number))
   :config
   (defun ~enable-line-number () (display-line-numbers-mode 1))
-  (defun ~disable-line-number () (display-line-numbers-mode -1)))
+  (defun ~disable-line-number () (display-line-numbers-mode -1))
+  (defun ~display-line-numbers-toggle-relative ()
+    "Toggle relative line numbers"
+    (interactive)
+    (if (equal display-line-numbers 'relative)
+        (setq display-line-numbers 'absolute)
+      (setq display-line-numbers 'relative))))
 
 ;; nlinum might be efficient but it doesn't play well with git-gutter.
 (use-package linum
