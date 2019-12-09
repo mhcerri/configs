@@ -1363,12 +1363,18 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
     (irony-cdb-autosetup-compile-options)))
 
 ;; Python
-;; apt install python-jedi python3-jedi flake8 python-flake8 python3-flake8 python-autopep8 python3-autopep8 yapf python-yapf python3-yapf
+;; apt install python3-jedi python3-flake8 python3-autopep8 python3-yapf python3-pip
 (use-package elpy
   :ensure t
   :defer t
   :hook
-  ((python-mode . elpy-enable)))
+  ((python-mode . elpy-enable))
+  :config
+  ;; Set python3 as default:
+  (setq python-shell-interpreter "python3")
+  (setq elpy-rpc-python-command "python3"))
+  (setq flycheck-python-pycompile-executable "python3")
+  (setq flycheck-python-flake8-executable "flake8")
 
 ;; GoLang
 (use-package go-mode
