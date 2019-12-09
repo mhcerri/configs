@@ -174,13 +174,14 @@
 ;; Package manager
 (require 'package)
 (setq package-enable-at-startup nil)
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 (package-initialize)
 (setq package-archives
       '(("marmalade"    . "https://marmalade-repo.org/packages/")
 	("melpa"        . "https://melpa.org/packages/") ; Assume ssl
 	("melpa-stable" . "https://stable.melpa.org/packages/")
 	("gnu"          . "https://elpa.gnu.org/packages/")
-	("org"          . "http://orgmode.org/elpa/")))
+	("org"          . "https://orgmode.org/elpa/")))
 
 ;; Auto install mechanism
 (if (not (package-installed-p 'use-package))
@@ -189,6 +190,9 @@
       (package-install 'use-package)))
 (eval-when-compile
   (require 'use-package))
+
+(use-package gnu-elpa-keyring-update
+  :ensure t)
 
 ;; Hide modes from status bar (used with use-package)
 (use-package diminish
