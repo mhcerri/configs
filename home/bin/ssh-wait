@@ -39,7 +39,7 @@ if ($port !~ /^\d+$/) {
 
 # Wait for SSH port
 my $waiting = 0;
-while (system("nc -z -w1 \"$domain\" \"$port\"")) {
+while (system("nc -z -w1 \"$domain\" \"$port\" 2> /dev/null")) {
 	if (!$waiting) {
 		debug("Waiting for port $port ");
 		$waiting = 1;
