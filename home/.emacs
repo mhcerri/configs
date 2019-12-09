@@ -1037,6 +1037,13 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (((c++-mode c-mode) . irony-mode)
    (irony-mode        . irony-cdb-autosetup-compile-options)))
 
+;; flycheck irony support
+(use-package flycheck-irony
+  :ensure t
+  :defer t
+  :hook
+  ((flycheck-mode . flycheck-irony-setup)))
+
 ;; company integration
 (use-package company-irony
   :ensure t
