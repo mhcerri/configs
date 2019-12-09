@@ -744,7 +744,8 @@
 	   ;; Information buffers shouldn't be selected by default:
 	   ("*Warnings*" :noselect t)
 	   ("*Backtrace*" :noselect t)
-	   ("*git-gutter:diff*" :noselect t))
+	   ("*git-gutter:diff*" :noselect t)
+           (platformio-compilation-mode :noselect t))
 	 popwin:special-display-config))
   ;; Close popups with ESC
   (add-hook '~evil-esc-hook #'popwin:close-popup-window)
@@ -1349,8 +1350,10 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   :ensure t
   :defer t
   :hook
-  ((c++-mode . ~pio-cpp-hook)
+  (((c++-mode arduino-mode) . ~pio-cpp-hook)
    (irony-mode . ~pio-irony-hook))
+  :commands
+  (platformio-conditionally-enable)
   :init
   (defun ~pio-cpp-hook()
     (irony-mode)
