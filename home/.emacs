@@ -984,6 +984,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
    ("C-c g n" . git-gutter:next-hunk)
    ("C-c g p" . git-gutter:previous-hunk)
    ("C-c g S" . git-gutter:stage-hunk)
+   ("C-c g a" . git-gutter:stage-hunk)
    ("C-c g R" . git-gutter:revert-hunk))
   :config
   (setq git-gutter:update-interval 0)
