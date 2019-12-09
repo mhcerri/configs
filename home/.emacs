@@ -294,10 +294,25 @@
   :config
   (defun ~enable-hl-line-mode ()
     "Enable hl-line-mode skipping some modes."
-    (if (not (derived-mode-p 'term-mode))
+    (if (and (not (derived-mode-p 'term-mode))
+             (not (bound-and-true-p rainbow-mode)))
 	(hl-line-mode 1)))
   ;; Customize color according to theme.
   (set-face-background 'hl-line "#222222"))
+
+;; Show hex colors
+;; Use the following version to fix the issue with hl-line
+;; wget https://raw.githubusercontent.com/amosbird/rainbow-mode/master/rainbow-mode.el -O ~/.emacs.d/elpa/rainbow-mode-*/rainbow-mode.el
+;; rm ~/.emacs.d/elpa/rainbow-mode-*/rainbow-mode.elc
+;; TODO: Use quelpa to fetch directly from this repo.
+(use-package rainbow-mode
+  :ensure t
+  :hook ((html-mode css-mode js-mode conf-mode) . rainbow-mode)
+  :init
+  (defun ~rainbow-mode()
+    (rainbow-mode)
+    ;; Disable line highlight when rainbow is enabled
+    (hl-line-mode -1)))
 
 ;; zerodark-theme
 (use-package zerodark-theme
