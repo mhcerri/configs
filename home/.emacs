@@ -792,6 +792,10 @@
   (vhl/define-extension 'evil 'evil-paste-after 'evil-paste-before
 			'evil-paste-pop 'evil-move)
   (vhl/install-extension 'evil)
+  (set-face-attribute
+   'vhl/default-face nil
+   :background (face-background 'default)
+   :slant 'italic)
   (volatile-highlights-mode t))
 
 ;; Select based on context
