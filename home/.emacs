@@ -202,6 +202,9 @@
   (dolist (m '(eldoc-mode auto-revert-mode))
     (diminish m)))
 
+(use-package delight
+  :ensure t)
+
 ;; List library
 (use-package cl
   :ensure t
