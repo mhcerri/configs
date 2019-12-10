@@ -1039,6 +1039,8 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (global-company-mode))
 
 ;; clang based completion server
+;; apt install clang
+;; M-x irony-install-server
 (use-package irony
   :ensure t
   :hook
