@@ -384,7 +384,7 @@
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
   ;; No crazy undos
-  (setq evil-want-fine-undo nil)
+  (setq evil-want-fine-undo t)
   ;; Esc hook support
   (defvar ~evil-esc-hook '(t)
     "A hook run after ESC is pressed in normal mode.")
