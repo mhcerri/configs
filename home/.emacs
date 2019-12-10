@@ -860,22 +860,24 @@
 ;; Spell checking
 (use-package flyspell
   ;; builtin
-  :diminish "FlyS"
+  :delight '(:eval (concat " FlyS:" ispell-local-dictionary))
+  :bind
+  (("C-c d b" . flyspell-buffer)
+   ("C-c d d" . ~flyspell-change-dictionary))
   :hook ((text-mode prog-mode) . ~flyspell-smart-mode)
-  :config
   ;; $ apt install aspell
+  :init
   (when (executable-find "aspell")
     (setq ispell-program-name "aspell")
     (setq ispell-extra-args '("--sug-mode=ultra"))
-    (setq ispell-dictionary "en_US"))
-  ;; $ apt install hunspell hunspell-pt-br
-  (when (executable-find "hunspell")
-    (setq ispell-program-name "hunspell")
-    (setq ispell-dictionary "en_US,pt_BR")
-    ;; ispell-set-spellchecker-params has to be called before
-    ;; ispell-hunspell-add-multi-dic is set.
-    (ispell-set-spellchecker-params)
-    (ispell-hunspell-add-multi-dic ispell-dictionary))
+    (setq ispell-dictionary "en_US")
+    )
+  :config
+  (defun ~flyspell-change-dictionary ()
+    "Change dictionary and check buffer."
+    (interactive)
+    (call-interactively 'ispell-change-dictionary)
+    (flyspell-buffer))
   (defun ~flyspell-smart-mode()
     "Enable flyspell based on the current major mode."
     (interactive)
@@ -894,7 +896,8 @@
   :after flyspell
   :bind
   (:map flyspell-mode-map
-        ("C-c $" . flyspell-correct-word-generic)))
+        ("C-c $" . flyspell-correct-word-generic)
+        ("C-c d c" . flyspell-correct-word-generic)))
 
 ;; Syntax check
 (use-package flycheck
