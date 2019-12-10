@@ -108,7 +108,7 @@
 	    (buffer-string))))
 
 ;; Sane undo
-(advice-add 'undo-auto--last-boundary-amalgamating-number :override #'ignore)
+(fset 'undo-auto-amalgamate 'ignore)
 
 ;; Shortcuts
 
