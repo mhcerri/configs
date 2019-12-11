@@ -1,0 +1,77 @@
+#!/bin/bash -eu
+
+log=~/tmp/cronwrap.log
+log_on_success=0;
+no_notification=0
+help=$(
+	cat <<EOF
+Usage: $(basename "$0") [-h|--help] [--log=LOG] [--] COMMAND
+
+Cron job wrapper.
+
+Arguments:
+  -h, --help		Show this message and exit.
+  --log LOG		Log file (default: $log).
+  --log-on-success	Also log on success (by default only failures
+                        are logged).
+  --no-notification     Suppress all notifications (by default a failure
+                        will trigger a notification).
+
+EOF
+)
+
+while [ "$#" -gt 0 ]; do
+	case "$1" in
+		-h|--help)
+			echo "$help"
+			exit 0
+			;;
+		--log)
+			shift;
+			log="$1"
+			;;
+		--log-on-success)
+			log_on_success=1;
+			;;
+		--no-notification)
+			no_notification=1
+			;;
+		--)
+			shift
+			break
+			;;
+		*)
+			break
+	esac
+	shift
+done
+
+if [ "$#" -eq 0 ]; then
+	echo "No command provided!"
+	exit 1
+fi
+
+if [ -z "$log" ]; then
+	log=/dev/null
+fi
+mkdir -p "$(dirname "$log")"
+
+time=$(date -Is)
+rc=0
+output=$("$@" 2>&1) || rc=$?
+
+if [ "$rc" -ne 0 ] || [ "$log_on_success" -ne 0 ]; then
+	echo "[rc=$rc]: $time: $*" >> "$log"
+	echo "$output" >> "$log"
+fi
+
+if [ "$rc" -ne 0 ] && [ "$no_notification" -eq 0 ]; then
+	if [ -z "$DISPLAY" ]; then
+		export DISPLAY=:0
+	fi
+	notify-send \
+		"Cron job failed: $*" \
+		"Check \"$log\" for details."
+fi
+
+exit 0
