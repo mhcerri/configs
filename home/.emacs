@@ -1438,6 +1438,13 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   :hook
   ((go-mode . go-eldoc-setup)))
 
+(use-package web-mode
+  :ensure t
+  :defer t
+  :config
+  ;; Fix bracket color
+  (set-face-foreground 'web-mode-html-tag-bracket-face nil))
+
 (use-package yaml-mode
   :ensure t
   :mode "\\.yaml\\'")
