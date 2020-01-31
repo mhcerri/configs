@@ -663,6 +663,22 @@
    ("C-S-s"   . counsel-ag)
    ("M-y"     . counsel-yank-pop)))
 
+(use-package rg
+  :ensure t
+  :bind
+  (("C-c s"   . rg-autoload-keymap)
+   ("C-c S" . rg-menu))
+  :init
+  (defun rg-autoload-keymap ()
+  (interactive)
+  (if (not (require 'rg nil t))
+      (user-error (format "Cannot load rg"))
+    (let ((key-vec (this-command-keys-vector)))
+      (global-set-key key-vec rg-global-map)
+      (setq unread-command-events
+        (mapcar (lambda (ev) (cons t ev))
+                (listify-key-sequence key-vec)))))))
+
 ;; Show hints about shortcuts
 (use-package which-key
   :ensure t
@@ -735,6 +751,7 @@
 	   (godoc-mode :stick t)
 	   ("*Apropos*" :stick t)
 	   ("*Flycheck errors*" :stick t)
+	   ("*rg*" :stick t)
 	   ;; Information buffers shouldn't be selected by default:
 	   ("*Warnings*" :noselect t)
 	   ("*Backtrace*" :noselect t)
