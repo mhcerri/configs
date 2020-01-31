@@ -654,15 +654,13 @@
   :bind
   (("M-x"     . counsel-M-x)
    ("C-x C-f" . counsel-find-file)
-   ("C-c f"   . counsel-git)
-   ("C-c C-f" . counsel-git)
-   ("C-c s"   . counsel-git-grep)
-   ("C-c C-s" . counsel-git-grep)
-   ("C-c /"   . counsel-ag)
    ("C-c o"   . counsel-find-file-extern)
-   ("C-S-s"   . counsel-ag)
    ("C-c l"   . counsel-locate)
    ("C-h B"   . counsel-descbinds)
+   ("C-c g f" . counsel-git)
+   ("C-c g G" . counsel-git-grep)
+   ("C-c /"   . counsel-ag)
+   ("C-S-s"   . counsel-ag)
    ("M-y"     . counsel-yank-pop)))
 
 ;; Show hints about shortcuts
