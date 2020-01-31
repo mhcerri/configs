@@ -355,10 +355,12 @@
 	 ("C-e"     . move-end-of-line))
    (:map evil-insert-state-map
 	 ;; cua-mode-ish for insert
-	 ("C-S-c"   . kill-ring-save)
-	 ("C-S-x"   . kill-region)
-	 ("C-S-v"   . yank)
-	 ("C-S-p"   . yank-pop)
+         ;; WARNING: it doesn't work properly with multi cursors
+         ;;          or with visual block
+	 ;;("C-S-c"   . kill-ring-save)
+	 ;;("C-S-x"   . kill-region)
+	 ;;("C-S-v"   . yank)
+	 ;;("C-S-p"   . yank-pop)
 	 ("C-z"     . undo-tree-undo)))
   :init
   ;; Use default emacs bindings for insert vim mode
