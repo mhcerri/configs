@@ -959,7 +959,10 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
         ("ESC <down>" . git-rebase-move-line-down)))
 
 (use-package transient
-  :ensure t)
+  :ensure t
+  :bind
+  (:map transient-map
+        ("<escape>" . transient-quit-one)))
 
 (use-package git-commit
   :ensure t
