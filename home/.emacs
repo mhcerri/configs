@@ -950,11 +950,12 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   :config
   (setq magit-revision-insert-related-refs nil))
 
-(use-package git-rebase-mode
+(use-package git-rebase
   :ensure magit
   :bind
-  (("ESC <up>" . git-rebase-move-line-up)
-   ("ESC <down>" . git-rebase-move-line-down)))
+  (:map git-rebase-mode-map
+        ("ESC <up>" . git-rebase-move-line-up)
+        ("ESC <down>" . git-rebase-move-line-down)))
 
 (use-package transient
   :ensure t)
