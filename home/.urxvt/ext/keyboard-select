@@ -171,6 +171,14 @@ sub key_press {
 		} else {
 			toggle_select($self, 'n');
 		}
+	} elsif ($key eq ' ') {
+		if ($event->{state} & urxvt::ControlMask) {
+			toggle_select($self, 'n');
+		} elsif ($event->{state} & urxvt::Mod1Mask) {
+			move_to($self, 'B');
+			toggle_select($self, 'n');
+			move_to($self, 'E');
+		}
 	} elsif ($key eq 'k' || $keysym == 0xff52) {
 		move_cursor($self, 'k');
 	} elsif ($key eq 'j' || $keysym == 0xff54) {
