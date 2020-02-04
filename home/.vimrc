@@ -112,8 +112,8 @@ if &term =~ '256color'
 endif
 
 " Show tabs and other special characters
-set list
-set listchars=tab:␉·,trail:␠,nbsp:⎵
+"set list
+"set listchars=tab:␉·,trail:␠,nbsp:⎵
 
 " Spell
 " cd ~/.vim/spell/; wget 'http://ftp.vim.org/pub/vim/runtime/spell/pt.utf-8.spl'
