@@ -1,0 +1,15 @@
+#!/bin/bash
+
+
+echo "META/SIGNED/LRM TO BE RE-TRIGGERED:"
+echo "-----------------------------------"
+swm-ls |
+    grep depwait |
+    grep -v main:building
+echo
+
+echo "FAILED BUILDS:"
+echo "--------------"
+swm-ls |
+       grep :failed
+echo
