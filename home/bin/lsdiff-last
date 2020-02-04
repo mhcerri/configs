@@ -1,0 +1,8 @@
+#!/bin/bash
+diff=$(ls -1tr *.debdiff | tail -n1)
+{
+	echo "DIFF: $diff"
+	echo "==="
+	lsdiff "$diff" |
+	       grep -v /abi/
+} | less

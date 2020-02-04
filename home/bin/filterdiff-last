@@ -1,0 +1,12 @@
+#!/bin/bash
+diff=$(ls -1tr *.debdiff | tail -n1)
+{
+	echo "DIFF: $diff"
+	echo "==="
+	filterdiff -x /abi/ "$diff" |
+	       awk '
+	       	   BEGIN   { begin=0 }
+	       	   /^diff/ { begin=1 }
+		   begin   { print   } ' |
+	       nicediff
+} | less -R
