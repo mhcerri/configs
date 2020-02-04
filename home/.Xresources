@@ -33,7 +33,7 @@ URxvt.url-launcher:             .urxvt-clip
 URxvt.keysym.C-Delete:          matcher:last
 URxvt.keysym.M-Delete:          matcher:list
 URxvt.keysym.C-S-Delete:        matcher:select
-URxvt.matcher.button:           1
+URxvt.matcher.button:           3
 URxvt.matcher.pattern.1:        \\b(lp|LP):?\\s?\\#?([0-9]+)\\b
 URxvt.matcher.launcher.1:       .urxvt-clip https:\/\/bugs.launchpad.net\/bugs\/$2
 
