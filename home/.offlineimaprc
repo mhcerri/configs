@@ -2,7 +2,7 @@
 pythonfile = ~/.offlineimap.py
 accounts = work
 #maxsyncaccounts = 1
-maxconnections = 50
+maxconnections = 2
 ui = basic
 
 [Account work]
