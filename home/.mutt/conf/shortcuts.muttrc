@@ -59,4 +59,5 @@ macro pager Y 'y/'
 #
 #            1.                                     2.                       3.
 #             \_____________________________________ \_______________________ \_______________________________________
-macro index A ':set editor="~/.mutt/action.sh"<return>g<return><return><return>:set editor="~/.mutt/editor.sh"<return>'
+#macro index A ':set editor="~/.mutt/action.sh"<return>g<return><return><return>:set editor="~/.mutt/editor.sh"<return>'
+macro index A ':set editor="~/.mutt/action.sh"<return>g<return><return>:set editor="~/.mutt/editor.sh"<return>'
