@@ -18,7 +18,7 @@ set show-changes = no
 
 # Go to diff view when selecting a commit. That makes possible to use the
 # arrows to navigate through the commit.
-bind main <Enter> :view-diff
+#bind main <Enter> :view-diff
 
 # Optionally, use the old and faster but less acurate graph renderer
 set main-view-commit-title-graph = v1
