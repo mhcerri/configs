@@ -1,0 +1,28 @@
+#!/bin/bash -eu
+
+keep=1
+
+# List source packages names
+list_sources() {
+	find . -mindepth 1 -maxdepth 1 -name '*.dsc' -a -type f |
+		sed -e 's/_.*//' -e 's/.*\///' |
+		sort -u
+}
+
+# List all versions for a give source package name
+list_versions() {
+	local source="$1"
+	find . -mindepth 1 -maxdepth 1 -name "${source}_*.dsc" -a -type f |
+		sed -n -r -e '/^.*_([^_]*)\.dsc$/s//\1/p' |
+		sort --version-sort -u
+}
+
+for source in $(list_sources); do
+	echo "Source: $source"
+	readarray -t versions < <(list_versions "$source" | head -n-"$keep")
+	for version in "${versions[@]}"; do
+		rm -vf \
+		   "${source}_${version}."* \
+		   "${source}_${version}_source"*
+	done
+done
