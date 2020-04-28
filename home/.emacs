@@ -236,8 +236,8 @@
 (use-package simple
   ;; builtin
   :config
-  (setq backward-delete-char-untabify-method 'hungry)
-  (add-hook 'text-mode-hook 'turn-on-auto-fill))
+  ;;(add-hook 'text-mode-hook 'turn-on-auto-fill)) ; Use M-q instead
+  (setq backward-delete-char-untabify-method 'hungry))
 
 ;; Keep track of recent files
 (use-package recentf
@@ -1491,7 +1491,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 			      ("^[ \t]*>[ \t]*>.*$"
 			       (0 'mail-double-quoted-text-face))))
     ;; Arrange paragraphs and ignore white space issues
-    (auto-fill-mode 1)
+    ;;(auto-fill-mode 1) ; Use M-q instead
     (whitespace-mode -1)
     ;; Enable spell checking
     (flyspell-mode 1)
@@ -1515,7 +1515,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 			      ("^[ \t]*>[ \t]*>.*$"
 			       (0 'message-double-quoted-text-face))))
     ;; Arrange paragraphs and ignore white space issues
-    (auto-fill-mode 1)
+    ;;(auto-fill-mode 1) ; Use M-q instead
     (whitespace-mode -1)
     ;; Enable spell checking
     (flyspell-mode-on)
@@ -1628,7 +1628,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
    '(lambda ()
       (orgstruct++-mode)
       (orgtbl-mode)
-      (auto-fill-mode 1)
+      ;;(auto-fill-mode 1) ; Use M-q instead
       (whitespace-mode -1)))
 
   ;; Mail view
