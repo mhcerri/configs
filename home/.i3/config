@@ -204,7 +204,7 @@ bindsym Pause exec exec `cat ~/.rofi-last-cmd`
 # snap install greenclip-mhcerri
 # snap alias greenclip-mhcerri.greenclip greenclip
 #
-bindsym $mod+dead_grave exec --no-startup-id rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
+bindsym $mod+c exec --no-startup-id rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
 
 # Load workspace layouts
 exec --no-startup-id ~/.i3/start-workspaces.sh
@@ -219,7 +219,7 @@ client.placeholder       #000000 #0c0c0c #ffffff #000000   #0c0c0c
 client.background        #202020
 
 for_window [instance=org-capture-frame] floating enable
-bindsym $mod+c exec --no-startup-id terminator -u \
+bindsym $mod+p Exec --no-startup-id terminator -u \
 	--name org-capture-frame \
 	-x emacsclient \
 	-te '(~org-capture-make-frame)'
