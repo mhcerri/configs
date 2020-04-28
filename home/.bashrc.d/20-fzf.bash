@@ -3,11 +3,16 @@
 #
 if ! command -v fzf &> /dev/null; then
 	echo "Please install fzf..." >&2
-elif ! [ -f "/usr/share/bash-completion/completions/fzf" ]; then
-	echo "Missing fzf bash completion script..."
 else
-	source /usr/share/bash-completion/completions/fzf
-	source /usr/share/doc/fzf/examples/key-bindings.bash
+	for _fzf_comp_script in \
+		'/usr/share/doc/fzf/examples/completion.bash' \
+			'/usr/share/bash-completion/completions/fzf'\
+			'/usr/share/doc/fzf/examples/key-bindings.bash' \
+			'/usr/share/doc/fzf/examples/completion.bash'; do
+		if [ -f "$_fzf_comp_script" ]; then
+			source "$_fzf_comp_script"
+		fi
+	done
 fi
 
 
