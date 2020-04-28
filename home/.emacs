@@ -665,9 +665,19 @@
 
 (use-package rg
   :ensure t
-  :bind
-  (("C-c s"   . rg-autoload-keymap)
-   ("C-c S" . rg-menu))
+  :bind (
+         ;;("C-c s" . rg-autoload-keymap)
+         ("C-c s d" . rg-dwim)
+         ("C-c s t" . rg-literal)
+         ("C-c s k" . rg-kill-saved-searches)
+         ("C-c s l" . rg-list-searches)
+         ("C-c s p" . rg-project)
+         ("C-c s r" . rg)
+         ("C-c s S" . rg-save-search-as-name)
+         ("C-c s s" . rg-save-search)
+         ;; Default bind
+         ("C-c S" . rg-menu)
+         )
   :init
   (defun rg-autoload-keymap ()
   (interactive)
