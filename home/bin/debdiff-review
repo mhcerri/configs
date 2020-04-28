@@ -1,0 +1,104 @@
+#!/bin/bash -eu
+
+# Pick the more recent debdiff if none is given
+last=$(ls -1tr *.debdiff | tail -n1)
+diff="${1:-$last}"
+
+setup() {
+	local bin
+
+	# Check for basic tools
+	for bin in awk grep sed xargs lsdiff; do
+		if ! command -v "$bin" &> /dev/null; then
+			echo "Warning: A required tool is missing: $bin"
+		fi
+	done
+
+	# Use colordiff to color the diff lines
+	colordiff='colordiff'
+	if ! command -v colordiff &> /dev/null; then
+		colordiff='cat'
+		echo "Warning: Install package $colordiff for prettier diffs"
+	fi
+
+	# Use diff-highlight from git to mark the changed tokens
+	diff_highlight=
+	while read -r bin; do
+		if [ -f "$bin" ]; then
+			diff_highlight="perl $bin"
+			break
+		fi
+	done < <(dpkg -L git 2> /dev/null | grep '/diff-highlight$')
+
+	if [ -z "$diff_highlight" ]; then
+		diff_highlight='cat'
+		echo "Warning: Install package git for prettier diffs"
+	fi
+}
+
+list_versions()
+{
+	# Find the corresponding .changes file
+	local changes_file="${1%.*}_source.changes"
+	if [ ! -e "$changes_file" ]; then
+		echo -e "\e[31m{}"
+		echo "No changes file: $changes_file"
+		return
+	fi
+
+	awk '
+	    # Skip until the Changes section
+	    BEGIN                { skip=1 }
+	    /^Changes:/          { skip=0 }
+	    # Print only the lines with the versions
+	    skip==0 && /^ linux/ { print  }
+	    # Stop processing at the end of the Changes sections
+	    skip==0 && /^[\s]/   { exit   }
+	    ' "$changes_file" |
+		# Trim spaces and remove trailing info
+		sed -e 's/^\s//' -e 's/;.*//' |
+		# Make it blue
+		xargs -i echo -e "\e[34m{}"
+}
+
+list_files() {
+	# Do no list ABI changes
+	lsdiff "$1" |
+		grep --color=no -v /abi/ |
+		# Make it yellow
+		xargs -i echo -e "\e[33m{}"
+}
+
+filter_diff() {
+	# Skip the header and any diff sections for files
+	# containing /abi/
+	awk '
+	    BEGIN              { skip=1 }
+	    /^diff/            { skip=0 }
+	    /^diff\s.*\/abi\// { skip=1 }
+	    !skip              { print  }
+	    ' "$1" |
+		# Colorize it
+		$colordiff |
+		# Highlight local changes
+		$diff_highlight
+}
+
+main() {
+	setup
+	echo "DIFF: $diff"
+	echo "---"
+	list_versions "$1"
+	echo "---"
+	list_files "$1"
+	echo "---"
+	filter_diff "$1"
+}
+
+
+if [ ! -f "$diff" ]; then
+	echo "File does not exist: \"$diff\""
+	exit 1
+fi
+
+main "$diff" 2>&1 | less -R
