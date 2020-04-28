@@ -745,6 +745,12 @@
   ((:map ivy-minibuffer-map
 	 ("C-o" . hydra-ivy/body))))
 
+(use-package warnings
+  ;; builtin
+  :config
+  (setq warning-suppress-type
+        '(flycheck syntax-checker)))
+
 ;; Control how popups are handled
 (use-package popwin
   :ensure t
