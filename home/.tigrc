@@ -21,4 +21,10 @@ set show-changes = no
 #bind main <Enter> :view-diff
 
 # Optionally, use the old and faster but less acurate graph renderer
-set main-view-commit-title-graph = v1
+#set main-view-commit-title-graph = v1
+
+# Show commit ids by default
+set main-view-id = yes
+
+# Start interactive rebase and exit tig
+bind main B <git rebase -i %(commit)~
