@@ -233,5 +233,4 @@ bindsym $mod+q exec --no-startup-id urxvt \
 
 for_window [instance="urxvt-terminal"] move scratchpad
 bindsym $mod+t [instance="urxvt-terminal"] scratchpad show
-bindsym $mod+Escape [instance="urxvt-terminal"] scratchpad show
 exec --no-startup-id urxvt-terminal
