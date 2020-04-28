@@ -29,6 +29,7 @@ URxvt*.keysym.C-S-V:            eval:paste_clipboard
 URxvt*.keysym.C-S-C:            eval:selection_to_clipboard
 URxvt*.keysym.M-Escape:         perl:keyboard-select:activate
 URxvt*.keysym.M-s:              perl:keyboard-select:search
+URxvt*.keyboard-select.clipboard: true
 URxvt.url-launcher:             .urxvt-clip
 URxvt.keysym.C-Delete:          matcher:last
 URxvt.keysym.M-Delete:          matcher:list
