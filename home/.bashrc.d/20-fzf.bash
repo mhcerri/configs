@@ -36,11 +36,23 @@ fi
 #
 _fcd_config=~/.fcd.locations
 
+_fcd_fzf_opts=
+_fcd_fzf_opts+=" --height ${FZF_TMUX_HEIGHT:-50%}"
+_fcd_fzf_opts+=" --min-height 15"
+_fcd_fzf_opts+=" --reverse"
+_fcd_fzf_opts+=" $FZF_DEFAULT_OPTS"
+_fcd_fzf_opts+=" --preview 'ls -l {}' --preview-window right:50%:wrap"
+
 fcd() {
 	local dir opts
 
 	if ! command -v fzf &> /dev/null; then
 		echo "Warning: please install fzf!" >&2
+	fi
+
+	if [ -n "$*" ]; then
+		cd "$*"
+		return 0
 	fi
 
 	opts=$(fcd-locations-expanded)
@@ -49,7 +61,7 @@ fcd() {
 		return 1
 	fi
 
-	if dir=$(echo "$opts" | fzf) && [ -d "$dir" ]; then
+	if dir=$(echo "$opts" | FZF_DEFAULT_OPTS="$_fcd_fzf_opts" fzf) && [ -d "$dir" ]; then
 		cd "$dir"
 		return 0
 	fi
@@ -57,6 +69,23 @@ fcd() {
 	echo "Aborted..."
 	return 1
 }
+
+_fcd() {
+	local fzf cur opts selected
+
+	fzf="$(__fzfcmd_complete)"
+	opts+="$_fcd_fzf_opts $FZF_COMPLETION_OPTS"
+	cur="${COMP_WORDS[COMP_CWORD]}"
+	selected=$(fcd-locations-expanded |
+			   FZF_DEFAULT_OPTS="$opts" $fzf -m -q "$cur")
+	printf '\e[5n'
+
+	if [ -n "$selected" ]; then
+		COMPREPLY=( "$selected" )
+		return 0
+	fi
+}
+complete -F _fcd fcd
 
 fcd-add() {
 	local target
