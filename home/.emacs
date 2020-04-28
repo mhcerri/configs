@@ -1425,6 +1425,13 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (setq flycheck-python-pycompile-executable "python3")
   (setq flycheck-python-flake8-executable "flake8")
 
+(use-package company-jedi
+  :ensure t
+  :hook (python-mode . ~company-jedi)
+  :init
+  (defun ~company-jedi()
+    (add-to-list 'company-backends 'company-jedi)))
+
 ;; GoLang
 (use-package go-mode
   :ensure t
