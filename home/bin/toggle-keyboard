@@ -1,0 +1,24 @@
+#!/bin/bash -eu
+name_pattern="${1:-AT Translated Set 2 keyboard}"
+name=$(xinput list --name-only | grep -E "$name_pattern" | head -n 1)
+if [ -z "$name" ]; then
+	echo "No device found: $name_pattern" >&2
+	exit 1
+fi
+id=$(xinput list --id-only "$name")
+if [ -z "$id" ]; then
+	echo "No device found: $name" >&2
+	exit 1
+fi
+enabled=$(xinput list-props "$id" |
+		  sed -n -r -e '/^\s*Device Enabled.*:\s([0-9]*).*/{s//\1/p;q}')
+if [ -z "$enabled" ]; then
+	echo "Cannot get device status: $id"
+	exit 1
+fi
+toggle_action="disable"
+if [ "$enabled" -eq 0 ]; then
+	toggle_action="enable"
+fi
+xinput "$toggle_action" "$id"
+exit "$?"
