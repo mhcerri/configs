@@ -62,13 +62,15 @@ eval $(/usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh
 export GNOME_KEYRING_CONTROL GNOME_KEYRING_PID GPG_AGENT_INFO SSH_AUTH_SOCK
 
 run_bg() {
-	if which "$1" > /dev/null; then
+	if command -v "$1" > /dev/null; then
 		"$@" &
+		return 0
 	fi
+	return 1
 }
 
 # Run Mate utils
-path="$PATH"
+__path="$PATH"
 ifs="$IFS"; IFS=$'\n'
 for dir in $(
     find /usr/lib               \
@@ -76,16 +78,19 @@ for dir in $(
         -type d -a -name 'mate-*')
 do
     export PATH="$dir:$PATH"
-done
 IFS="$ifs"
-#run_bg mate-settings-daemon mate-settings-daemon
+done
+
 run_bg mate-settings-daemon
 run_bg polkit-mate-authentication-agent-1
 run_bg mate-power-manager
-run_bg mate-bluetooth-applet
+run_bg mate-bluetooth-applet ||
+	run_bg blueman-applet
 run_bg nm-applet
-export PATH="$path"
+export PATH="$__path"
+unset __path
 
 # Misc
-run_bg rofi -run-command "sh -c 'echo \"\$1\" > ~/.rofi-last-cmd; eval \$1 &' sh \"{cmd}\"" &
-run_bg dropbox start &
+run_bg rofi -run-command "sh -c 'echo \"\$1\" > ~/.rofi-last-cmd; eval \$1 &' sh \"{cmd}\""
+run_bg autokey-gtk
+run_bg dropbox start
