@@ -41,8 +41,8 @@ bindsym $mod+shift+d exec dmenu_run
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
-bindsym $mod+d exec --no-startup-id rofi -show run -run-command "$HOME/bin/rofi-run.sh {cmd}"
-bindsym $mod+x exec --no-startup-id rofi -show window
+bindsym $mod+d exec --no-startup-id ~/.i3/bin/rofi-wrapper -show run -run-command "$HOME/bin/rofi-run.sh {cmd}"
+bindsym $mod+x exec --no-startup-id ~/.i3/bin/rofi-wrapper -show window
 
 # change focus
 #bindsym $mod+j focus left
@@ -195,7 +195,6 @@ bindsym $mod+u [urgent=latest] focus
 bindsym $mod+z workspace back_and_forth
 bindsym $mod+Tab workspace back_and_forth
 bindsym $mod+Shift+z move container to workspace back_and_forth; workspace back_and_forth
-bindsym Control+mod1+l exec xautolock -locknow
 bindsym --release Caps_Lock exec pkill -SIGRTMIN+11 i3blocks
 bindsym --release Num_Lock exec pkill -SIGRTMIN+11 i3blocks
 bindsym Pause exec exec `cat ~/.rofi-last-cmd`
@@ -204,10 +203,7 @@ bindsym Pause exec exec `cat ~/.rofi-last-cmd`
 # snap install greenclip-mhcerri
 # snap alias greenclip-mhcerri.greenclip greenclip
 #
-bindsym $mod+c exec --no-startup-id rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
-
-# Load workspace layouts
-exec --no-startup-id ~/.i3/start-workspaces.sh
+bindsym $mod+c exec --no-startup-id ~/.i3/bin/rofi-wrapper -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
 
 # Custom colors
 # class                  border  backgr. text    indicator child_border
@@ -218,7 +214,7 @@ client.urgent            #900000 #900000 #ffffff #900000   #900000
 client.placeholder       #000000 #0c0c0c #ffffff #000000   #0c0c0c
 client.background        #202020
 
-
+# Special windows
 for_window [instance="Toolkit" class="Firefox"] sticky enable
 for_window [instance="Toolkit" class="Firefox"] border 1pixel
 
@@ -237,4 +233,52 @@ bindsym $mod+q exec --no-startup-id urxvt \
 
 for_window [instance="urxvt-terminal"] move scratchpad
 bindsym $mod+t [instance="urxvt-terminal"] scratchpad show
+
+# Background
+exec_always --no-startup-id xsetroot -solid '#555555'
+
+# XFCE
+# Make sure to set IgnoreLid=true in /etc/UPower/UPower.conf
+# And configure lid behaviour in /etc/systemd/logind.conf
+exec --no-startup-id xfsettingsd
+exec --no-startup-id xfce4-power-manager
+exec --no-startup-id /usr/lib/x86_64-linux-gnu/xfce4/notifyd/xfce4-notifyd
+
+## Gnome - Might need to launch systray apps with dbus-launch
+#exec --no-startup-id gsettings set org.gnome.gnome-flashback desktop false
+#exec --no-startup-id /usr/lib/gsd-xsettings
+#exec --no-startup-id gnome-flashback
+#exec_always --no-startup-id gnome-power-manager
+#exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+
+# Screensaver: xss-lock
+bindsym Control+mod1+l exec loginctl lock-session
+exec --no-startup-id xset s 120
+exec --no-startup-id xss-lock -- ~/.i3/bin/lock -c 000000
+
+# Screensaver: xautolock
+#bindsym Control+mod1+l exec xautolock -locknow
+#exec --no-startup-id xautolock -detectsleep -time 10 -locker '~/.i3/bin/lock -c 000000'
+#exec_always --no-startup-id ~/.i3/bin/xautolock-dbus
+
+# Screensaver: gnome
+#bindsym Control+mod1+l exec --no-startup-id dbus-send --type=method_call --dest=org.gnome.ScreenSaver /org/gnome/ScreenSaver org.gnome.ScreenSaver.Lock
+#exec --no-startup-id /usr/bin/gnome-screensaver
+
+# Pulse Audio controls and Media keys
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioMute        exec --no-startup-id pactl set-sink-mute   @DEFAULT_SINK@ toggle
+bindsym XF86AudioPlay        exec --no-startup-id playerctl play-pause
+bindsym XF86AudioPause       exec --no-startup-id playerctl play-pause
+bindsym XF86AudioNext        exec --no-startup-id playerctl next
+bindsym XF86AudioPrev        exec --no-startup-id playerctl previous
+
+# Utilities
 exec --no-startup-id urxvt-terminal
+exec --no-startup-id nm-applet
+exec --no-startup-id blueman-applet
+exec --no-startup-id autokey-gtk
+exec --no-startup-id nice -n 5 dropbox start
+exec --no-startup-id nice -n 5 insync
+exec --no-startup-id cryfs-ask ~/GDrive/.private/ ~/Private/

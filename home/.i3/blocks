@@ -137,7 +137,7 @@ interval=30
 #
 [time]
 #command=date '+%Y-%m-%d %H:%M:%S'
-command=~/.i3/clock 'Europe/Berlin' 'Europe/London' 'America/Sao_Paulo' 'US/Central' 'US/Pacific'
+command=~/.i3/bin/blocks/clock 'Europe/Berlin' 'Europe/London' 'America/Sao_Paulo' 'US/Central' 'US/Pacific'
 interval=5
 
 # Generic media player support

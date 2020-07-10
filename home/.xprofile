@@ -5,16 +5,17 @@
 
 # Just start all the application when the script is not executed by a session
 # manager or when i3 is the window manager.
-if [[ -n "$XDG_SESSION_DESKTOP" && "$XDG_SESSION_DESKTOP" != "i3" ]]; then
-    return
-fi
+case "$XDG_SESSION_DESKTOP" in
+	*i3*) ;;
+	*)    return;;
+esac
 
 # Fake mate desktop environment
-XDG_CURRENT_DESKTOP=mate
+#XDG_CURRENT_DESKTOP=GNOME-Flashback
 
 # Un comment for debug:
-#exec &> >(tee ~/.xprofile.log)
-#set -x
+exec &> >(tee ~/.xprofile.log)
+set -x
 
 ## Ensure that the D-Bus Communication System is running properly to fix
 ## File management, authentication, and other essential system processes
@@ -35,11 +36,7 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
   unset f
 fi
 
-# Monitor calibration
-[[ -f ~/.monicarc ]] && source ~/.monicarc
-
 # Set environment
-. ~/.bashrc
 for t in urxvt terminator gnome-terminal mate-terminal urxvt256c; do
 	if which "$t" &> /dev/null; then
 		export TERMINAL="$t"
@@ -50,47 +47,6 @@ done
 # Ensure that SSH will ask the passphase via console
 export SSH_ASKPASS=
 
-# Set X related settings
-xsetroot -solid '#555555'
-
-# Screensaver
-xautolock -detectsleep -time 10 -locker '~/.i3/lock -c 000000' &
-~/.i3/xautolock-dbus &
-
 # Keyring
 eval $(/usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh)
 export GNOME_KEYRING_CONTROL GNOME_KEYRING_PID GPG_AGENT_INFO SSH_AUTH_SOCK
-
-run_bg() {
-	if command -v "$1" > /dev/null; then
-		"$@" &
-		return 0
-	fi
-	return 1
-}
-
-# Run Mate utils
-__path="$PATH"
-ifs="$IFS"; IFS=$'\n'
-for dir in $(
-    find /usr/lib               \
-        -mindepth 1 -maxdepth 1 \
-        -type d -a -name 'mate-*')
-do
-    export PATH="$dir:$PATH"
-IFS="$ifs"
-done
-
-run_bg mate-settings-daemon
-run_bg polkit-mate-authentication-agent-1
-run_bg mate-power-manager
-run_bg mate-bluetooth-applet ||
-	run_bg blueman-applet
-run_bg nm-applet
-export PATH="$__path"
-unset __path
-
-# Misc
-run_bg rofi -run-command "sh -c 'echo \"\$1\" > ~/.rofi-last-cmd; eval \$1 &' sh \"{cmd}\""
-run_bg autokey-gtk
-run_bg dropbox start
