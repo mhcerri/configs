@@ -1,5 +1,3 @@
 #!/bin/bash
-
-echo "init" >> /tmp/clip.log
 echo "$*" | xsel -b
 notify-send "Copied to clipboard:" "$*"
