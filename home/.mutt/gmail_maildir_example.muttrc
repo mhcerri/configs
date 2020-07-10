@@ -25,6 +25,7 @@ source ~/.mutt/conf/abook.muttrc
 source ~/.mutt/conf/colors.muttrc
 source ~/.mutt/conf/common.muttrc
 source ~/.mutt/conf/gmail_maildir.muttrc
+source ~/.mutt/conf/mbsync.muttrc
 source ~/.mutt/conf/gpg.muttrc
 source ~/.mutt/conf/shortcuts.muttrc
 source ~/.mutt/conf/sidebar.muttrc

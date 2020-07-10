@@ -1,0 +1,3 @@
+# Shotcuts for mbsync
+macro index <f5> "!mbsync -V quick<Return>" "Quick update through mbsync"
+macro index <f6> "!mbsync -V -a<Return>" "Full update through mbsync"
