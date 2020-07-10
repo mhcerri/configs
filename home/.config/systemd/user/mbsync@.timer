@@ -1,0 +1,10 @@
+[Unit]
+Description=mbsync timer for account %i
+ConditionPathExists=%h/.mbsyncrc
+
+[Timer]
+OnBootSec=1m
+OnUnitInactiveSec=5m
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,11 @@
+[Unit]
+Description=mbservice service for account %i (oneshot)
+Documentation=man:mbsync(1)
+ConditionPathExists=%h/.mbsyncrc
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/mbsync -Dm %i
+
+[Install]
+WantedBy=default.target
