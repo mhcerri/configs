@@ -1,0 +1,93 @@
+#!/bin/bash -eu
+
+usage() {
+cat <<EOF
+Usage: $(basename "$(readlink -f "$0")") <basedir> <mount> [<cryfs-options>]
+EOF
+}
+
+# Log
+app_name="CryFS"
+
+ts() { date --rfc-3339=seconds; }
+
+error() { log error "$@"; }
+
+info() { log info "$@"; }
+
+log() {
+	local type
+	type="$1"
+	shift
+	notify-send -i "$type" "$app_name" "$*"
+	echo "$(ts): $*" >&2
+}
+
+# secret-tool helper
+secret_tool() {
+	local cmd base_dir
+	cmd="$1"; shift
+	base_dir="$1"; shift
+	secret-tool "$cmd" cryfs-basedir "$base_dir" "$@"
+	return $?
+}
+
+# cryfs helper for non interactive usage
+cryfs_helper() {
+	# Keep only the error message
+	# shellcheck disable=SC2069
+	CRYFS_FRONTEND=noninteractive cryfs "$@" 2>&1 >/dev/null
+}
+
+# Check required tools
+for cmd in cryfs secret-tool zenity; do
+	if ! command -v "$cmd" &> /dev/null; then
+		error "Required tool missing: $cmd"
+		exit 1
+	fi
+done
+
+# Check arguments
+base_dir="${1:-}"; shift
+if [ ! -d "$base_dir" ]; then
+	error "Invalid base dir: $base_dir"
+	usage
+	exit 1
+fi
+base_dir=$(readlink -f "$base_dir")
+
+mount="${1:-}"; shift
+if [ ! -d "$mount" ]; then
+	error "Invalid mount dir: $mount"
+	usage
+	exit 1
+fi
+mount=$(readlink -f "$mount")
+
+label="$app_name: $base_dir"
+while true; do
+	# Try to get the password from the keyring
+	if ! password=$(secret_tool lookup "$base_dir"); then
+		# Ask the user for the password
+		if ! password=$(zenity --title "CryFS" --password); then
+			error "Password not provided. Aborting..."
+			exit 1
+		fi
+		# Add the password to the keyring
+		echo -n "$password" | secret_tool store "$base_dir" --label="$label"
+	fi
+
+	# Try to mount the cryfs volume with the password
+	if result=$(echo "$password" | cryfs_helper "$base_dir" "$mount" "$@"); then
+		# Success
+		break
+	fi
+
+	# On error, remove the password from the keyring
+	error "Failed to mount CryFS volume!" "$result"
+	secret_tool clear "$base_dir"
+done
+
+# Done
+info "$app_name volume \"$base_dir\" mounted at \"$mount\"."
+exit 0
