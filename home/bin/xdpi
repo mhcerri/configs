@@ -1,0 +1,13 @@
+#!/bin/sh
+dpi="${1:-100}"
+
+if pgrep -u "$(whoami)" xfsettingsd > /dev/null 2>&1; then
+	echo "Setting DPI via XFCE..."
+	xfconf-query -c  xsettings -p /Xft/DPI -s "$dpi"
+else
+	echo "Setting DPI via xrdb..."
+	echo "Xft.dpi: $dpi" | xrdb -merge
+fi
+
+echo "Restaring i3..."
+i3 restart > /dev/null 2>&1
