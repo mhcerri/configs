@@ -6,6 +6,7 @@ Documentation=man:offlineimap(1)
 ExecStart=/bin/sh -c "PATH=\"$PATH:$HOME/bin\" /usr/bin/offlineimap -a %i -u basic"
 Restart=on-failure
 RestartSec=60
+Nice=5
 
 [Install]
 WantedBy=default.target
