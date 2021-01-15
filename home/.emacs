@@ -1586,9 +1586,9 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 
 (use-package mu4e
   ;; Always use custom mu binaries:
-  :load-path "~/workspace/mu/mu4e/"
+  :load-path "~/Documents/workspace/mu/mu4e/"
   :bind
-  (("<C-f12>" . mu4e))
+  (("C-c @" . mu4e))
   :hook
   (((mu4e-main-mode mu4e-headers-mode mu4e-view-mode) .
     (lambda () (~disable-line-number))))
@@ -1597,41 +1597,21 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
    mu4e-update-index)
   :config
   ;; Use my custom mu
-  (setq mu4e-mu-binary "~/workspace/mu/mu/mu")
+  (setq mu4e-mu-binary "~/Documents/workspace/mu/mu/mu")
   ;; Use mu4e for e-mail in emacs
   (setq mail-user-agent 'mu4e-user-agent)
   ;; Use ivy for prompts
   (setq mu4e-completing-read-function 'ivy-completing-read)
 
   ;; Path to Maildir directory
-  (setq mu4e-maildir "~/.mail/")
-
-  ;; Utility function to get a maildir path from `mu4e-maildir'.
-  (defun ~mu4e-get-maildir (pattern)
-    "Get a maildir path relative to `mu4e-maildir' based on PATTERN."
-    ;; TODO: fix it for non linux platforms.
-    (if (not mu4e-maildir)
-	(error "Variable mu4e-maildir is not set"))
-    (let ((dir (expand-file-name mu4e-maildir)))
-      (require 's)
-      (dolist (exe '("find" "sort" "head"))
-	(if (not (executable-find exe))
-	    (error "Required tool not found in path: %s" exe)))
-      (s-chop-prefix
-       (directory-file-name dir)
-       (s-trim
-	(shell-command-to-string
-	 (format
-	  "find %s -type d -a -iname '*'%s'*' | sort | head -n1"
-	  (shell-quote-argument dir)
-	  (shell-quote-argument pattern)))))))
+  (setq mu4e-root-maildir "~/.mail/work2/")
 
   ;; The next are relative to `mu4e-maildir'
   ;; instead of strings, they can be functions too, see
   ;; their docstring or the chapter 'Dynamic folders'
-  (setq mu4e-sent-folder   (~mu4e-get-maildir "sent")
-	mu4e-drafts-folder (~mu4e-get-maildir "draft")
-	mu4e-trash-folder  (~mu4e-get-maildir "trash"))
+  (setq mu4e-sent-folder   "/Sent Mail"
+	mu4e-drafts-folder "/Drafts"
+	mu4e-trash-folder  "/Trash")
 
   ;; Headers
   ;; (setq mu4e-headers-results-limit -1)
@@ -1649,7 +1629,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (setq mu4e-bookmarks
 	`(,(make-mu4e-bookmark
 	    :name "Inbox" :key ?i
-	    :query (format "maildir:\"%s\"" (~mu4e-get-maildir "inbox")))
+	    :query (format "maildir:\"%s\"" "/INBOX"))
 	  ,(make-mu4e-bookmark
 	    :name "Draft" :key ?d
 	    :query (format "maildir:\"%s\"" mu4e-drafts-folder))
