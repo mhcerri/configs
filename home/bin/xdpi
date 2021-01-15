@@ -1,5 +1,5 @@
 #!/bin/sh
-dpi="${1:-100}"
+dpi="${1:-96}"
 
 if pgrep -u "$(whoami)" xfsettingsd > /dev/null 2>&1; then
 	echo "Setting DPI via XFCE..."
