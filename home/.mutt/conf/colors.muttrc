@@ -36,7 +36,7 @@ color index         color240        color234        "~R"                        
 color index         color178         color234        "~U"                       # unread messages
 color index         color178         color234        "~U~$"                     # unread, unreferenced messages
 color index         color241        color234        "~v"                        # messages part of a collapsed thread
-color index         color241        color234        "~P"                        # messages from me
+color index         color241        color234        "~P!~F"                        # messages from me
 color index         color208         color234        "~p!~F"                    # messages to me
 color index         color208         color234        "~N~p!~F"                  # new messages to me
 color index         color208         color234        "~U~p!~F"                  # unread messages to me
