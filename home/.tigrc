@@ -28,3 +28,4 @@ set main-view-id = yes
 
 # Start interactive rebase and exit tig
 bind main B <git rebase -i %(commit)~
+bind main R <git reset --hard %(commit)
