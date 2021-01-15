@@ -228,7 +228,7 @@ bindsym $mod+p Exec --no-startup-id terminator -u \
 for_window [instance="urxvt-launcher"] floating enable
 bindsym $mod+q exec --no-startup-id urxvt \
 	-name "urxvt-launcher" \
-	-geometry 50x1 \
+	-geometry 75x10 \
 	-keysym.Escape 'eval:exit' \
 	-e sh -c '_LAUNCHER=1 /bin/bash'
 
