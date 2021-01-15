@@ -39,6 +39,7 @@ URxvt.keysym.C-S-Delete:        matcher:select
 URxvt.matcher.button:           3
 URxvt.matcher.pattern.1:        \\b(lp|LP):?\\s?\\#?([0-9]+)\\b
 URxvt.matcher.launcher.1:       .urxvt-clip https:\/\/bugs.launchpad.net\/bugs\/$2
+URxvt.print-pipe:               "cat > /dev/null"
 
 ! rofi
 rofi.quiet:             true
