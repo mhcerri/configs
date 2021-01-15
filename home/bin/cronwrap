@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 
-log=~/tmp/cronwrap.log
+log="$HOME/tmp/cronwrap.log"
 log_on_success=0;
 no_notification=0
 help=$(
@@ -51,11 +51,23 @@ if [ "$#" -eq 0 ]; then
 	exit 1
 fi
 
-if [ -z "$log" ]; then
+if [ -z "${log:-}" ]; then
 	log=/dev/null
 fi
 mkdir -p "$(dirname "$log")"
 
+# Make it possible for X applications to run, ie notify-send
+if [ -z "${DISPLAY:-}" ]; then
+	export DISPLAY=:0
+fi
+if [ -z "${XDG_RUNTIME_DIR:-}" ]; then
+	export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+fi
+if [ -z "${XAUTHORITY:-}" ]; then
+	export XAUTHORITY=/home/mhcerri/.Xauthority
+fi
+
+# Run the command
 time=$(date -Is)
 rc=0
 output=$("$@" 2>&1) || rc=$?
@@ -66,9 +78,6 @@ if [ "$rc" -ne 0 ] || [ "$log_on_success" -ne 0 ]; then
 fi
 
 if [ "$rc" -ne 0 ] && [ "$no_notification" -eq 0 ]; then
-	if [ -z "$DISPLAY" ]; then
-		export DISPLAY=:0
-	fi
 	notify-send \
 		"Cron job failed: $*" \
 		"Check \"$log\" for details."
