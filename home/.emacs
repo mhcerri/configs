@@ -924,8 +924,8 @@
   :after flyspell
   :bind
   (:map flyspell-mode-map
-        ("C-c $" . flyspell-correct-word-generic)
-        ("C-c d c" . flyspell-correct-word-generic)))
+        ("C-c $" . flyspell-correct-at-point)
+        ("C-c d c" . flyspell-correct-at-point)))
 
 ;; Syntax check
 (use-package flycheck
