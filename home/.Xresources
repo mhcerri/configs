@@ -2,6 +2,8 @@
 ! Xresources
 !
 
+Xft.dpi: 192
+
 ! urxvt
 URxvt*.font:                    xft:monospace:size=9
 URxvt*.letterSpace:             -1
