@@ -1177,6 +1177,12 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (setq dumb-jump-max-find-time 20)
   (setq dumb-jump-selector 'ivy))
 
+(use-package avy
+  :ensure t
+  :bind
+  (("C-c ;" . avy-goto-char)
+   ("C-c :" . avy-goto-char-2)))
+
 (use-package ag
   :ensure t
   :bind
