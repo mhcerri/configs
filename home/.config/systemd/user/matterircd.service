@@ -1,0 +1,9 @@
+[Unit]
+Description=MatterMost IRC Daemon
+
+[Service]
+ExecStart=%h/.matterircd/src/matterircd --conf %h/.matterircd/config.toml
+Restart=always
+
+[Install]
+WantedBy=default.target
