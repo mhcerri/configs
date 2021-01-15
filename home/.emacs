@@ -165,13 +165,13 @@
 (require 'package)
 (setq package-enable-at-startup nil)
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
-(package-initialize)
 (setq package-archives
       '(("marmalade"    . "https://marmalade-repo.org/packages/")
 	("melpa"        . "https://melpa.org/packages/") ; Assume ssl
 	("melpa-stable" . "https://stable.melpa.org/packages/")
 	("gnu"          . "https://elpa.gnu.org/packages/")
 	("org"          . "https://orgmode.org/elpa/")))
+(package-initialize)
 
 ;; Auto install mechanism
 (if (not (package-installed-p 'use-package))
