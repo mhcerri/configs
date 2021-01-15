@@ -1478,6 +1478,18 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   :hook
   ((go-mode . go-eldoc-setup)))
 
+(use-package lua-mode
+  :ensure t)
+
+(use-package company-lua
+  :ensure t
+  :after (company)
+  :config
+  (add-to-list 'company-backends 'company-lua))
+
+(use-package love-minor-mode
+  :ensure t)
+
 (use-package web-mode
   :ensure t
   :defer t
