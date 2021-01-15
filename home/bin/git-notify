@@ -22,6 +22,7 @@ fi
 notify() {
 	local arg=$(printf '%q' "$*")
 	local cmd=$(printf "$NOTIFY_CMD" "$arg")
+	echo "$cmd"
 	eval "$cmd"
 }
 
