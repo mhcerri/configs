@@ -32,6 +32,7 @@ set include                 = yes   # always include messages when replying
 set pager_index_lines       = 10    # show some lines from index on top message body
 set pager_stop              = yes   # Stop at the end instead jumping to next email
 set pager_context           = 3     # Show context lines when going to next page
+set menu_context            = 10    # Show context lines when going to next page (index)
 set signature               = "echo 'Regards,\nMarcelo\n'|" # Signature
 set sig_on_top              = no    # Signature before any quoted or forwarded text
 set menu_scroll             = yes   # Scroll each page instead of each line
@@ -46,3 +47,7 @@ set display_filter          = "~/.mutt/bin/display_filter.sh"
 
 # Open folders on the last email
 folder-hook . 'push <last-entry>'
+
+# Forward emails with attachments
+#set mime_forward
+#set mime_forward_rest=yes
