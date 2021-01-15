@@ -17,6 +17,12 @@ esac
 exec &> >(tee ~/.xprofile.log)
 set -x
 
+# Set scale for hidpi
+export GDK_SCALE=2
+export GDK_DPI_SCALE=$(echo "scale=2; 1.0/($GDK_SCALE)" | bc)
+#export QT_SCALE_FACTOR="$GDK_SCALE"
+export QT_SCALE_FACTOR="1"
+
 ## Ensure that the D-Bus Communication System is running properly to fix
 ## File management, authentication, and other essential system processes
 if which dbus-launch >/dev/null && test -z "$DBUS_SESSION_BUS_ADDRESS"; then
