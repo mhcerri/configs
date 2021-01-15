@@ -194,6 +194,7 @@ workspace_layout tabbed
 bindsym $mod+u [urgent=latest] focus
 bindsym $mod+z workspace back_and_forth
 bindsym $mod+Tab workspace back_and_forth
+bindsym Control+Mod1+Tab workspace back_and_forth
 bindsym $mod+Shift+z move container to workspace back_and_forth; workspace back_and_forth
 bindsym --release Caps_Lock exec pkill -SIGRTMIN+11 i3blocks
 bindsym --release Num_Lock exec pkill -SIGRTMIN+11 i3blocks
