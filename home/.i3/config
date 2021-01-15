@@ -242,8 +242,11 @@ exec_always --no-startup-id xsetroot -solid '#555555'
 # Make sure to set IgnoreLid=true in /etc/UPower/UPower.conf
 # And configure lid behaviour in /etc/systemd/logind.conf
 exec --no-startup-id xfsettingsd
+exec --no-startup-id ~/.screenlayout/default.sh
+exec --no-startup-id dunst
+#exec --no-startup-id compton
 exec --no-startup-id xfce4-power-manager
-exec --no-startup-id /usr/lib/x86_64-linux-gnu/xfce4/notifyd/xfce4-notifyd
+#exec --no-startup-id /usr/lib/x86_64-linux-gnu/xfce4/notifyd/xfce4-notifyd
 
 ## Gnome - Might need to launch systray apps with dbus-launch
 #exec --no-startup-id gsettings set org.gnome.gnome-flashback desktop false
@@ -254,7 +257,7 @@ exec --no-startup-id /usr/lib/x86_64-linux-gnu/xfce4/notifyd/xfce4-notifyd
 
 # Screensaver: xss-lock
 bindsym Control+mod1+l exec loginctl lock-session
-exec --no-startup-id xset s 120
+exec --no-startup-id xset s 300
 exec --no-startup-id xss-lock -- ~/.i3/bin/lock -c 000000
 
 # Screensaver: xautolock
@@ -281,5 +284,5 @@ exec --no-startup-id nm-applet
 exec --no-startup-id blueman-applet
 exec --no-startup-id autokey-gtk
 exec --no-startup-id nice -n 5 dropbox start
-exec --no-startup-id nice -n 5 insync
-exec --no-startup-id cryfs-ask ~/GDrive/.private/ ~/Private/
+exec --no-startup-id nice -n 5 insync start
+exec --no-startup-id cryfs-ask ~/GDrive/USP/.private/ ~/Private/
