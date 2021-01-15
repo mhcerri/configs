@@ -4,6 +4,8 @@
 bind pager j next-line
 bind pager k previous-line
 macro index <insert> 'Wn'
+bind index,pager \Ch help
+bind index,pager ? search-reverse
 
 # Scroll inside the message rather than the index
 bind pager <up> previous-line
