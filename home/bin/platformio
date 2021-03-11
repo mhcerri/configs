@@ -5,7 +5,7 @@ install() {
 	echo "Installing platformio at \"$INSTALL_DIR\"..."
 	rm -rf "$INSTALL_DIR"
 	mkdir -p "$INSTALL_DIR"
-	virtualenv -p python2 "$INSTALL_DIR"
+	virtualenv -p python3 "$INSTALL_DIR"
 	activate
 	pip install platformio
 }
