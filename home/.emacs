@@ -311,6 +311,7 @@
 (use-package zerodark-theme
   :ensure t
   :config
+  (setq frame-background-mode 'dark)
   (setq zerodark-use-paddings-in-mode-line nil)
   (load-theme 'zerodark t))
 
