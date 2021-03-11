@@ -127,10 +127,10 @@ interval=10
 # Battery indicator
 #
 # The battery instance defaults to 0.
-[battery]
+[battery2]
+command=~/.i3/bin/blocks/battery2
 label=BAT
-#label=⚡
-#instance=1
+markup=pango
 interval=30
 
 # Date Time
