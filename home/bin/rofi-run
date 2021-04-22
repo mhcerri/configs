@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Helper to enforce the DPI set by Xresources
+rofi-helper() { exec rofi -dpi "$(xrdb -query | sed -n 's/^Xft\.dpi:\s*//p')" "$@"; }
+
+if [ $# -eq 0 ]; then
+	# By default run my custom rofi
+	rofi-helper -show combi -combi-modi "fav:$0 -fav,run" \
+		-modi "combi,fav:$0 -fav,run,window,ssh" \
+		-run-command "sh -c 'echo \"\$*\" > ~/.rofi-last-cmd; exec \"\$@\"' -- {cmd}"
+elif [ "$1" = '-fav' ]; then
+	# Run as a mode script
+	if [ $# -le 1 ]; then
+		# List options
+		cat ~/.config/rofi/cmds
+	else
+		# Run command replicating -run-command
+		shift; read -r -a args <<< "$*"
+		sh -c 'echo "$*" > ~/.rofi-last-cmd; exec "$@"' -- "${args[@]}" &> /dev/null
+	fi
+else
+	# Otherwise use it as a wrapper for DPI
+	rofi-helper "$@"
+fi

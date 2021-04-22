@@ -1,2 +1,0 @@
-#!/bin/sh
-exec rofi -dpi "$(xrdb -query | sed -n 's/^Xft\.dpi:\s*//p')" "$@"

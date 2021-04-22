@@ -41,8 +41,8 @@ bindsym $mod+shift+d exec dmenu_run
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
-bindsym $mod+d exec --no-startup-id ~/.i3/bin/rofi-wrapper -show run -run-command "$HOME/bin/rofi-run.sh {cmd}"
-bindsym $mod+x exec --no-startup-id ~/.i3/bin/rofi-wrapper -show window
+bindsym $mod+d exec --no-startup-id rofi-run
+bindsym $mod+x exec --no-startup-id rofi-run -show window
 
 # change focus
 #bindsym $mod+j focus left
@@ -204,7 +204,7 @@ bindsym Pause exec exec `cat ~/.rofi-last-cmd`
 # snap install greenclip-mhcerri
 # snap alias greenclip-mhcerri.greenclip greenclip
 #
-bindsym $mod+c exec --no-startup-id ~/.i3/bin/rofi-wrapper -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
+bindsym $mod+c exec --no-startup-id rofi-run -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
 
 # Custom colors
 # class                  border  backgr. text    indicator child_border
