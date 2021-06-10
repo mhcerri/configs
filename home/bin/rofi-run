@@ -16,7 +16,9 @@ elif [ "$1" = '-fav' ]; then
 	else
 		# Run command replicating -run-command
 		shift; read -r -a args <<< "$*"
-		sh -c 'echo "$*" > ~/.rofi-last-cmd; exec "$@"' -- "${args[@]}" &> /dev/null
+		# Ignore output (otherwise rofi will ask the user
+		# again) and do not wait for the command to finish
+		sh -c 'echo "$*" > ~/.rofi-last-cmd; exec "$@"' -- "${args[@]}" &> /dev/null &
 	fi
 else
 	# Otherwise use it as a wrapper for DPI
