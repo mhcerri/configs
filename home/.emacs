@@ -166,54 +166,66 @@
 (setq package-enable-at-startup nil)
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 (setq package-archives
-      '(("marmalade"    . "https://marmalade-repo.org/packages/")
-	("melpa"        . "https://melpa.org/packages/") ; Assume ssl
+      '(("melpa"        . "https://melpa.org/packages/") ; Assume ssl
 	("melpa-stable" . "https://stable.melpa.org/packages/")
 	("gnu"          . "https://elpa.gnu.org/packages/")
 	("org"          . "https://orgmode.org/elpa/")))
 (package-initialize)
 
 ;; Auto install mechanism
-(if (not (package-installed-p 'use-package))
-    (progn
-      (package-refresh-contents)
-      (package-install 'use-package)))
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 (eval-when-compile
   (require 'use-package))
 
-(use-package gnu-elpa-keyring-update
-  :ensure t)
+;; Install package by default
+(require 'use-package-ensure)
+(setq use-package-always-ensure t)
+
+;; Import keys
+(use-package gnu-elpa-keyring-update)
+
+;; Make possible to install packages from git
+;; It increases init time, should I keep it?
+(setq quelpa-update-melpa-p nil)
+(setq quelpa-checkout-melpa-p nil)
+(setq quelpa-use-package-inhibit-loading-quelpa t)
+(unless (package-installed-p 'quelpa)
+  (with-temp-buffer
+    (url-insert-file-contents "https://github.com/quelpa/quelpa/raw/master/quelpa.el")
+    (eval-buffer)
+    (quelpa-self-upgrade)))
+(quelpa
+ '(quelpa-use-package
+   :fetcher git
+   :url "https://github.com/quelpa/quelpa-use-package.git"))
+(require 'quelpa-use-package)
 
 ;; Hide modes from status bar (used with use-package)
 (use-package diminish
-  :ensure t
   :config
   ;; Only diminish built-in modes here
   (dolist (m '(eldoc-mode auto-revert-mode))
     (diminish m)))
 
-(use-package delight
-  :ensure t)
+(use-package delight)
 
 ;; List library
 (use-package cl
-  :ensure t
   :defer t)
 
 ;; Async library
-(use-package s
-  :ensure t)
+(use-package s)
 
 ;; Async
 (use-package async
-  :ensure t
   :config
   (dired-async-mode 1)
   (async-bytecomp-package-mode 1))
 
 ;; Run async external commands with status on the message line
 (use-package bpr
-  :ensure t
   :commands (bpr-process-directory
              bpr-show-progress
              bpr-close-after-success
@@ -221,12 +233,10 @@
 
 ;; Function decorator library
 (use-package noflet
-  :ensure t
   :defer t)
 
 ;; Fix env (important for go-mode with emacsclient)
 (use-package exec-path-from-shell
-  :ensure t
   :if (daemonp)
   :config
   (dolist (var '("GOPATH" "GOROOT" "NVM_BIN" "PATH"))
@@ -234,7 +244,7 @@
   (exec-path-from-shell-initialize))
 
 (use-package simple
-  ;; builtin
+  :ensure nil ; builtin
   :config
   ;;(add-hook 'text-mode-hook 'turn-on-auto-fill)) ; Use M-q instead
   (setq backward-delete-char-untabify-method 'hungry))
@@ -253,14 +263,12 @@
 
 ;; Show undo tree with "C-x u"
 (use-package undo-tree
-  :ensure t
   :diminish
   :defer 1)
 
 ;; Use simpleclip-copy, simpleclip-paste and simpleclip-cut to
 ;; interact with the system clipboard.
 (use-package simpleclip
-  :ensure t
   :bind
   (("C-c y"  . copy-to-clipboard)
    ("C-c p"  . paste-from-clipboard))
@@ -276,7 +284,6 @@
 
 ;; xclip is necessary for simpleclip to work
 (use-package xclip
-  :ensure t
   :defer t
   :config
   (xclip-mode 1))
@@ -294,12 +301,8 @@
   (set-face-background 'hl-line "#222222"))
 
 ;; Show hex colors
-;; Use the following version to fix the issue with hl-line
-;; wget https://raw.githubusercontent.com/amosbird/rainbow-mode/master/rainbow-mode.el -O ~/.emacs.d/elpa/rainbow-mode-*/rainbow-mode.el
-;; rm ~/.emacs.d/elpa/rainbow-mode-*/rainbow-mode.elc
-;; TODO: Use quelpa to fetch directly from this repo.
 (use-package rainbow-mode
-  :ensure t
+  :quelpa (rainbow-mode :fetcher github :repo "amosbird/rainbow-mode")
   :hook ((html-mode css-mode js-mode conf-mode) . rainbow-mode)
   :init
   (defun ~rainbow-mode()
@@ -309,7 +312,6 @@
 
 ;; zerodark-theme
 (use-package zerodark-theme
-  :ensure t
   :config
   (setq frame-background-mode 'dark)
   (setq zerodark-use-paddings-in-mode-line nil)
@@ -317,7 +319,6 @@
 
 ;; Mode line
 (use-package telephone-line
-  :ensure t
   :after (evil)
   :config
   ;; Plain separators
@@ -342,7 +343,6 @@
 
 ;; Extensible vi layer
 (use-package evil
-  :ensure t
   :demand ;; ":defer .1" causes some issues when other packages rely on it.
   :bind
   ((:map evil-window-map
@@ -406,7 +406,6 @@
   ;; evil:config. The alternative would be to move everything in
   ;; evil:init to evil-leader:init.
   (use-package evil-leader
-    :ensure t
     :config
     (global-evil-leader-mode)
     (evil-leader/set-key
@@ -433,19 +432,16 @@
   (evil-mode 1))
 
 (use-package evil-collection
-  :ensure t
   :after evil
   :config
   (evil-collection-init))
 
 ;; Show information about searches
 (use-package evil-anzu
-  :ensure t
   :defer 1)
 
 ;; Improved %
 (use-package evil-matchit
-  :ensure t
   :defer t ; Supports autoload
   :after evil
   :config
@@ -453,7 +449,6 @@
 
 ;; Show evil marks
 (use-package evil-visual-mark-mode
-  :ensure t
   :defer 1
   :after evil
   :config
@@ -464,7 +459,6 @@
 
 ;; Multiple cursors
 (use-package evil-mc
-  :ensure t
   :diminish
   :after (evil which-key)
   :bind
@@ -499,7 +493,6 @@
 
 ;; Better Home and C-k
 (use-package crux
-  :ensure t
   :bind
   (([remap move-beginning-of-line] . crux-move-beginning-of-line)
    ("C-k"                          . crux-smart-kill-line)))
@@ -507,7 +500,6 @@
 ;; PCRE regular expression style
 ;; Use `pcre-mode' to enable it.
 (use-package pcre2el
-  :ensure t
   :commands (pcre-mode))
 
 ;; Add numbers to lines
@@ -528,7 +520,6 @@
 
 ;; nlinum might be efficient but it doesn't play well with git-gutter.
 (use-package linum
-  :ensure t
   :if (not (version<= "26.0.50" emacs-version))
   :hook
   (((text-mode prog-mode) . ~linum-hook))
@@ -558,7 +549,6 @@
 
 ;; Highlight trailing spaces
 (use-package whitespace
-  :ensure t
   :diminish
   :after (flyspell)
   :hook ((text-mode prog-mode) . whitespace-mode)
@@ -574,7 +564,6 @@
 
 ;; Remove trailing white spaces
 (use-package ws-butler
-  :ensure t
   :diminish
   :hook ((text-mode prog-mode) . ws-butler-mode))
 
@@ -586,7 +575,6 @@
 
 ;; Usage: M-x ialign RET
 (use-package ialign
-  :ensure t
   :commands (ialign))
 
 ;; ediff options
@@ -599,12 +587,12 @@
   (setq ediff-diff-options ""))
 
 (use-package dired
+  :ensure nil ; builtin
   :init
   ;; Enable dired-find-alternate-file
   (put 'dired-find-alternate-file 'disabled nil))
 
 (use-package dired-single
-  :ensure t
   :after (dired)
   :bind
   ((:map dired-mode-map
@@ -624,7 +612,6 @@
 
 ;; ivy, swiper and counsel - Better "M-x", "C-s" and "C-x f"
 (use-package ivy
-  :ensure t
   :diminish
   :defer .1
   :bind
@@ -643,13 +630,11 @@
   (ivy-mode 1))
 
 (use-package swiper
-  :ensure t
   :diminish
   :bind
   (("C-s"     . swiper)))
 
 (use-package counsel
-  :ensure t
   :diminish
   :after (ivy)
   :bind
@@ -665,7 +650,6 @@
    ("M-y"     . counsel-yank-pop)))
 
 (use-package rg
-  :ensure t
   :bind (
          ;;("C-c s" . rg-autoload-keymap)
          ("C-c s d" . rg-dwim)
@@ -692,7 +676,6 @@
 
 ;; Show hints about shortcuts
 (use-package which-key
-  :ensure t
   :diminish
   :defer .1
   :init
@@ -709,7 +692,6 @@
   (which-key-setup-side-window-bottom))
 
 (use-package hydra
-  :ensure t
   :bind
   (("C-c g g" . hydra-git-gutter/body)
    ("C-c m"   . hydra-evil-mc/body))
@@ -740,7 +722,6 @@
     ("C-p" evil-mc-make-cursor-move-prev-line "prev line")))
 
 (use-package ivy-hydra
-  :ensure t
   :after (ivy hydra)
   :bind
   ((:map ivy-minibuffer-map
@@ -754,7 +735,6 @@
 
 ;; Control how popups are handled
 (use-package popwin
-  :ensure t
   :config
   (setq popwin:popup-window-position 'bottom)
   (setq popwin:popup-window-height 0.4)
@@ -791,7 +771,6 @@
 
 ;; Highlight current line when jumping with the cursor.
 (use-package beacon
-  :ensure t
   :diminish
   :defer 1
   :config
@@ -799,7 +778,6 @@
 
 ;; Highlight symbol under the cursor
 (use-package highlight-symbol
-  :ensure t
   :diminish
   :hook ((prog-mode . highlight-symbol-mode))
   :config
@@ -810,7 +788,6 @@
 
 ;; Highlight text affected by operations
 (use-package volatile-highlights
-  :ensure t
   :diminish
   :defer 1
   :config
@@ -825,7 +802,6 @@
 
 ;; Select based on context
 (use-package expand-region
-  :ensure t
   :bind
   (("<M-SPC>" . er/expand-region)
    (:map evil-insert-state-map ("<M-SPC>" . er/expand-region))
@@ -834,13 +810,11 @@
 
 ;; Editable grep buffers
 (use-package wgrep
-  :mode "\\*grep\\*"
-  :ensure t)
+  :mode "\\*grep\\*")
 
 ;; Edit multiple occurrences of a symbol at the same time
 ;; todo: try multiple-cursors.el again.
 (use-package iedit
-  :ensure t
   :defer t ; Should be explicitly required
   :config
   (if (display-graphic-p)
@@ -848,7 +822,6 @@
     (set-face-attribute 'iedit-occurrence nil :background "magenta")))
 
 (use-package evil-iedit-state
-  :ensure t
   :bind
   ;; Define key bindings here since it's necessary to
   ;; use evil-iedit-state/iedit-mode instead
@@ -875,11 +848,9 @@
 
 ;;;; Snippets
 (use-package yasnippet-snippets
-  :ensure t
   :defer t)
 
 (use-package yasnippet
-  :ensure t
   :diminish yas-minor-mode
   :defer .1
   :commands (yas-activate-extra-mode)
@@ -921,7 +892,6 @@
 
 ;; Show spelling options via ivy.
 (use-package flyspell-correct-ivy
-  :ensure t
   :after flyspell
   :bind
   (:map flyspell-mode-map
@@ -930,7 +900,6 @@
 
 ;; Syntax check
 (use-package flycheck
-  :ensure t
   :defer .1
   :config
   (global-flycheck-mode))
@@ -938,19 +907,16 @@
 ;; Aggressive indentation
 ;; Use `aggressive-indent-mode' to enable it.
 (use-package aggressive-indent
-  :ensure t
   :diminish "AI"
   :commands (aggressive-indent))
 
 (use-package dtrt-indent
-  :ensure t
   :diminish "DTRT"
   :config
   (dtrt-indent-global-mode 1))
 
 ;; Git support
 (use-package magit
-  :ensure t
   :if (executable-find "git")
   ;; global-git-commit-mode forces the load of both git-commit and magit. Copy
   ;; instead the regular expression for special git file names and defer the
@@ -993,17 +959,14 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
         ("ESC <down>" . git-rebase-move-line-down)))
 
 (use-package transient
-  :ensure t
   :bind
   (:map transient-map
         ("<escape>" . transient-quit-one)))
 
 (use-package git-commit
-  :ensure t
   :commands (git-commit-mode))
 
 (use-package git-timemachine
-  :ensure t
   :bind
   (("C-c g t" . git-timemachine))
   :config
@@ -1012,7 +975,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
 
 (use-package evil-magit
-  :ensure t
+  :quelpa (evil-magit :fetcher github :repo "emacs-evil/evil-magit")
   :after (:all evil magit)
   :config
   (evil-magit-init)
@@ -1021,7 +984,6 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 
 ;; Show git status on the left margin of the file.
 (use-package git-gutter
-  :ensure t
   :diminish
   :defer .1
   :bind
@@ -1039,7 +1001,6 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 
 ;; Auto complete
 (use-package company
-  :ensure t
   :demand
   :diminish "Comp"
   :bind
@@ -1080,33 +1041,28 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 ;; apt install clang
 ;; M-x irony-install-server
 (use-package irony
-  :ensure t
   :hook
   (((c++-mode c-mode) . irony-mode)
    (irony-mode        . irony-cdb-autosetup-compile-options)))
 
 ;; flycheck irony support
 (use-package flycheck-irony
-  :ensure t
   :defer t
   :hook
   ((flycheck-mode . flycheck-irony-setup)))
 
 ;; company integration
 (use-package company-irony
-  :ensure t
   :after (:all company irony)
   :config
   (add-to-list 'company-backends 'company-irony))
 
 (use-package irony-eldoc
-  :ensure t
   :hook
   ((irony-mode . irony-eldoc)))
 
 ;; C headers completion based on the irony server
 (use-package company-irony-c-headers
-  :ensure t
   :after (:all company-irony)
   :config
   (add-to-list
@@ -1115,7 +1071,6 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 
 ;; Basic support for etags if gtags is not available:
 (use-package etags
-  :ensure t
   :defer .1
   :config
   ;; Don't ask before re-reading the TAGS files if they have changed
@@ -1124,13 +1079,11 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (setq large-file-warning-threshold nil))
 
 (use-package counsel-etags
-  :ensure t
   :after (:all counsel etags))
 
 ;; counsel-gtags completely replaces ggtags.el and offers better
 ;; support for creating and updating tags files.
 (use-package counsel-gtags
-  :ensure t
   :diminish "Gtags"
   :after (:all evil counsel bpr)
   :hook
@@ -1161,7 +1114,6 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 
 ;; Tag-like jump without any support
 (use-package dumb-jump
-  :ensure t
   :init
   (which-key-add-key-based-replacements "C-c j" "dump-jump")
   :bind
@@ -1179,13 +1131,11 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (setq dumb-jump-selector 'ivy))
 
 (use-package avy
-  :ensure t
   :bind
   (("C-c ;" . avy-goto-char)
    ("C-c :" . avy-goto-char-2)))
 
 (use-package ag
-  :ensure t
   :bind
   (("C-c a a"   . ag)
    ("C-c a f"   . ag-files)
@@ -1198,7 +1148,6 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 
 ;; Code and project navigation
 (use-package projectile
-  :ensure t
   :after (:all counsel-etags)
   :commands (projectile-mode)
   :hook
@@ -1223,14 +1172,12 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (projectile-mode))
 
 (use-package ibuffer-projectile
-  :ensure t
   :after (:all ibuffer projectile)
   :hook
   ((ibuffer . ibuffer-projectile-set-filter-groups)))
 
 ;; Better embedded terminal
 (use-package multi-term
-  :ensure t
   :commands
   (multi-term
    multi-term-next
@@ -1287,7 +1234,6 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (add-to-list 'company-backends '~org-keyword-backend))
 
 (use-package evil-org
-  :ensure t
   :after (:all evil org)
   :hook
   ((org-mode      . evil-org-mode)
@@ -1399,7 +1345,6 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 
 ;; Platform.io
 (use-package platformio-mode
-  :ensure t
   :defer t
   :hook
   (((c++-mode arduino-mode) . ~pio-cpp-hook)
@@ -1421,7 +1366,6 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 ;; Python
 ;; apt install python3-jedi python3-flake8 python3-autopep8 python3-yapf python3-pip
 (use-package elpy
-  :ensure t
   :defer t
   :hook
   ((python-mode . elpy-enable))
@@ -1433,7 +1377,6 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (setq flycheck-python-flake8-executable "flake8")
 
 (use-package company-jedi
-  :ensure t
   :hook (python-mode . ~company-jedi)
   :init
   (defun ~company-jedi()
@@ -1441,7 +1384,6 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 
 ;; GoLang
 (use-package go-mode
-  :ensure t
   :mode ("\\.go\\'" . go-mode)
   :config
   (defun setup-go-mode-env ()
@@ -1469,21 +1411,17 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (advice-add 'generate-new-buffer :around #'her-apply-function))
 
 (use-package company-go
-  :ensure t
   :after (company)
   :config
   (add-to-list 'company-backends 'company-go))
 
 (use-package go-eldoc
-  :ensure t
   :hook
   ((go-mode . go-eldoc-setup)))
 
-(use-package lua-mode
-  :ensure t)
+(use-package lua-mode)
 
 (use-package company-lua
-  :ensure t
   :after (company)
   :config
   (add-to-list 'company-backends 'company-lua))
@@ -1492,25 +1430,21 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   :ensure t)
 
 (use-package web-mode
-  :ensure t
   :defer t
   :config
   ;; Fix bracket color
   (set-face-foreground 'web-mode-html-tag-bracket-face nil))
 
 (use-package yaml-mode
-  :ensure t
   :mode "\\.yaml\\'")
 
 (use-package markdown-mode
-  :ensure t
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
 
 (use-package arduino-mode
-  :ensure t
   :after (irony)
   :mode "\\.ino\\'"
   :config
@@ -1519,6 +1453,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 
 ;; Mail
 (use-package mail
+  :ensure nil ; builtin
   :defer t
   :mode ("mutt-.*$" . mail-mode)
   :hook
@@ -1544,6 +1479,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
     (orgtbl-mode)))
 
 (use-package message
+  :ensure nil ; builtin
   :defer t
   ;:mode ("mutt-.*$" . message-mode)
   :hook
@@ -1665,7 +1601,6 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   :after (mu4e evil))
 
 (use-package mu4e-alert
-  :ensure t
   :after (mu4e)
   :config
   (mu4e-alert-set-default-style 'libnotify)
@@ -1673,18 +1608,15 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display))
 
 (use-package mu4e-jump-to-list
-  :ensure t
   :after (mu4e))
 
 (use-package mu4e-maildirs-extension
-  :ensure t
   :after (mu4e)
   :config
   (setq mu4e-maildirs-extension-maildir-default-prefix " ")
   (mu4e-maildirs-extension))
 
 (use-package mu4e-query-fragments
-  :ensure t
   :after (mu4e)
   :init
   (setq mu4e-query-fragments-list
