@@ -1599,11 +1599,6 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   ;; Required by mbsync
   (setq mu4e-change-filenames-when-moving t))
 
-;; Evil mode support
-(use-package evil-mu4e
-  :ensure t
-  :after (mu4e evil))
-
 (use-package mu4e-alert
   :after (mu4e)
   :config
