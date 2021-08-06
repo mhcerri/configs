@@ -974,14 +974,6 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   ;; force update evil keymaps after git-timemachine-mode loaded
   (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
 
-(use-package evil-magit
-  :quelpa (evil-magit :fetcher github :repo "emacs-evil/evil-magit")
-  :after (:all evil magit)
-  :config
-  (evil-magit-init)
-  ;; evil-magit fails to convert popups, that's a workaround for that:
-  (evil-set-initial-state 'magit-popup-mode 'insert))
-
 ;; Show git status on the left margin of the file.
 (use-package git-gutter
   :diminish
