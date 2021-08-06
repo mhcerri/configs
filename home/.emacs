@@ -1560,6 +1560,10 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 	  (:from-or-to     . 22)
 	  (:thread-subject . nil)))
 
+  (setq mu4e-headers-thread-child-prefix '("├>" . "┣▶ ")
+        mu4e-headers-thread-last-child-prefix '("└>" . "┗▶ ")
+        mu4e-headers-thread-connection-prefix '("│" . "┃ "))
+
   ;; Bookmarks (works better than mu4e-maildir-shortcuts)
   ;; Avoid appending since for some reason use-package is evaluating :config
   ;; twice for mu4e
