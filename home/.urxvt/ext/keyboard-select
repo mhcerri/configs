@@ -175,6 +175,7 @@ sub key_press {
 		if ($event->{state} & urxvt::ControlMask) {
 			toggle_select($self, 'n');
 		} elsif ($event->{state} & urxvt::Mod1Mask) {
+			move_to($self, 'w');
 			move_to($self, 'B');
 			toggle_select($self, 'n');
 			move_to($self, 'E');
