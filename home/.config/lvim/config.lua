@@ -18,6 +18,12 @@ lvim.keys.insert_mode["<A-q>"] = { "<Esc>{gq}a", { silent=true, } }
 lvim.keys.insert_mode["<C-h>B"] = { "<cmd>Telescope keymaps<cr>", { noremap=false, } }
 lvim.keys.normal_mode["<C-h>B"] = { "<cmd>Telescope keymaps<cr>", { noremap=false, } }
 
+-- "Emacs mode"
+lvim.keys.insert_mode["<C-x><C-c>"] = { "<Esc><cmd>qa<cr>", { silent=true, noremap=false, } }
+lvim.keys.normal_mode["<C-x><C-c>"] = { "<cmd>qa<cr>", { silent=true, noremap=false } }
+lvim.keys.insert_mode["<C-x><C-s>"] = { "<Esc><cmd>w<cr>a", { silent=true, } }
+lvim.keys.normal_mode["<C-x><C-s>"] = { "<cmd>w<cr>", { silent=true, } }
+
 -- Leader binding via which-ke
 lvim.leader = "space"
 lvim.builtin.which_key.mappings["t"] = { "<cmd>terminal<cr>i", "Terminal" }
