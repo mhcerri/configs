@@ -13,3 +13,6 @@ alias vim='echo -e "\033[1;31mTry \`e\` or \`v\`...\033[0m"'
 # already named "e".
 alias emacs='emacs -nw --no-site-file'
 alias v=lvim
+
+# Add custom emacs to the path
+export PATH="$HOME/.local/share/emacs/bin/:$PATH"
