@@ -245,7 +245,7 @@ exec --no-startup-id xfsettingsd
 exec --no-startup-id ~/.screenlayout/default.sh
 exec --no-startup-id screen-monitor.sh ~/.screenlayout/default.sh
 exec --no-startup-id dunst
-#exec --no-startup-id compton
+exec --no-startup-id compton
 exec --no-startup-id xfce4-power-manager
 #exec --no-startup-id /usr/lib/x86_64-linux-gnu/xfce4/notifyd/xfce4-notifyd
 
