@@ -1,24 +1,45 @@
 #!/bin/bash
 
+log_dir=~/.log
+log="$log_dir/rofi-run.log"
+
 # Helper to enforce the DPI set by Xresources
 rofi-helper() { exec rofi -dpi "$(xrdb -query | sed -n 's/^Xft\.dpi:\s*//p')" "$@"; }
 
 if [ $# -eq 0 ]; then
 	# By default run my custom rofi
 	rofi-helper -show combi -combi-modi "fav:$0 -fav,run" \
-		-modi "combi,fav:$0 -fav,run,window,ssh" \
-		-run-command "sh -c 'echo \"\$*\" > ~/.rofi-last-cmd; exec \"\$@\"' -- {cmd}"
+		-modi "combi,dir:$0 -dir,fav:$0 -fav,run,window,ssh" \
+		-run-command "$0 -run '{cmd}'"
+elif [ "$1" = '-run' ]; then
+	# Run command replicating -run-command
+	mkdir -p "$log_dir"
+	echo "$@" >> "$log"
+	shift; read -r -a args <<< "$*"
+	# Ignore output (otherwise rofi will ask the user
+	# again) and do not wait for the command to finish
+	sh -c 'echo "$*" > ~/.rofi-last-cmd; exec "$@"' -- "${args[@]}" &>> "$log" &
 elif [ "$1" = '-fav' ]; then
 	# Run as a mode script
-	if [ $# -le 1 ]; then
+	shift
+	if [ $# -eq 0 ]; then
 		# List options
 		cat ~/.config/rofi/cmds
 	else
-		# Run command replicating -run-command
-		shift; read -r -a args <<< "$*"
-		# Ignore output (otherwise rofi will ask the user
-		# again) and do not wait for the command to finish
-		sh -c 'echo "$*" > ~/.rofi-last-cmd; exec "$@"' -- "${args[@]}" &> /dev/null &
+		# Run command
+		"$0" -run "$@"
+	fi
+elif [ "$1" = '-dir' ]; then
+	# Run as a mode script
+	shift
+	if [ $# -eq 0 ] || [ -d "$1" ]; then
+		# List options
+		cur=$(readlink -f "${1:-$HOME}")
+		find "$cur" -mindepth 1 -maxdepth 1 -executable | sort
+		[ "$cur" != / ] && echo "$cur/.."
+	else
+		# Run command
+		"$0" -run "$@"
 	fi
 else
 	# Otherwise use it as a wrapper for DPI
