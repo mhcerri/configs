@@ -599,13 +599,13 @@
   ;; Enable dired-find-alternate-file
   (put 'dired-find-alternate-file 'disabled nil))
 
-(use-package dired-single
+(use-package ranger
   :after (dired)
-  :bind
-  ((:map dired-mode-map
-	 ("<return>" . 'dired-single-buffer)
-	 ("RET"      . 'dired-single-buffer)
-	 ("^"        . 'dired-single-up-directory))))
+  :init
+  (setq ranger-show-hidden 'hidden)
+  (setq ranger-cleanup-on-disable nil)
+  (setq ranger-cleanup-eagerly nil)
+  (setq ranger-override-dired t))
 
 (use-package ibuffer
   :hook (ibuffer-mode . ibuffer-auto-mode)
