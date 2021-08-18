@@ -340,7 +340,10 @@
 (use-package evil
   :demand ;; ":defer .1" causes some issues when other packages rely on it.
   :bind
-  ((:map evil-window-map
+  (; Avoid problems with eval-expression
+   ("M-:"     . evil-ex)
+   ("M-ESC :" . evil-ex)
+   (:map evil-window-map
 	 ("<left>"  . evil-window-left)
 	 ("<down>"  . evil-window-down)
 	 ("<up>"    . evil-window-up)
