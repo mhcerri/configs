@@ -290,9 +290,7 @@
     "Enable hl-line-mode skipping some modes."
     (if (and (not (derived-mode-p 'term-mode))
              (not (bound-and-true-p rainbow-mode)))
-	(hl-line-mode 1)))
-  ;; Customize color according to theme.
-  (set-face-background 'hl-line "#222222"))
+	(hl-line-mode 1))))
 
 ;; Show hex colors
 (use-package rainbow-mode
@@ -306,6 +304,9 @@
 
 ;; zerodark-theme
 (use-package zerodark-theme
+  :init
+  ;; Fix issue in zerodark when using "emacs --daemon" and true color
+  (advice-add 'true-color-p :filter-return (lambda (ret) t))
   :config
   (setq frame-background-mode 'dark)
   (setq zerodark-use-paddings-in-mode-line nil)
