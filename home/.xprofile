@@ -52,7 +52,7 @@ do
 done
 
 # Set environment
-for t in urxvt terminator gnome-terminal mate-terminal urxvt256c; do
+for t in alacritty urxvt terminator gnome-terminal mate-terminal urxvt256c; do
 	if which "$t" &> /dev/null; then
 		export TERMINAL="$t"
 		break

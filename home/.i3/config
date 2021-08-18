@@ -232,8 +232,8 @@ bindsym $mod+q exec --no-startup-id urxvt \
 	-keysym.Escape 'eval:exit' \
 	-e sh -c '_LAUNCHER=1 /bin/bash'
 
-for_window [instance="urxvt-terminal"] move scratchpad
-bindsym $mod+t [instance="urxvt-terminal"] scratchpad show
+for_window [instance="popup-terminal"] move scratchpad
+bindsym $mod+t [instance="popup-terminal"] scratchpad show
 
 # Background
 exec_always --no-startup-id xsetroot -solid '#555555'
@@ -279,7 +279,7 @@ bindsym XF86AudioNext        exec --no-startup-id playerctl next
 bindsym XF86AudioPrev        exec --no-startup-id playerctl previous
 
 # Utilities
-exec --no-startup-id urxvt-terminal
+exec --no-startup-id popup-terminal
 exec --no-startup-id nm-applet
 exec --no-startup-id blueman-applet
 exec --no-startup-id autokey-gtk

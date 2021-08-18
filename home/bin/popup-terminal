@@ -1,0 +1,6 @@
+#!/bin/dash
+name="$(basename "$0")"
+while alacritty --class "$name" "$@" -e tmux new -A -s "$name"
+do
+	sleep .1
+done
