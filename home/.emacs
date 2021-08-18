@@ -141,26 +141,6 @@
 (global-set-key (kbd "C-c u") '~backward-kill-line)
 (global-set-key (kbd "C-c C-u") '~backward-kill-line)
 
-
-;; Move lines
-(defun move-line-up ()
-  "Move the current line up."
-  (interactive)
-  (transpose-lines 1)
-  (forward-line -2))
-
-(defun move-line-down ()
-  "Move the current line down."
-  (interactive)
-  (forward-line 1)
-  (transpose-lines 1)
-  (forward-line -1))
-
-(dolist (key '("M-<up>" "M-p" "ESC <up>" "ESC p"))
-  (global-set-key (kbd key) 'move-line-up))
-(dolist (key '("M-<down>" "M-n" "ESC <down>" "ESC n"))
-  (global-set-key (kbd key) 'move-line-down))
-
 ;; Package manager
 (require 'package)
 (setq package-enable-at-startup nil)
@@ -248,6 +228,20 @@
   :config
   ;;(add-hook 'text-mode-hook 'turn-on-auto-fill)) ; Use M-q instead
   (setq backward-delete-char-untabify-method 'hungry))
+
+;; Move lines up and down with M-<up> and M-<down>
+(use-package move-text
+  :bind
+  (;; Up
+   ("M-<up>"     . move-text-up)
+   ("M-p"        . move-text-up)
+   ("ESC <up>"   . move-text-up)
+   ("ESC p"      . move-text-up)
+   ;; Down
+   ("M-<down>"   . move-text-down)
+   ("M-n"        . move-text-down)
+   ("ESC <down>" . move-text-down)
+   ("ESC n"      . move-text-down)))
 
 ;; Keep track of recent files
 (use-package recentf
@@ -472,7 +466,6 @@
 	 ("grh" . evil-mc-make-cursor-here)
 	 ("grj" . evil-mc-make-cursor-move-next-line)
 	 ("grk" . evil-mc-make-cursor-move-prev-line)
-	 ("M-n" . evil-mc-make-and-goto-next-cursor)
 	 ("grN" . evil-mc-skip-and-goto-next-cursor)
 	 ("grP" . evil-mc-skip-and-goto-prev-cursor)
 	 ("grn" . evil-mc-skip-and-goto-next-match)
