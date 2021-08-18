@@ -418,7 +418,12 @@
       "qq" 'save-buffers-kill-terminal
       "qQ" 'save-buffers-kill-emacs
       "k"  'kill-this-buffer
-      "w"  'evil-window-delete))
+      "w"  'evil-window-delete
+      "//" 'evilnc-comment-or-uncomment-lines
+      "/c" 'evilnc-copy-and-comment-lines
+      "/p" 'evilnc-comment-or-uncomment-paragraphs
+      "s"  'counsel-rg-at
+      "g"  'counsel-git-grep-at))
   ;; When deferring evil (and thus evil-collection), some fixes will fail
   ;; to be applied to special modes that are loaded right after emacs is
   ;; started. One example is git-rebase-mode, that is invoked when emacs is
@@ -433,6 +438,9 @@
   :after evil
   :config
   (evil-collection-init))
+
+;; evilnc-* function to comment and uncomment lines
+(use-package evil-nerd-commenter)
 
 ;; Show information about searches
 (use-package evil-anzu
