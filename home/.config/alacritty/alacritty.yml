@@ -1,0 +1,73 @@
+#
+# Alacritty - Install with:
+#
+# $ cargo install alacritty
+#
+
+import:
+  - ~/.config/alacritty/colors.yml
+
+env:
+  TERM: xterm-256color
+
+font:
+  normal:
+    family: DroidSansMono Nerd Font Mono
+    style: Bold
+  size: 9.0
+
+bell:
+  animation: EaseOutQuart
+  color: '0x303030'
+  duration: 100
+
+hints:
+  enabled:
+    # URLs
+    - regex: "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)\
+              [^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`]+"
+      command: .alacritty-clip
+      post_processing: true
+      mouse:
+        enabled: true
+        mods: None
+      binding:
+        key: U
+        mods: Control|Shift
+    - regex: "(lp|LP):?\\s?#?([0-9]+)"
+      command: .alacritty-clip
+      post_processing: true
+      mouse:
+        enabled: true
+        mods: None
+      binding:
+        key: U
+        mods: Control|Shift
+
+mouse:
+  hide_when_typing: true
+
+key_bindings:
+  # Key binding to emulate my current plugins for rxvt:
+
+  # Alt+Escape: Enter (visual) vi mode
+  - mods: Alt
+    key: Escape
+    action: ToggleViMode
+
+  # Alt+Space: Select word
+  - mods: Alt
+    key: Space
+    mode: Vi|~Search
+    action: ToggleSemanticSelection
+
+  # Enter: copy, clear selection and return from vi mode
+  - key: Return
+    mode: Vi|~Search
+    action: Copy
+  - key: Return
+    mode: Vi|~Search
+    action: ClearSelection
+  - key: Return
+    mode: Vi|~Search
+    action: ToggleViMode

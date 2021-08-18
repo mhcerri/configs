@@ -1,0 +1,4 @@
+#!/bin/bash
+text=$(echo "$*" | sed -r -e 's,^(lp|LP):?\s?#?([0-9]+),https://bugs.launchpad.net/bugs/\2,')
+echo "$text" | xsel -b
+notify-send "Copied to clipboard:" "$text"
