@@ -502,6 +502,8 @@
   :if (version<= "26.0.50" emacs-version)
   :hook
   (((text-mode prog-mode conf-mode) . ~enable-line-number))
+  :init
+  (setq display-line-numbers-type 'relative)
   :config
   (defun ~enable-line-number () (display-line-numbers-mode 1))
   (defun ~disable-line-number () (display-line-numbers-mode -1))
