@@ -42,6 +42,15 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
   unset f
 fi
 
+for p in "$HOME/bin" \
+	 "$HOME/.local/bin" \
+	 "$HOME/.local/var/bin" \
+	 "$HOME/.local/share/emacs/bin" \
+	 "$HOME/.cargo/bin"
+do
+	export PATH="$p:$PATH"
+done
+
 # Set environment
 for t in urxvt terminator gnome-terminal mate-terminal urxvt256c; do
 	if which "$t" &> /dev/null; then
