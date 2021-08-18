@@ -644,6 +644,19 @@
 (use-package counsel
   :diminish
   :after (ivy)
+  :init
+  (defun counsel-gg-at ()
+    "counsel-ag with initial input from the cursor."
+    (interactive)
+    (counsel-ag (ivy-thing-at-point)))
+  (defun counsel-rg-at ()
+    "counsel-rg with initial input from the cursor."
+    (interactive)
+    (counsel-rg (ivy-thing-at-point)))
+  (defun counsel-git-grep-at ()
+    "counsel-git-grep with initial input from the cursor."
+    (interactive)
+    (counsel-git-grep (ivy-thing-at-point)))
   :bind
   (("M-x"     . counsel-M-x)
    ("C-x C-f" . counsel-find-file)
@@ -651,9 +664,9 @@
    ("C-c l"   . counsel-locate)
    ("C-h B"   . counsel-descbinds)
    ("C-c g f" . counsel-git)
-   ("C-c g G" . counsel-git-grep)
-   ("C-c /"   . counsel-ag)
-   ("C-S-s"   . counsel-ag)
+   ("C-c g G" . counsel-git-grep-at)
+   ("C-c /"   . counsel-ag-at)
+   ("C-S-s"   . counsel-ag-at)
    ("M-y"     . counsel-yank-pop)))
 
 (use-package rg
@@ -1169,6 +1182,9 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 	'(:eval (format " Proj[%s]" (projectile-project-name))))
   (setq projectile-completion-system 'ivy)
   (projectile-mode))
+
+(use-package counsel-projectile
+  :defer t)
 
 (use-package ibuffer-projectile
   :after (:all ibuffer projectile)
