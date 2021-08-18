@@ -289,9 +289,15 @@
     #foreground = "#ffffff"
     background = "#aaaaaa"
     foreground = "#333333"
-    timeout = 20
+    timeout = 0
+    set_transient = no
     # Icon for notifications with normal urgency, uncomment to enable
     #icon = /path/to/icon
+
+# Force normal messages to not timeout even if the client requested otherwise
+[keep-normal]
+    msg_urgency = normal
+    timeout = 0
 
 [urgency_critical]
     background = "#900000"
@@ -347,10 +353,10 @@
 
 # Disable the transient hint so that idle_threshold cannot be bypassed from the
 # client
-#[transient_disable]
-#    match_transient = yes
-#    set_transient = no
-#
+[transient_disable]
+    match_transient = yes
+    set_transient = no
+
 # Make the handling of transient notifications more strict by making them not
 # be placed in history.
 #[transient_history_ignore]
