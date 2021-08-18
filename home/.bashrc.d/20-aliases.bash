@@ -27,3 +27,7 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 alias g=git
 _completion_loader git
 complete -o bashdefault -o default -o nospace -F __git_wrap__git_main g
+
+if command -v bat &> /dev/null; then
+	alias cat=bat
+fi
