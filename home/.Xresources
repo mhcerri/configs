@@ -5,7 +5,8 @@
 Xft.dpi: 192
 
 ! urxvt
-URxvt*.font:                    xft:monospace:size=9
+! Install font from https://www.nerdfonts.com/
+URxvt*.font:                    xft:DroidSansMono Nerd Font Mono:size=9,xft:monospace:size=9
 URxvt*.letterSpace:             -1
 URxvt*.background:              #202020
 URxvt*.foreground:              #AAAAAA
