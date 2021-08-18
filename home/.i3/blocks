@@ -58,6 +58,10 @@ instance=Master
 interval=once
 signal=10
 
+[bitrate]
+command=~/.i3/bin/bitrate.sh
+interval=1
+
 # Memory usage
 #
 # The type defaults to "mem" if the instance is not specified.
