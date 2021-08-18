@@ -150,7 +150,8 @@
 	("melpa-stable" . "https://stable.melpa.org/packages/")
 	("gnu"          . "https://elpa.gnu.org/packages/")
 	("org"          . "https://orgmode.org/elpa/")))
-(package-initialize)
+(if (not (bound-and-true-p ~package-initialized))
+    (package-initialize))
 
 ;; Auto install mechanism
 (unless (package-installed-p 'use-package)
@@ -190,10 +191,6 @@
     (diminish m)))
 
 (use-package delight)
-
-;; List library
-(use-package cl
-  :defer t)
 
 ;; Async library
 (use-package s)
@@ -1413,17 +1410,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
       )
     )
   (add-hook 'go-mode-hook 'setup-go-mode-env)
-  (add-hook 'before-save 'gofmt-before-save)
-
-  (defun her-apply-function (orig-fun name)
-    "wgo support"
-    (interactive)
-    (let ((res (funcall orig-fun name)))
-      (if (or (string= name "*gocode*") (string= name "*compilation*"))
-	  (setup-go-mode-env)
-	)
-      res))
-  (advice-add 'generate-new-buffer :around #'her-apply-function))
+  (add-hook 'before-save 'gofmt-before-save))
 
 (use-package company-go
   :after (company)
