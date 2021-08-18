@@ -1442,7 +1442,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (add-to-list 'company-backends 'company-lua))
 
 (use-package love-minor-mode
-  :ensure t)
+  :quelpa (love-minor-mode :fetcher github :repo "mhcerri/love-minor-mode"))
 
 (use-package web-mode
   :defer t
