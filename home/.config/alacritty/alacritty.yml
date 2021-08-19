@@ -72,16 +72,43 @@ key_bindings:
     mode: Vi|~Search
     action: ToggleViMode
 
+  - key: Escape
+    mode: Vi|~Search
+    action: ToggleViMode
+
   # Make navigation in Vi mode more natural
   - key: PageUp
     mode: Vi
     action: ScrollPageUp
+
   - key: PageDown
     mode: Vi
     action: ScrollPageDown
+
   - key: Home
     mode: Vi
     action: First
+
   - key: End
     mode: Vi
     action: Last
+
+  - mods: Control
+    key: Left
+    mode: Vi
+    action: SemanticLeft
+
+  - mods: Control
+    key: Right
+    mode: Vi
+    action: SemanticRightEnd
+
+  - mods: Control
+    key: Up
+    mode: Vi
+    action: Up
+
+  - mods: Control
+    key: Down
+    mode: Vi
+    action: Down
