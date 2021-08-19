@@ -71,3 +71,17 @@ key_bindings:
   - key: Return
     mode: Vi|~Search
     action: ToggleViMode
+
+  # Make navigation in Vi mode more natural
+  - key: PageUp
+    mode: Vi
+    action: ScrollPageUp
+  - key: PageDown
+    mode: Vi
+    action: ScrollPageDown
+  - key: Home
+    mode: Vi
+    action: First
+  - key: End
+    mode: Vi
+    action: Last
