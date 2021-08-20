@@ -3,8 +3,8 @@ Description=Emacs: the extensible, self-documenting text editor
 
 [Service]
 Type=forking
-ExecStart=%h/.local/share/systemd-emacs/emacs -nw --daemon
-ExecStop=%h/.local/share/systemd-emacs/emacsclient --eval "(kill-emacs)"
+ExecStart=%h/.local/share/systemd/bin/emacs -nw --daemon
+ExecStop=%h/.local/share/systemd/bin/emacsclient --eval "(kill-emacs)"
 Environment="SSH_AUTH_SOCK=%t/keyring/ssh" "LC_TIME=en_US.UTF-8" "COLORTERM=truecolor"
 Restart=always
 
