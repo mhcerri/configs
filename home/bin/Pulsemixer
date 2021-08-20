@@ -1,0 +1,2 @@
+#!/bin/sh
+exec i3-sensible-terminal -e pulsemixer
