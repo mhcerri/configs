@@ -1,0 +1,23 @@
+#!/bin/bash
+program=$(basename "$0")
+here=$(readlink -f "$(dirname "$0")")
+
+full_path=
+for path in ~/bin ~/.local/bin ~/.local/var/bin \
+		  /bin /usr/bin /usr/local/bin
+		  do
+	if [ "$(readlink -f "$path")" = "$here" ]; then
+		continue
+	fi
+	if [ -x "$path/$program" ]; then
+		full_path="$path/$program"
+		break
+	fi
+done
+
+if [ -z "$full_path" ]; then
+	echo "Cannot find $program binary!" >&2
+	exit 1
+fi
+
+exec "$full_path" "$@"
