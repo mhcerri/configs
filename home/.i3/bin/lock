@@ -4,8 +4,17 @@
 #convert "$SS" -blur 0x5 "$SS"
 #i3lock -i "$SS" "$@"
 #rm "$SS"
-i3lock "$@"
-todo=~/Dropbox/org/todos.org
-if [ -f "$todo" ]; then
-	notify-send -a "To Dos" -t 30000 "$(echo "$todo\n==="; grep '^\*' "$todo" | grep -v DONE | tac)"
-fi
+
+# Workaround to avoid showing dunst notifications while i3lock is
+# active:
+
+# 1. Kill compton
+pkill -x compton
+killed="$?"
+
+# 2. Call i3lock with -n (no fork), so the command doesn't return
+# until the screen is unlocked.
+i3lock -n "$@"
+
+# 3. If compton was killed, start it again in background
+[ "$killed" -eq 0 ] && compton -b
