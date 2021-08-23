@@ -357,6 +357,11 @@
     match_transient = yes
     set_transient = no
 
+[mattermost_direct]
+    desktop_entry = "Firefox"
+    summary = "Direct message"
+    script = ~/.config/dunst/duplicate-notification.sh
+
 # Make the handling of transient notifications more strict by making them not
 # be placed in history.
 #[transient_history_ignore]
