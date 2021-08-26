@@ -7,7 +7,7 @@ body="$3"
 icon="$4"
 urgency="$5"
 
-tag='[fix]'
+tag='↩️'
 
 if echo "$summary" | grep -F "$tag" &> /dev/null; then
 	echo "Skipping tagged notification."

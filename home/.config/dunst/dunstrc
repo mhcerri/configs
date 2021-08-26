@@ -358,8 +358,8 @@
     set_transient = no
 
 [mattermost_direct]
-    desktop_entry = "Firefox"
-    summary = "Direct message"
+    appname = Firefox
+    skip_display = yes
     script = ~/.config/dunst/duplicate-notification.sh
 
 # Make the handling of transient notifications more strict by making them not
