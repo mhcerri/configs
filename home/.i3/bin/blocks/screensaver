@@ -1,0 +1,56 @@
+#!/bin/bash -eu
+
+# Labels
+LABEL='SS'
+LABEL_ON="${LABEL_ON:-$LABEL}"
+LABEL_OFF="${LABEL_OFF:-$LABEL}"
+
+# Colors
+COLOR_ON='#222222'
+COLOR_OFF='#FF0000'
+
+# Values and commands
+OFF_VALUE=0
+ON_COMMAND='xset s 300 300; xset +dpms'
+OFF_COMMAND='xset s 0 0; xset -dpms'
+
+get_timeout() {
+	xset q | awk '
+	     # Do not show any sections by default
+	     /^[^ ]/ {
+	     	show = 0
+	     }
+
+	     # If under the right section, show the value
+	     # if the line matches with timeout
+	     show == 1 && /timeout:/ {
+	     	print $2
+	     }
+
+	     # Only show lines under the right section
+	     /^Screen Saver:/ {
+	     	show = 1
+	     }'
+}
+
+# Toggle on click
+if [ -n "$BLOCK_BUTTON" ]; then
+	if [ "$(get_timeout)" = "$OFF_VALUE" ]; then
+		eval "$ON_COMMAND"
+	else
+		eval "$OFF_COMMAND"
+	fi
+fi
+
+# Show status
+if [ "$(get_timeout)" = "$OFF_VALUE" ]; then
+	label="$LABEL_OFF"
+	color="$COLOR_OFF"
+else
+	label="$LABEL_ON"
+	color="$COLOR_ON"
+fi
+
+echo "$label"
+echo "$label"
+echo "$color"
