@@ -1673,9 +1673,10 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (setq
    mu4e-index-cleanup nil      ;; don't do a full cleanup check
    mu4e-index-lazy-check t)    ;; don't consider up-to-date dirs
+  ;; update every N minutes
   (setq
-   mu4e-get-mail-command "true" ;; or fetchmail, or ...
-   mu4e-update-interval 120)    ;; update every 5 minutes)
+   mu4e-get-mail-command "~/.mutt/bin/mbsync.sh -a"
+   mu4e-update-interval (* 5 60))
   )
 
 (use-package mu4e-alert
