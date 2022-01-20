@@ -259,7 +259,7 @@ exec --no-startup-id xfce4-power-manager
 # Screensaver: xss-lock
 bindsym Control+mod1+l exec loginctl lock-session
 exec --no-startup-id xset s 300
-exec --no-startup-id xss-lock -- ~/.i3/bin/lock -c 000000
+exec --no-startup-id xss-lock -- ~/.i3/bin/lock
 
 # Screensaver: xautolock
 #bindsym Control+mod1+l exec xautolock -locknow

@@ -1,20 +1,41 @@
-#!/bin/sh
-#SS="$HOME/.i3lock-blur.png"
-#scrot "$SS"
-#convert "$SS" -blur 0x5 "$SS"
-#i3lock -i "$SS" "$@"
-#rm "$SS"
+#!/bin/bash -eu
 
 # Workaround to avoid showing dunst notifications while i3lock is
 # active:
 
 # 1. Kill compton
-pkill -x compton
-killed="$?"
+killed=0
+pkill -x compton && killed=1
+if [ "$killed" -ne 0 ]; then
+	echo "Compton was killed!"
+fi
 
 # 2. Call i3lock with -n (no fork), so the command doesn't return
 # until the screen is unlocked.
-i3lock -n "$@"
+text_color=222222
+i3lock_args=(-n -c 000000)
+color_args=(
+	--pass-media
+	--composite
+	--clock
+	--ring-width 1.0
+	--radius 110
+	--insidever-color 00000000
+	--ringver-color 008888
+	--time-color "$text_color"
+	--date-color "$text_color"
+	--layout-color "$text_color"
+	--greeter-color "$text_color"
+)
+if ! i3lock "${i3lock_args[@]}" "${color_args[@]}" "$@"; then
+	echo "Failed to run i3lock-color, trying plain i3lock..."
+	i3lock "${i3lock_args[@]}" "$@"
+fi
 
 # 3. If compton was killed, start it again in background
-[ "$killed" -eq 0 ] && compton -b
+if [ "$killed" -ne 0 ]; then
+	echo "Restarting compton..."
+	compton -b
+fi
+
+exit 0
