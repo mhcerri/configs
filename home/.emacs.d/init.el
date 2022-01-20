@@ -1635,6 +1635,14 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (custom-set-faces
    '(mu4e-replied-face ((t (:inherit default)))))
 
+  ;; Make highlighted line better
+  (set-face-attribute 'mu4e-header-highlight-face nil :underline nil)
+  (set-face-attribute 'mu4e-header-highlight-face nil :reverse-video t)
+
+  ;; Change the color of the unread face to blueish
+  (set-face-attribute 'mu4e-unread-face nil :foreground
+		      (face-attribute 'message-header-name :foreground))
+
   ;; Configure compose mode
   (add-hook
    'mu4e-compose-mode-hook
