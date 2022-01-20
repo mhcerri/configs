@@ -1652,6 +1652,9 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
       ;;(auto-fill-mode 1) ; Use M-q instead
       (whitespace-mode -1)))
 
+  ;; Mail signature
+  (setq mu4e-compose-signature "Regards,\nMarcelo\n")
+
   ;; Mail view
   (setq mu4e-view-show-addresses t)
   (setq mu4e-view-show-images t)
