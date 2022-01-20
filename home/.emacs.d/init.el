@@ -1659,8 +1659,18 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (setq mu4e-view-show-addresses t)
   (setq mu4e-view-show-images t)
   (setq mu4e-view-prefer-html nil)
+
   ;; Required by mbsync
-  (setq mu4e-change-filenames-when-moving t))
+  (setq mu4e-change-filenames-when-moving t)
+
+  ;; Make mu4e faster
+  (setq
+   mu4e-index-cleanup nil      ;; don't do a full cleanup check
+   mu4e-index-lazy-check t)    ;; don't consider up-to-date dirs
+  (setq
+   mu4e-get-mail-command "true" ;; or fetchmail, or ...
+   mu4e-update-interval 120)    ;; update every 5 minutes)
+  )
 
 (use-package mu4e-alert
   :after (mu4e)
