@@ -1575,7 +1575,8 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 	  (:thread-subject . nil)))
 
   ;(setq mu4e-use-fancy-chars t)
-  (setq mu4e-headers-thread-child-prefix '("├>" . "├▸ ")
+  (setq mu4e-headers-thread-mark-as-orphan 'first
+        mu4e-headers-thread-child-prefix '("├>" . "├▸ ")
 	mu4e-headers-thread-first-child-prefix '("├>" . "├▸ ")
         mu4e-headers-thread-last-child-prefix '("└>" . "└▸ ")
         mu4e-headers-thread-connection-prefix '("│" . "│ ")
