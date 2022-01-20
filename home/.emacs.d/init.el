@@ -1599,6 +1599,20 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 	    :name "Sent" :key ?s
 	    :query (format "maildir:\"%s\"" mu4e-sent-folder))))
 
+  ;; mu4e actions (access via "a")
+  (defun ~mu4e-action-save-message (msg)
+    "Save email to a temp file."
+    (interactive)
+    (let ((src (mu4e-message-field msg :path))
+	  (dst (read-file-name "Save to file: ")))
+      (copy-file src dst)
+      (message (concat "Saved file: " dst))))
+
+  (dolist (l '(mu4e-headers-actions mu4e-view-actions))
+    (dolist (i '(("Save email" . ~mu4e-action-save-message)
+		 ("Apply mbox" . mu4e-action-git-apply-mbox)))
+      (add-to-list l i 't)))
+
   ;; Utility functions for shorcuts
   (defun ~mu4e-headers-mark-thread-read ()
     "Mark thread under the cursor as read."
