@@ -32,6 +32,16 @@ if command -v fd &> /dev/null; then
 fi
 
 #
+# Default color scheme for fzf generated with:
+# https://minsw.github.io/fzf-color-picker/
+#
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS"'
+ --color=fg:-1,bg:-1,hl:#aa4400
+ --color=fg+:#d0d0d0,bg+:#262626,hl+:#ff6600
+ --color=info:#aa4400,prompt:#ff6600,pointer:#ff6600
+ --color=marker:#9922ff,spinner:#ff6600,header:#aa4400'
+
+#
 # Add fcd to easily change directories.
 #
 _fcd_config=~/.fcd.locations
@@ -61,8 +71,8 @@ fcd() {
 		return 1
 	fi
 
-	if dir=$(echo "$opts" | FZF_DEFAULT_OPTS="$_fcd_fzf_opts" fzf) && [ -d "$dir" ]; then
-		cd "$dir"
+	if dir=$(echo "$opts" | FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} $_fcd_fzf_opts" fzf) && [ -d "$dir" ]; then
+		cd "$dir" || true
 		return 0
 	fi
 
