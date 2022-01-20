@@ -1588,7 +1588,10 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (setq mu4e-bookmarks
 	`(,(make-mu4e-bookmark
 	    :name "Inbox" :key ?i
-	    :query (format "maildir:\"%s\"" "/INBOX"))
+	    :query (format "maildir:\"/INBOX\""))
+	  ,(make-mu4e-bookmark
+	    :name "Inbox (unread)" :key ?I
+	    :query (format "(maildir:\"/INBOX\") AND (flag:unread)"))
 	  ,(make-mu4e-bookmark
 	    :name "Draft" :key ?d
 	    :query (format "maildir:\"%s\"" mu4e-drafts-folder))
