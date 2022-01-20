@@ -242,7 +242,7 @@ exec_always --no-startup-id xsetroot -solid '#555555'
 # Make sure to set IgnoreLid=true in /etc/UPower/UPower.conf
 # And configure lid behaviour in /etc/systemd/logind.conf
 exec --no-startup-id xfsettingsd
-exec --no-startup-id ~/.screenlayout/default.sh
+exec --no-startup-id sh -c 'sleep 1; ~/.screenlayout/default.sh'
 exec --no-startup-id screen-monitor.sh ~/.screenlayout/default.sh
 exec --no-startup-id dunst
 exec --no-startup-id compton
