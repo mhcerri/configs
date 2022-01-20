@@ -183,6 +183,9 @@
    :url "https://github.com/quelpa/quelpa-use-package.git"))
 (require 'quelpa-use-package)
 
+;; Add support for extended bindings with use-package
+(use-package general)
+
 ;; Hide modes from status bar (used with use-package)
 (use-package diminish
   :config
