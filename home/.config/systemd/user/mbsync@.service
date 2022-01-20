@@ -6,6 +6,7 @@ ConditionPathExists=%h/.mbsyncrc
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/mbsync -Dm %i
+ExecStartPost=-%h/.local/var/bin/mu index
 
 [Install]
 WantedBy=default.target
