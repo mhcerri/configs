@@ -40,12 +40,14 @@ command=~/.i3/bin/blocks/screensaver
 interval=1
 
 [keyindicator]
+command=~/.i3/bin/blocks/keyindicator
 instance=CAPS
 interval=once
 signal=11
 separator=false
 
 [keyindicator]
+command=~/.i3/bin/blocks/keyindicator
 instance=NUM
 interval=once
 signal=11
