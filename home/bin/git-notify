@@ -3,7 +3,7 @@ set -e
 
 # Default values:
 SAVED_DIR=~/.git-notify/
-NOTIFY_CMD="notify-send --expire-time=0 %s"
+NOTIFY_CMD="notify-send --urgency=low --expire-time=0 %s"
 
 # Load configs
 config=~/.git-notify.conf
