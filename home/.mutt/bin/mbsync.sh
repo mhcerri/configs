@@ -7,8 +7,13 @@ notify() {
 	type="$1"
 	shift
 
+	args=()
+	if [ "$type" = 'info' ]; then
+		args+=('--urgency=low')
+	fi
+
 	if [ -n "$DISPLAY" ]; then
-		notify-send -i "$type" "$title" "$*"
+		notify-send "${args[@]}" -i "$type" "$title" "$*"
 	else
 		echo "$type: $*" >&2
 	fi
