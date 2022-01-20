@@ -1539,12 +1539,6 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   :load-path "~/Documents/workspace/mu/mu4e/"
   :bind
   (("C-c @" . mu4e))
-  :hook
-  (((mu4e-main-mode mu4e-headers-mode mu4e-view-mode) .
-    (lambda () (~disable-line-number))))
-  :commands
-  (mu4e
-   mu4e-update-index)
   :config
   ;; Use my custom mu
   (setq mu4e-mu-binary "~/Documents/workspace/mu/mu/mu")
