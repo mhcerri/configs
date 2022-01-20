@@ -1539,11 +1539,13 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   :load-path "~/Documents/workspace/mu/mu4e/"
   :bind
   (("C-c @" . mu4e))
+  :init
+  ;; Use mu4e for e-mail in emacs
+  (setq mail-user-agent 'mu4e-user-agent)
+  (set-variable 'read-mail-command 'mu4e)
   :config
   ;; Use my custom mu
   (setq mu4e-mu-binary "~/Documents/workspace/mu/mu/mu")
-  ;; Use mu4e for e-mail in emacs
-  (setq mail-user-agent 'mu4e-user-agent)
   ;; Use ivy for prompts
   (setq mu4e-completing-read-function 'ivy-completing-read)
 
