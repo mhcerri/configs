@@ -1222,7 +1222,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   :ensure org-plus-contrib
   :after (company)
   :mode ("\\.org$" . org-mode)
-  :commands (org-mode orgstruct-mode orgtbl-mode)
+  :commands (org-mode orgtbl-mode)
   :config
   ;; Use org indent
   (setq org-startup-indented t)
@@ -1247,6 +1247,9 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
       (ignore-case t)
       (duplicates t)))
   (add-to-list 'company-backends '~org-keyword-backend))
+
+;; Replacing orgstruct-mode
+(use-package outshine)
 
 (use-package evil-org
   :after (:all evil org)
@@ -1486,7 +1489,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
     (re-search-forward "^$")
     (forward-char 1)
     ;; Enable org modes
-    (orgstruct-mode)
+    (outshine-mode)
     (orgtbl-mode)))
 
 (use-package message
@@ -1511,9 +1514,8 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
     (re-search-forward "^$")
     (forward-char 1)
     ;; Enable org modes
-    (orgstruct-mode)
-    (orgtbl-mode)
-    )
+    (outshine-mode)
+    (orgtbl-mode))
   :config
   ;; This is needed to allow msmtp to do its magic:
   (setq message-sendmail-f-is-evil 't)
@@ -1598,8 +1600,8 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (add-hook
    'mu4e-compose-mode-hook
    '(lambda ()
-      (orgstruct++-mode)
       (orgtbl-mode)
+      (outshine-mode)
       ;;(auto-fill-mode 1) ; Use M-q instead
       (whitespace-mode -1)))
 
