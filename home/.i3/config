@@ -287,3 +287,10 @@ exec --no-startup-id autokey-gtk
 exec --no-startup-id nice -n 5 dropbox start
 exec --no-startup-id nice -n 5 insync start
 exec --no-startup-id cryfs-ask ~/GDrive/USP/.private/ ~/Private/
+exec --no-startup-id sh -c 'pkill dunst; ~/Documents/workspace/dunst/dunst'
+
+# Dunst
+bindsym $mod+Escape         exec --no-startup-id ~/Documents/workspace/dunst/dunstctl close
+bindsym Control+$mod+Escape exec --no-startup-id ~/Documents/workspace/dunst/dunstctl close-all
+bindsym $mod+dead_grave     exec --no-startup-id ~/Documents/workspace/dunst/dunstctl history-pop
+bindsym $mod+F1             exec --no-startup-id ~/Documents/workspace/dunst/dunstctl context
