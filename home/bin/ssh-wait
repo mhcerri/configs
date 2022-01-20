@@ -20,7 +20,9 @@ for (my $i = 0; $i <= $#ARGV; $i++) {
 		# Ignore
 	}
 	else {
-		($domain, ) = reverse split(/@/, $ARGV[$i], 2);
+		if (!defined $domain) {
+			($domain, ) = reverse split(/@/, $ARGV[$i], 2);
+		}
 	}
 }
 
