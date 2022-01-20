@@ -31,6 +31,8 @@
     # screen width minus the width defined in within the geometry option.
     geometry = "600x5-30+20"
 
+    scale = 1
+
     # Show how many messages are currently hidden (because of geometry).
     indicate_hidden = yes
 
@@ -359,8 +361,9 @@
 
 [mattermost_direct]
     appname = Firefox
-    skip_display = yes
-    script = ~/.config/dunst/duplicate-notification.sh
+    #skip_display = yes
+    #script = ~/.config/dunst/duplicate-notification.sh
+    ignore_close = yes
 
 # Make the handling of transient notifications more strict by making them not
 # be placed in history.
