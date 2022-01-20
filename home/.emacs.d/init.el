@@ -1381,12 +1381,18 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   :defer t
   :hook
   ((python-mode . elpy-enable))
+  :init
+  ;; Fix error in process sentinel..
+  (setenv "PYTHONIOENCODING" "utf-8")
+  (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
+  (add-to-list 'process-coding-system-alist '("elpy" . (utf-8 . utf-8)))
+  (add-to-list 'process-coding-system-alist '("flake8" . (utf-8 . utf-8)))
   :config
   ;; Set python3 as default:
   (setq python-shell-interpreter "python3")
-  (setq elpy-rpc-python-command "python3"))
+  (setq elpy-rpc-python-command "python3")
   (setq flycheck-python-pycompile-executable "python3")
-  (setq flycheck-python-flake8-executable "flake8")
+  (setq flycheck-python-flake8-executable "flake8"))
 
 (use-package company-jedi
   :hook (python-mode . ~company-jedi)
