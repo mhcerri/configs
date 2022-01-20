@@ -1537,8 +1537,13 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 (use-package mu4e
   ;; Always use custom mu binaries:
   :load-path "~/Documents/workspace/mu/mu4e/"
-  :bind
-  (("C-c @" . mu4e))
+  :general
+  ("C-c @"  'mu4e)
+  (:states 'normal :keymaps 'mu4e-headers-mode-map
+	   "N"            '~mu4e-headers-show-unread
+           "C-r"          '~mu4e-headers-mark-thread-read
+           "<insert>"     '~mu4e-headers-mark-thread-read
+           "<insertchar>" '~mu4e-headers-mark-thread-read)
   :init
   ;; Use mu4e for e-mail in emacs
   (setq mail-user-agent 'mu4e-user-agent)
@@ -1586,6 +1591,23 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 	  ,(make-mu4e-bookmark
 	    :name "Sent" :key ?s
 	    :query (format "maildir:\"%s\"" mu4e-sent-folder))))
+
+  ;; Utility functions for shorcuts
+  (defun ~mu4e-headers-mark-thread-read ()
+    "Mark thread under the cursor as read."
+    (interactive)
+    (mu4e~mark-in-context
+     (when (not (or (null mu4e~mark-map)
+		    (zerop (hash-table-count mu4e~mark-map))))
+       ;(mu4e-mark-unmark-all)
+       (mu4e-warn "ABORTING! Existing marks...")))
+    (mu4e-headers-mark-thread nil '(read . nil))
+    (mu4e-mark-execute-all t))
+
+  (defun ~mu4e-headers-show-unread ()
+    "Filter only the unread messages."
+    (interactive)
+    (mu4e-headers-search-narrow "flag:unread"))
 
   ;; Faces
   ;; Do not highlight replied messages because that is too confusing...
