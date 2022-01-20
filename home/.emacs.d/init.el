@@ -1648,9 +1648,14 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (add-hook
    'mu4e-compose-mode-hook
    '(lambda ()
-      (orgtbl-mode)
+      ;; "org-mode" minor mode
       (outshine-mode)
-      ;;(auto-fill-mode 1) ; Use M-q instead
+      (orgtbl-mode)
+      ;; Always GPG sign the messages
+      (mml-secure-message-sign-pgp)
+      ;; Use M-q instead
+      ;;(auto-fill-mode 1)
+      ;; Do not mark trailing spaces as red
       (whitespace-mode -1)))
 
   ;; Mail signature
