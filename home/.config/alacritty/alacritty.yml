@@ -76,6 +76,22 @@ key_bindings:
     mode: Vi|~Search
     action: ToggleViMode
 
+  # Reverse and regularsearch
+  - mods: Shift
+    key: Slash
+    mode: Vi
+    action: SearchBackward
+
+  - mods: Control
+    key: F
+    mode: Vi
+    action: SearchForward
+
+  - mods: Control|Shift
+    key: F
+    mode: Vi
+    action: SearchBackward
+
   # Make navigation in Vi mode more natural
   - key: PageUp
     mode: Vi
@@ -89,7 +105,24 @@ key_bindings:
     mode: Vi
     action: First
 
+  - mods: Control
+    key: A
+    mode: Vi
+    action: First
+
   - key: End
+    mode: Vi
+    action: First
+  - key: End
+    mode: Vi
+    action: Last
+
+  - mods: Control
+    key: E
+    mode: Vi
+    action: First
+  - mods: Control
+    key: E
     mode: Vi
     action: Last
 
