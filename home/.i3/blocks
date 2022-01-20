@@ -133,6 +133,7 @@ separator=false
 interval=10
 
 [temperature]
+command=/usr/share/i3blocks/temperature --chip '*-isa-*'
 interval=10
 
 # Battery indicator
