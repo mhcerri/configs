@@ -1544,6 +1544,11 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
            "C-r"          '~mu4e-headers-mark-thread-read
            "<insert>"     '~mu4e-headers-mark-thread-read
            "<insertchar>" '~mu4e-headers-mark-thread-read)
+  (:states 'normal :keymaps '(mu4e-main-mode-map
+                              mu4e-headers-mode-map
+                              mu4e-view-mode-map
+                              mu4e-compose-mode-map)
+           "<f5>"         'mu4e-update-mail-and-index)
   :init
   ;; Use mu4e for e-mail in emacs
   (setq mail-user-agent 'mu4e-user-agent)
