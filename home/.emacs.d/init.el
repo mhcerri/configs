@@ -597,6 +597,7 @@
   (setq ediff-diff-options ""))
 
 (use-package dired
+  :defer t
   :ensure nil ; builtin
   :init
   ;; Enable dired-find-alternate-file
@@ -1260,7 +1261,8 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (add-to-list 'company-backends '~org-keyword-backend))
 
 ;; Replacing orgstruct-mode
-(use-package outshine)
+(use-package outshine
+  :defer t)
 
 (use-package evil-org
   :after (:all evil org)
@@ -1444,7 +1446,8 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   :hook
   ((go-mode . go-eldoc-setup)))
 
-(use-package lua-mode)
+(use-package lua-mode
+  :defer t)
 
 (use-package company-lua
   :after (company)
@@ -1452,6 +1455,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (add-to-list 'company-backends 'company-lua))
 
 (use-package love-minor-mode
+  :defer t
   :quelpa (love-minor-mode :fetcher github :repo "mhcerri/love-minor-mode"))
 
 (use-package web-mode
