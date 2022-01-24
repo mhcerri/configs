@@ -1,0 +1,2 @@
+#!/bin/bash -eu
+exec emacs -nw --eval '(progn (mu4e '"'"'t)(mu4e-search "maildir:\"/INBOX\""))' "$@"
