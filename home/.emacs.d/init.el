@@ -1733,6 +1733,13 @@ to save a range of URLs."
   (setq mu4e-maildirs-extension-maildir-default-prefix " ")
   (mu4e-maildirs-extension))
 
+(use-package mu4e-column-faces
+  ;; Use my custom repo with a fix fixes and changes
+  :quelpa (mu4e-column-faces :fetcher github :repo "mhcerri/mu4e-column-faces")
+  :after (mu4e)
+  :config
+  (mu4e-column-faces-mode))
+
 (use-package mu4e-query-fragments
   :after (mu4e)
   :init
