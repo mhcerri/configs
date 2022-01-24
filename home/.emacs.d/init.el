@@ -9,8 +9,6 @@
 
 ;; Suppress welcome screen
 (setq inhibit-startup-screen t)
-(put 'inhibit-startup-echo-area-message 'saved-value t)
-(setq inhibit-startup-echo-area-message (user-login-name))
 
 ;; Tune garbage collector during startup
 (setq gc-cons-threshold (* 50 1000 1000))
