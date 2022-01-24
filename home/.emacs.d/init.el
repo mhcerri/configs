@@ -1594,7 +1594,8 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   ;; Avoid appending since for some reason use-package is evaluating :config
   ;; twice for mu4e
   (setq mu4e-bookmarks
-	`((:name "/INBOX"
+	`(;; Common folders
+	  (:name "/INBOX"
                  :key ?i
 	         :query "maildir:\"/INBOX\"")
 	  (:name "/INBOX (unread)"
@@ -1605,7 +1606,20 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 	         :query ,(format "maildir:\"%s\"" mu4e-drafts-folder))
 	  (:name ,mu4e-sent-folder
                  :key ?s
-	         :query ,(format "maildir:\"%s\"" mu4e-sent-folder))))
+	         :query ,(format "maildir:\"%s\"" mu4e-sent-folder))
+	  ;; Work folders
+	  (:name "/Bugs/Important"
+		 :key ?b
+		 :query "maildir:\"/Bugs/Important\"")
+          (:name "/Canonical Kernel Team"
+		 :key ?c
+		 :query "maildir:\"/Canonical Kernel Team\"")
+          (:name "/Public/Kernel Team"
+		 :key ?u
+		 :query "maildir:\"/Public/Kernel Team\"")
+	  (:name "/Internal/AllHands"
+		 :key ?a
+		 :query "maildir:\"/Internal/AllHands\"")))
 
   ;; mu4e actions (access via "a")
   (defun ~mu4e-action-save-message (msg)
