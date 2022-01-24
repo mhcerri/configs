@@ -282,6 +282,8 @@
   :config
   (xclip-mode 1))
 
+(use-package sr-speedbar)
+
 ;; Highlight current line
 (use-package hl-line
   :hook (after-change-major-mode . ~enable-hl-line-mode)
@@ -1683,6 +1685,10 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
    mu4e-get-mail-command "~/.mutt/bin/mbsync.sh -a"
    mu4e-update-interval (* 5 60))
   )
+
+(use-package mu4e-speedbar
+  :ensure nil ; Provided by mu4e above
+  :after (mu4e))
 
 (use-package mu4e-alert
   :after (mu4e)
