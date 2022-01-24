@@ -638,6 +638,14 @@
   ;; Enable it
   (ivy-mode 1))
 
+;;  Add more info to ivy prompts
+(use-package ivy-rich
+  :diminish
+  :after ivy
+  :config
+  (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
+  (ivy-rich-mode 1))
+
 (use-package swiper
   :diminish
   :bind
