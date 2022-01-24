@@ -1653,17 +1653,9 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
     (mu4e-headers-search-narrow "flag:unread"))
 
   ;; Faces
-  ;; Do not highlight replied messages because that is too confusing...
-  (custom-set-faces
-   '(mu4e-replied-face ((t (:inherit default)))))
-
   ;; Make highlighted line better
   (set-face-attribute 'mu4e-header-highlight-face nil :underline nil)
   (set-face-attribute 'mu4e-header-highlight-face nil :reverse-video t)
-
-  ;; Change the color of the unread face to blueish
-  (set-face-attribute 'mu4e-unread-face nil :foreground
-		      (face-attribute 'message-header-name :foreground))
 
   ;; Configure compose mode
   (add-hook
