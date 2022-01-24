@@ -1551,6 +1551,8 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
                               mu4e-view-mode-map
                               mu4e-compose-mode-map)
            "<f5>"         'mu4e-update-mail-and-index)
+  (:states 'normal :keymaps 'mu4e-view-mode-map
+	   "g u"          '~mu4e-view-copy-url)
   :init
   ;; Use mu4e for e-mail in emacs
   (setq mail-user-agent 'mu4e-user-agent)
@@ -1651,6 +1653,17 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
     "Filter only the unread messages."
     (interactive)
     (mu4e-headers-search-narrow "flag:unread"))
+
+  (defun ~mu4e-view-copy-url (&optional multi)
+    "Offer to copy URLs to the clipboard.
+If MULTI (prefix-argument) is nil, save a single one, otherwise, offer
+to save a range of URLs."
+    (interactive "P")
+    (mu4e~view-handle-urls
+     "URL to save" multi
+     (lambda (url)
+       (simpleclip-set-contents url)
+       (mu4e-message "Copied %s to clipboard" url))))
 
   ;; Faces
   ;; Make highlighted line better
