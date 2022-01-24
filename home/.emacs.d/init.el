@@ -180,6 +180,9 @@
    :fetcher git
    :url "https://github.com/quelpa/quelpa-use-package.git"))
 (require 'quelpa-use-package)
+;; To make possible to install via quelpa when using
+;; use-package-always-ensure
+(quelpa-use-package-activate-advice)
 
 ;; Add support for extended bindings with use-package
 (use-package general)
