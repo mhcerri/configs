@@ -1489,7 +1489,6 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   ((mail-mode . ~mail-mode))
   :init
   (defun ~mail-mode()
-    (message "TEST")
     (font-lock-add-keywords nil
 			    '(("^[ \t]*>[ \t]*>[ \t]*>.*$"
 			       (0 'mail-multiply-quoted-text-face))
