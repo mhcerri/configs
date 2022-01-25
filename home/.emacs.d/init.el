@@ -1733,6 +1733,22 @@ to save a range of URLs."
   (setq mu4e-maildirs-extension-maildir-default-prefix " ")
   (mu4e-maildirs-extension))
 
+;; TODO: Investigate issues related to byte compiled .elc files. In
+;; order to make mu4e-column-faces work properly is necessary to
+;; remove two .elc files:
+;;
+;; 1. ~/.emacs.d/elpa/mu4e-column-faces-*/mu4e-column-faces.elc
+;;    mu4e-column-faces doesn't work at all while this file is not
+;;    removed.
+;;
+;; 2. mu/mu4e/mu4e-helpers.elc
+;;    Without removing this file, any line in the headers view will
+;;    loose their faces when read or unread.
+;;
+;; After removing those two .elc files, it's possible to generated
+;; them again manually with byte-compile-file and mu4e-column-faces
+;; will still work.
+;;
 (use-package mu4e-column-faces
   ;; Use my custom repo with a fix fixes and changes
   :quelpa (mu4e-column-faces :fetcher github :repo "mhcerri/mu4e-column-faces")
