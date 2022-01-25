@@ -1554,7 +1554,8 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   :general
   ("C-c @"  'mu4e)
   (:states 'normal :keymaps 'mu4e-headers-mode-map
-	   "N"            '~mu4e-headers-show-unread
+	   "N"            '~mu4e-headers-narrow-unread
+	   "I"            '~mu4e-headers-narrow-important
            "C-r"          '~mu4e-headers-mark-thread-read
            "<insert>"     '~mu4e-headers-mark-thread-read
            "<insertchar>" '~mu4e-headers-mark-thread-read)
@@ -1612,9 +1613,9 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 	  (:name "/INBOX"
                  :key ?i
 	         :query "maildir:\"/INBOX\"")
-	  (:name "/INBOX (unread)"
+	  (:name "/INBOX (unread & flagged)"
                  :key ?I
-	         :query "(maildir:\"/INBOX\") AND (flag:unread)")
+	         :query "(maildir:\"/INBOX\") AND (flag:unread OR flag:flagged)")
 	  (:name ,mu4e-drafts-folder
                  :key ?d
 	         :query ,(format "maildir:\"%s\"" mu4e-drafts-folder))
@@ -1661,10 +1662,15 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
     (mu4e-headers-mark-thread nil '(read . nil))
     (mu4e-mark-execute-all t))
 
-  (defun ~mu4e-headers-show-unread ()
-    "Filter only the unread messages."
+  (defun ~mu4e-headers-narrow-unread ()
+    "Narrow the filter to unread messages."
     (interactive)
     (mu4e-headers-search-narrow "flag:unread"))
+
+  (defun ~mu4e-headers-narrow-important ()
+    "Narrow the filter to unread and flagged messages."
+    (interactive)
+    (mu4e-headers-search-narrow "flag:unread OR flag:flagged"))
 
   (defun ~mu4e-view-copy-url (&optional multi)
     "Offer to copy URLs to the clipboard.
