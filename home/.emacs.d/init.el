@@ -1577,7 +1577,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (setq mu4e-completing-read-function 'ivy-completing-read)
 
   ;; Path to Maildir directory
-  (setq mu4e-root-maildir "~/.mail/work2/")
+  (setq mu4e-root-maildir "~/.mail/work/")
 
   ;; The next are relative to `mu4e-maildir'
   ;; instead of strings, they can be functions too, see
