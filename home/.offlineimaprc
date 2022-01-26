@@ -13,7 +13,7 @@ quick = 0
 
 [Repository work-local]
 type = Maildir
-localfolders = ~/.mail/work/
+#localfolders = ~/.mail/work/
 
 [Repository work-remote]
 type = Gmail
