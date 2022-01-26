@@ -1563,7 +1563,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
                               mu4e-headers-mode-map
                               mu4e-view-mode-map
                               mu4e-compose-mode-map)
-           "<f5>"         'mu4e-update-mail-and-index)
+           "<f5>"         '~mu4e-update-mail-and-index)
   (:states 'normal :keymaps 'mu4e-view-mode-map
 	   "g u"          '~mu4e-view-copy-url)
   :init
@@ -1682,6 +1682,13 @@ to save a range of URLs."
      (lambda (url)
        (simpleclip-set-contents url)
        (mu4e-message "Copied %s to clipboard" url))))
+
+  (defun ~mu4e-update-mail-and-index (full)
+    "Run mu4e-update-mail-and-index using my mbsync quick profile by default."
+    (interactive "P")
+    (let* ((arg (if full "-a" "quick"))
+	   (mu4e-get-mail-command (format "~/.mutt/bin/mbsync.sh %s" arg)))
+      (mu4e-update-mail-and-index 't)))
 
   ;; Faces
   ;; Make highlighted line better
