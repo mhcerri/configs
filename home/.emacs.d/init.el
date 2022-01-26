@@ -1762,6 +1762,10 @@ to save a range of URLs."
   :config
   (mu4e-column-faces-mode))
 
+;; Diff "mode" for mu4e-view-mode (which is backed by gnus)
+(use-package message-view-patch
+  :hook (gnus-part-display . message-view-patch-highlight))
+
 (use-package mu4e-query-fragments
   :after (mu4e)
   :init
