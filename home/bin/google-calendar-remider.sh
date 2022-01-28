@@ -17,15 +17,6 @@ if ! which gcalcli &>/dev/null; then
     exit 1
 fi
 
-# List just your own calendars
-calendars="$(
-    gcalcli --nocolor list |
-    perl -ne '
-        if (/^\s*owner\s+(.*)/) {
-            printf("--calendar \"%s\"\n", $1);
-        }
-    ')"
-
 # Notification command
 cmd='"notify-send           \
         -u critical         \
@@ -35,4 +26,4 @@ cmd='"notify-send           \
         %s"'
 
 # Check reminders
-eval gcalcli "$calendars" remind "${1:-10}" "$cmd"
+eval gcalcli remind "${1:-10}" "$cmd"
