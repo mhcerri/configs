@@ -1690,6 +1690,53 @@ to save a range of URLs."
 	   (mu4e-get-mail-command (format "~/.mutt/bin/mbsync.sh %s" arg)))
       (mu4e-update-mail-and-index 't)))
 
+  ;; Make thread subjects smarter
+  ;; mu4e-headers-fields would have been a better alternative, but
+  ;; that doesn't work well with mu4e-columns-faces.
+  (defvar-local ~mu4e~headers-thread-subject-state '())
+  (defun ~mu4e~headers-thread-subject (msg)
+    "Get the subject if it doesn't match the parent's subject,
+ignoring prefixes added for replies. In other words, show the
+subject of a thread only once, similar to e.g. 'mutt'."
+    (let* ((tinfo  (mu4e-message-field msg :meta))
+	   (level (plist-get tinfo :level))
+           (subj (mu4e-msg-field msg :subject)))
+      ;; Trim and pad the list (if missing levels)
+      (let* ((length (length ~mu4e~headers-thread-subject-state))
+	     (padding (make-list (max 0 (- level length)) nil)))
+	(setq ~mu4e~headers-thread-subject-state
+	      (cl-subseq
+	       (append ~mu4e~headers-thread-subject-state padding)
+	       0 level)))
+      ;; Get parent
+      (let* ((parent (car (last ~mu4e~headers-thread-subject-state)))
+	     (reply-regexp "^\\(Re\\|RE\\)[ \t]*:[ \t]*"))
+	;; Append to the list for the next header
+	(setq ~mu4e~headers-thread-subject-state
+	      (append ~mu4e~headers-thread-subject-state (list subj)))
+	(concat
+	 ;; prefix subject with a thread indicator
+	 (mu4e~headers-thread-prefix tinfo)
+	 ;; Compare with the parent subject to decide if we can suppress
+	 ;; it or not:
+	 (if (string-equal
+	      (replace-regexp-in-string reply-regexp "" (or parent ""))
+	      (replace-regexp-in-string reply-regexp "" (or subj "")))
+	     "" subj)))))
+  (defun ~mu4e~headers-cached-thread-subject (msg)
+    "try to cache the return of ~mu4e~headers-thread-subject, so
+the header prefix and subject do not break when updating a single
+message without the thread context when viewing or flagging a
+message."
+    (let* ((tinfo  (mu4e-message-field msg :meta)))
+      (when (not (plist-get tinfo :cached-thread-subject))
+	(setq tinfo
+	      (plist-put tinfo :cached-thread-subject
+			 (~mu4e~headers-thread-subject msg))))
+      (plist-get tinfo :cached-thread-subject)))
+  (advice-add 'mu4e~headers-thread-subject :override
+	      #'~mu4e~headers-cached-thread-subject)
+
   ;; Faces
   ;; Make highlighted line better
   (set-face-attribute 'mu4e-header-highlight-face nil :underline nil)
