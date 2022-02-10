@@ -1865,12 +1865,17 @@ message."
   :ensure nil ; Provided by mu4e above
   :after (mu4e))
 
+(use-package alert
+  :defer t
+  :init
+  (setq alert-fade-time 0))
+
 (use-package mu4e-alert
   :after (mu4e)
+  :init
+  (setq mu4e-alert-interesting-mail-query "(maildir:\"/INBOX\") AND (flag:unread)")
   :config
-  (mu4e-alert-set-default-style 'libnotify)
-  (add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
-  (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display))
+  (mu4e-alert-enable-notifications))
 
 (use-package mu4e-jump-to-list
   :after (mu4e))
