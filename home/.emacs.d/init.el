@@ -1814,6 +1814,17 @@ message."
   (advice-add 'mu4e~headers-thread-subject :override
 	      #'~mu4e~headers-cached-thread-subject)
 
+  ;; Ignore unwanted contacts
+  (defun ~mu4e-contact-processor (contact)
+    (cond
+     ;; remove unwanted
+     ((string-match-p "no[t]?[-\\.]?repl\\(y\\|ies\\)" contact) nil)
+     ((string-match-p "@docs.google.com" contact) nil)
+     ((string-match-p ".launchpad.net" contact) nil)
+     ;; default
+     (t contact)))
+  (setq mu4e-contact-process-function '~mu4e-contact-processor)
+
   ;; Faces
   ;; Make highlighted line better
   (set-face-attribute 'mu4e-header-highlight-face nil :underline nil)
