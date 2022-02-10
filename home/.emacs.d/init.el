@@ -1033,6 +1033,19 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (if (not (version<= "26.0.50" emacs-version))
       (git-gutter:linum-setup)))
 
+;; LSP
+(use-package lsp-mode
+  :hook ((prog-mode . lsp-mode)
+	 (lsp-mode . lsp-enable-which-key-integration))
+  :init
+  (setq lsp-keymap-prefix "C-c l"))
+
+(use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode)
+  :init
+  (setq lsp-ui-sideline-show-hover t
+	lsp-ui-sideline-show-code-actions t))
+
 ;; Auto complete
 (use-package company
   :demand
