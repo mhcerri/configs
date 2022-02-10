@@ -1539,6 +1539,11 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   :hook
   ((message-mode . ~message-mode))
   :init
+  ;; Use custom format for the citation line:
+  (setq message-citation-line-function #'message-insert-formatted-citation-line)
+  ;; Use default format without the extra new line:
+  (setq message-citation-line-format "On %a, %b %d %Y, %N wrote:")
+
   (defun ~message-mode()
     (font-lock-add-keywords nil
 			    '(("^[ \t]*>[ \t]*>[ \t]*>.*$"
