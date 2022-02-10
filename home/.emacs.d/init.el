@@ -439,6 +439,7 @@
 
 (use-package evil-collection
   :after evil
+  :diminish (evil-collection-unimpaired-mode)
   :config
   (evil-collection-init))
 
@@ -943,7 +944,7 @@
   :commands (aggressive-indent))
 
 (use-package dtrt-indent
-  :diminish "DTRT"
+  :diminish
   :config
   (dtrt-indent-global-mode 1))
 
