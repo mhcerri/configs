@@ -1252,6 +1252,9 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (setq multi-term-program (getenv "SHELL"))
   (setq multi-term-switch-after-close 'PREVIOUS))
 
+(use-package eterm-256color
+  :hook (term-mode . eterm-256color-mode))
+
 ;; org mode
 (use-package org
   :ensure org-plus-contrib
