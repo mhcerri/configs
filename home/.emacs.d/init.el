@@ -1597,6 +1597,9 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
            "<f5>"         '~mu4e-update-mail-and-index)
   (:states 'normal :keymaps 'mu4e-view-mode-map
 	   "g u"          '~mu4e-view-copy-url)
+  (:states 'normal :keymaps '(mu4e-headers-mode-map
+			      mu4e-view-mode-map)
+	   "c p"          '~mu4e-compose-reply-patch)
   :init
   ;; Use mu4e for e-mail in emacs
   (setq mail-user-agent 'mu4e-user-agent)
@@ -1720,6 +1723,49 @@ to save a range of URLs."
     (let* ((arg (if full "-a" "quick"))
 	   (mu4e-get-mail-command (format "~/.mutt/bin/mbsync.sh %s" arg)))
       (mu4e-update-mail-and-index 't)))
+
+  (defun ~mu4e-compose-reply-patch-hook()
+    "Hook to edit replies to patches."
+    (remove-hook 'mu4e-compose-mode-hook
+		 #'~mu4e-compose-reply-patch-hook)
+    ;; Prompt for the patch action:
+    (let* ((prefix (mu4e-read-option
+		    "Patch action "
+		    '(("ack" . "ACK")
+		      ("nack" . "NACK")
+		      ("Applied" . "APPLIED"))))
+	   (body (pcase prefix
+		   ("ACK" (when (and (bound-and-true-p user-full-name)
+				     (bound-and-true-p user-mail-address))
+			    (format "Acked-by: %s <%s>"
+				    user-full-name
+				    user-mail-address)))
+		   ("APPLIED" "Applied. Thanks!")
+		   (prefix nil))))
+      ;; Update subject
+      (save-excursion
+	(goto-line 0)
+	(when (re-search-forward "^Subject:" nil t)
+	  (replace-match (format "\\& %s:" prefix) t)))
+      ;; Add acked-by tag
+      (when (bound-and-true-p body)
+	(save-excursion
+	  (insert (format "%s\n\n" body))))))
+
+  (defun ~mu4e-compose-reply-patch()
+    "Reply to patches with pre formated messages."
+    (interactive)
+    ;; The mu4e-compose-mode-hook is run asynchronously with
+    ;; mu4e-compose-reply. mu4e-compose-reply will request a reply
+    ;; message, and the hook is only invoked later when the server sends
+    ;; the reply command back. Because of that, it's not possible to
+    ;; override mu4e-compose-mode-hook only for a single
+    ;; mu4e-compose-reply call. The workaround is to register the
+    ;; special hook, call mu4e-compose-reply and then the hook will
+    ;; remove itself.
+    (add-hook 'mu4e-compose-mode-hook
+	      #'~mu4e-compose-reply-patch-hook)
+    (mu4e-compose-reply))
 
   ;; Make thread subjects smarter
   ;; mu4e-headers-fields would have been a better alternative, but
