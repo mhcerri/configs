@@ -57,5 +57,4 @@ close(OUT);
 my $message;
 $message = $sink_descs[$next_sink_idx];
 $message =~ s/'/"/g;
-system("notify-send '" . $message . "'");
-
+system("notify-send -u low '" . $message . "'");
