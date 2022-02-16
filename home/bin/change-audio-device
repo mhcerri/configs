@@ -5,77 +5,71 @@
 #
 ROFI=rofi-run
 
-#
-# Parse options
-#
-option="${1:-}"
-if [ -z "$option" ]; then
-	option=$( (echo output; echo input) | "$ROFI" -dmenu)
-fi
-case "$option" in
-output)
-	type='sink'
-	tag='Sink'
-	;;
-input)
-	type='source'
-	tag='Source'
-	;;
-*)
-	echo "Invalid option: $option"
-	exit 1
-esac
-
-#
-# Helper to store the options
-#
-#declare -A options
+# Helpers to store the options
 options=()
 add_option() {
-	[ -z "$index" ] && return
+	# add_option <IN|OUT> <index> <name> <desc>
 	# Exclude monitors
-	[[ "$3" = *Monitor* ]] && return
-	options+=( "${1}: ${3:-$2}" )
+	[[ -z "$2" ]] && return
+	[[ "$4" = *Monitor* ]] && return
+	options+=( "$(printf '%3s: %02d: %s' "${1}" "${2}" "${4:-$3}")" )
 }
 
-#
-# Retrieve list from pulseaudio
-#
-index=
-name=
-desc=
-while read -r line; do
-	case "$line" in
-	"${tag} #"*)
-		add_option "$index" "$name" "$desc"
-		index="${line#*#}"
-		name=
-		desc=
-		;;
-	Name:*)
-		name="${line#*:}"
-		name="${name# }"
-		;;
-	Description:*)
-		desc="${line#*:}"
-		desc="${desc# }"
-		;;
+get_tag() {
+	case "$1" in
+	OUT) echo 'Sink';;
+	IN)  echo 'Source';;
 	esac
-done < <(LC_ALL=C pactl list "${type}s")
-add_option "$index" "$name" "$desc"
+}
 
-#
+get_type() {
+	get_tag "$@" | tr '[:upper:]' '[:lower:]'
+}
+
+# List sources and sinks
+for dir in OUT IN; do
+	#
+	# Retrieve list from pulseaudio
+	#
+	index=
+	name=
+	desc=
+	tag=$(get_tag "$dir")
+	type=$(get_type "$dir")
+	while read -r line; do
+		case "$line" in
+		"${tag} #"*)
+			add_option "$dir" "$index" "$name" "$desc"
+			index="${line#*#}"
+			name=
+			desc=
+			;;
+		Name:*)
+			name="${line#*:}"
+			name="${name# }"
+			;;
+		Description:*)
+			desc="${line#*:}"
+			desc="${desc# }"
+			;;
+		esac
+	done < <(LC_ALL=C pactl list "${type}s")
+	add_option "$dir" "$index" "$name" "$desc"
+done
+
 # Ask user
-#
 choice=$(for opt in "${options[@]}"; do
 		 echo "$opt"
-	 done |
-	 "$ROFI" -dmenu)
+	 done | "$ROFI" -dmenu)
+
+# Parse choice
+dir=$(echo "$choice" | cut -d: -f1 | sed -r 's/(^\s*|\s*$)//g')
+index=$(echo "$choice" | cut -d: -f2 | sed -r 's/(^\s*|\s*$)//g')
+name=$(echo "$choice" | cut -d: -f3 | sed -r 's/(^\s*|\s*$)//g')
+type=$(get_type "$dir")
 
 # Chance device
-index="${choice%%:*}"
 pactl "set-default-${type}" "$index"
 
 # Notify
-name="${choice#*: }"
-notify-send -u low "$name"
+notify-send -u low "$dir: $name"
