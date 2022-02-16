@@ -1745,8 +1745,8 @@ to save a range of URLs."
       ;; Update subject
       (save-excursion
 	(goto-line 0)
-	(when (re-search-forward "^Subject:" nil t)
-	  (replace-match (format "\\& %s:" prefix) t)))
+	(when (re-search-forward "^\\(Subject:\\)\\([ \\t]*\\(Re\\|RE\\):\\)?" nil t)
+	  (replace-match (format "\\1 %s:" prefix) t)))
       ;; Add acked-by tag
       (when (bound-and-true-p body)
 	(save-excursion
