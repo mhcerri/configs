@@ -1921,7 +1921,7 @@ no user-interaction ongoing."
 ;;    mu4e-column-faces doesn't work at all while this file is not
 ;;    removed.
 ;;
-;; 2. mu/mu4e/mu4e-helpers.elc
+;; 2. mu/mu4e/mu4e-headers.elc
 ;;    Without removing this file, any line in the headers view will
 ;;    loose their faces when read or unread.
 ;;
