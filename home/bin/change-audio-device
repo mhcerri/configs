@@ -60,7 +60,7 @@ done
 # Ask user
 choice=$(for opt in "${options[@]}"; do
 		 echo "$opt"
-	 done | "$ROFI" -dmenu)
+	 done | "$ROFI" -dmenu -i)
 
 # Parse choice
 dir=$(echo "$choice" | cut -d: -f1 | sed -r 's/(^\s*|\s*$)//g')
