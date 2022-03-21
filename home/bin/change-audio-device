@@ -69,7 +69,10 @@ name=$(echo "$choice" | cut -d: -f3 | sed -r 's/(^\s*|\s*$)//g')
 type=$(get_type "$dir")
 
 # Chance device
-pactl "set-default-${type}" "$index"
+if ! out=$(pactl "set-default-${type}" "$index" 2>&1); then
+	notify-send -u low "Failed: pactl set-default-${type} $index" "$out"
+	exit 1
+fi
 
 # Notify
 notify-send -u low "$dir: $name"
