@@ -1607,6 +1607,8 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   ;; Use mu4e for e-mail in emacs
   (setq mail-user-agent 'mu4e-user-agent)
   (set-variable 'read-mail-command 'mu4e)
+  ;; Always encrypt to your self
+  (setq-local mml-secure-openpgp-encrypt-to-self t)
   :config
   ;; Use my custom mu
   (setq mu4e-mu-binary "~/Documents/workspace/mu/mu/mu")
