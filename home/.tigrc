@@ -27,5 +27,15 @@ set show-changes = no
 set main-view-id = yes
 
 # Start interactive rebase and exit tig
-bind main B <git rebase -i %(commit)~
-bind main R <git reset --hard %(commit)
+bind generic B <git rebase -i %(commit)~
+bind generic R <git reset --hard %(commit)
+
+bind diff <Up>        scroll-line-up
+bind diff <Down>      scroll-line-down
+bind diff <Ctrl-Up>   previous
+bind diff <Ctrl-Down> next
+
+bind blob <Up>        scroll-line-up
+bind blob <Down>      scroll-line-down
+bind blob <Ctrl-Up>   previous
+bind blob <Ctrl-Down> next
