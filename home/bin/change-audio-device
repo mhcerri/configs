@@ -64,7 +64,7 @@ choice=$(for opt in "${options[@]}"; do
 
 # Parse choice
 dir=$(echo "$choice" | cut -d: -f1 | sed -r 's/(^\s*|\s*$)//g')
-index=$(echo "$choice" | cut -d: -f2 | sed -r 's/(^\s*|\s*$)//g')
+index=$(echo "$choice" | cut -d: -f2 | sed -r 's/(^\s*0*|\s*$)//g')
 name=$(echo "$choice" | cut -d: -f3 | sed -r 's/(^\s*|\s*$)//g')
 type=$(get_type "$dir")
 
