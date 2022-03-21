@@ -1819,6 +1819,28 @@ message."
   (advice-add 'mu4e~headers-thread-subject :override
 	      #'~mu4e~headers-cached-thread-subject)
 
+  ;; Replace the internal function that updates the headers view to
+  ;; prevent any update while the view window is open.
+  (defun mu4e~headers-maybe-auto-update ()
+    "Update the current headers buffer after indexing has brought
+some changes, `mu4e-headers-auto-update' is non-nil and there is
+no user-interaction ongoing."
+    (when (and mu4e-headers-auto-update          ;; must be set
+	       mu4e-index-update-status
+	       (not (zerop (plist-get mu4e-index-update-status :updated)))
+	       (zerop (mu4e-mark-marks-num))     ;; non active marks
+	       (not (active-minibuffer-window))) ;; no user input only
+      ;; rerun search if there's a live window with search results;
+      ;; otherwise we'd trigger a headers view from out of nowhere.
+      (when (and (buffer-live-p (mu4e-get-headers-buffer))
+		 ;; CHANGE BEGIN: Only update when the headers buffer is focused
+		 (eq (mu4e-get-headers-buffer) (window-buffer (selected-window)))
+		 ;; CHANGE END
+		 (window-live-p (get-buffer-window (mu4e-get-headers-buffer) t)))
+	(mu4e-search-rerun))))
+
+  (setq mu4e-headers-auto-update t)
+
   ;; Ignore unwanted contacts
   (defun ~mu4e-contact-processor (contact)
     (cond
