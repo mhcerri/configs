@@ -1627,7 +1627,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 
   ;; Headers
   ;; (setq mu4e-headers-results-limit -1)
-  (setq mu4e-headers-results-limit 1000)
+  (setq mu4e-search-results-limit 1000)
   (setq mu4e-headers-include-related t)
   (setq mu4e-headers-fields
 	'((:human-date     . 12)
