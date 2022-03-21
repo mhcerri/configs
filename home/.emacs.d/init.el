@@ -1589,6 +1589,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (:states 'normal :keymaps 'mu4e-headers-mode-map
 	   "N"            '~mu4e-headers-narrow-unread
 	   "I"            '~mu4e-headers-narrow-important
+	   "TAB"          'mu4e-headers-next-unread
            "C-r"          '~mu4e-headers-mark-thread-read
            "<insert>"     '~mu4e-headers-mark-thread-read
            "<insertchar>" '~mu4e-headers-mark-thread-read)
