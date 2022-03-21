@@ -1490,6 +1490,8 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   ;; Fix bracket color
   (set-face-foreground 'web-mode-html-tag-bracket-face nil))
 
+(use-package lorem-ipsum)
+
 (use-package yaml-mode
   :mode "\\.yaml\\'")
 
