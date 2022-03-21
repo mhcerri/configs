@@ -1,0 +1,27 @@
+#!/bin/bash -eu
+
+output=
+
+# Weather
+locations='Campinas,São Carlos'
+weather_format='%l:+🌡+%t+|+⛆+%p+|+💧%h+|+💨+%w+|+%C\n'
+loc_width=$(
+	while IFS=, read -ra loca; do
+		for loc in "${loca[@]}"; do
+			echo -n "$loc" | wc -m
+		done
+	done <<< "$locations" |
+	sort -n | tail -n1)
+output+=$(curl -s wttr.in/"{${locations}}?format=${weather_format}" |
+		  awk -vFS=: -vw="$loc_width" '{ printf("%*s: %s\n", w, $1, $2); }')
+output+=$'\n\n'
+
+# Currency
+usd=$(curl -s brl.rate.sx/1USD)
+output+="BRL = ${usd} USD"
+output+=$'\n'
+
+# Calendar
+output+=$(day)
+
+echo "${output}"
