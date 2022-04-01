@@ -5,16 +5,31 @@
 #
 ROFI=rofi-run
 
-# Helpers to store the options
-options=()
+# Array to keep track of all the options
+defaults=        # List of default entries as indices in the arrays bellow.
+options_dir=()   # pulseaudio direction (IN/Source or OUT/Sink)
+options_index=() # pulseaudio index
+options_title=() # text shown by rofi
+
+# add_option <IN|OUT> <index> <name> <desc>
+# Add a new option to the list.
 add_option() {
-	# add_option <IN|OUT> <index> <name> <desc>
-	# Exclude monitors
-	[[ -z "$2" ]] && return
-	[[ "$4" = *Monitor* ]] && return
-	options+=( "$(printf '%3s: %02d: %s' "${1}" "${2}" "${4:-$3}")" )
+	local dir index name desc default
+	dir="$1"; index="$2"; name="$3"; desc="$4"; default="$5"
+	# Exclude invalid entries and monitors
+	[[ -z "$index" ]] && return
+	[[ "$desc" = *Monitor* ]] && return
+	# Check if it's default
+	[ "$name" = "$default" ] && defaults+="${#options_index[@]},"
+	# Register the new entry
+	options_dir+=( "$dir" )
+	options_index+=( "$index" )
+	options_title+=( "$(printf '%3s: %s' "${dir}" "${desc:-$name}")"" | $name" )
 }
 
+# get_tag <IN|OUT>
+# Return the capitalized tag used by pulseaudio in its output given a
+# direction, ie, Sink or Source.
 get_tag() {
 	case "$1" in
 	OUT) echo 'Sink';;
@@ -22,11 +37,14 @@ get_tag() {
 	esac
 }
 
+# get_type <IN|OUT>
+# Return the non capitalized type used in pulseaudio command line,
+# ie, sink or source.
 get_type() {
 	get_tag "$@" | tr '[:upper:]' '[:lower:]'
 }
 
-# List sources and sinks
+# List and process the sources and sinks:
 for dir in OUT IN; do
 	#
 	# Retrieve list from pulseaudio
@@ -36,10 +54,12 @@ for dir in OUT IN; do
 	desc=
 	tag=$(get_tag "$dir")
 	type=$(get_type "$dir")
+	default=$(LC_ALL=C pactl info |
+			  sed -n -e "/^Default ${tag}:\s*\(.*\)/s//\1/p")
 	while read -r line; do
 		case "$line" in
 		"${tag} #"*)
-			add_option "$dir" "$index" "$name" "$desc"
+			add_option "$dir" "$index" "$name" "$desc" "$default"
 			index="${line#*#}"
 			name=
 			desc=
@@ -54,18 +74,17 @@ for dir in OUT IN; do
 			;;
 		esac
 	done < <(LC_ALL=C pactl list "${type}s")
-	add_option "$dir" "$index" "$name" "$desc"
+	add_option "$dir" "$index" "$name" "$desc" "$default"
 done
 
-# Ask user
-choice=$(for opt in "${options[@]}"; do
+# Ask user via rofi
+choice=$(for opt in "${options_title[@]}"; do
 		 echo "$opt"
-	 done | "$ROFI" -dmenu -i)
+	 done | "$ROFI" -dmenu -i -no-custom -format i ${defaults:+-a "$defaults"})
 
 # Parse choice
-dir=$(echo "$choice" | cut -d: -f1 | sed -r 's/(^\s*|\s*$)//g')
-index=$(echo "$choice" | cut -d: -f2 | sed -r 's/(^\s*0*|\s*$)//g')
-name=$(echo "$choice" | cut -d: -f3 | sed -r 's/(^\s*|\s*$)//g')
+dir="${options_dir[$choice]}"
+index="${options_index[$choice]}"
 type=$(get_type "$dir")
 
 # Chance device
@@ -75,4 +94,4 @@ if ! out=$(pactl "set-default-${type}" "$index" 2>&1); then
 fi
 
 # Notify
-notify-send -u low "$dir: $name"
+notify-send -u low "${options_title[choice]}"
