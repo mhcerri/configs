@@ -51,7 +51,12 @@ _fcd_fzf_opts+=" --height ${FZF_TMUX_HEIGHT:-50%}"
 _fcd_fzf_opts+=" --min-height 15"
 _fcd_fzf_opts+=" --reverse"
 _fcd_fzf_opts+=" $FZF_DEFAULT_OPTS"
-_fcd_fzf_opts+=" --preview 'ls -l {}' --preview-window right:50%:wrap"
+_fcd_fzf_opts+=" --preview-window right:50%:wrap"
+_fcd_fzf_opts+=" --preview 'f={}; [ -d \"\$f\" ] && ls --color=always -l \"\$f\" || bat --color=always \"\$f\"'"
+
+###
+# Fast change dir
+#
 
 fcd() {
 	local dir opts
@@ -132,4 +137,36 @@ fcd-locations-expanded() {
 			[ -d "$path" ] && echo "$path"
 		done |
 		sort
+}
+
+###
+# Fast editor
+#
+fe() {
+	local file opts app editor
+
+	for app in fzf fd; do
+		if ! command -v "$app" &> /dev/null; then
+			echo "Warning: please install $app!" >&2
+		fi
+	done
+
+	# TODO
+	editor="${EDITOR:-e}"
+
+	opts=$(fd "$@")
+	if [ -z "$opts" ]; then
+		echo "Nothing found..."
+		return 1
+	fi
+
+	if [ "$(echo "$opts" | wc -l)" -eq 1 ]; then
+		file="$opts"
+	elif ! file=$(echo "$opts" | FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} $_fcd_fzf_opts" fzf); then
+		echo "Aborted..."
+		return 1
+	fi
+
+	"${editor}" "$file"
+	return $?
 }
