@@ -1957,5 +1957,5 @@ no user-interaction ongoing."
       (mapc (lambda (file) (load-file file))
 	    (directory-files dir t "\\.el$"))))
 
-(provide '.emacs)
-;;; .emacs ends here
+(provide 'init)
+;;; init.el ends here
