@@ -1874,6 +1874,12 @@ no user-interaction ongoing."
       ;; Do not mark trailing spaces as red
       (whitespace-mode -1)))
 
+  ;; enable inline images
+  (setq mu4e-view-show-images t)
+  ;; use imagemagick, if available
+  (when (fboundp 'imagemagick-register-types)
+    (imagemagick-register-types))
+
   ;; Mail signature
   (setq mu4e-compose-signature "Regards,\nMarcelo\n")
 
