@@ -1,7 +1,12 @@
 #
 # Set prompt
 #
-export _TERM=$(ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$))
+
+#export _TERM=$(ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$))
+_TERM=$(grep PPid: /proc/"$$"/task/*/status | head -1)
+_TERM="${_TERM#*	}"
+_TERM=$(strings "/proc/$_TERM/cmdline")
+
 OLD_TERM="$TERM"
 case "$_TERM" in
 	terminology)
