@@ -1317,6 +1317,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 
 (use-package org-capture
   :ensure org-plus-contrib
+  :commands (~org-capture-make-frame)
   :bind
   (("C-c c" . org-capture))
   :config
@@ -1328,9 +1329,9 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (setq org-capture-templates
 	`(
 	  ("t" "Todo" entry
-	   (file ,(concat ~org-capture-root "todos.org"))
+	   (file+headline ,(concat ~org-capture-root "todos.org") "Recent")
 	   "* TODO %?\n  %u\n  %a"
-	   :empty-lines 1)
+	   :empty-lines 1 :prepend t)
 	  ("w" "Week" entry
 	   (file+headline ,(concat ~org-capture-root "week.org") "Current")
 	   "** %?\n  %u\n  %a"
