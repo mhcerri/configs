@@ -794,6 +794,7 @@
 	   ;; Information buffers shouldn't be selected by default:
 	   ("*Warnings*" :noselect t)
 	   ("*Backtrace*" :noselect t)
+	   ("*Compile-Log*" :noselect t)
 	   ("*git-gutter:diff*" :noselect t)
            (platformio-compilation-mode :noselect t))
 	 popwin:special-display-config))
