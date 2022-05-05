@@ -1958,6 +1958,13 @@ no user-interaction ongoing."
 	  ("%hidden" . "flag:trashed OR %junk")))
   (setq mu4e-query-fragments-append "AND NOT %hidden"))
 
+(use-package ldap
+  :commands (ldap-search)
+  :init
+  ;; The remaining configuration is done via ~/.ldaprc
+  (setq ldap-default-host "" ; That's necessary to use the host from the ldap conf
+	ldap-ldapsearch-args '("-LL" "-tt" "-x" "-y" "/home/mhcerri/.ldappw")))
+
 ;; Load custom el files
 (let* ((dir "~/.emacs.d/custom.d/")
        (dir (file-name-as-directory dir)))
