@@ -903,7 +903,8 @@
 ;; Spell checking
 (use-package flyspell
   ;; builtin
-  :delight '(:eval (concat " FlyS:" ispell-local-dictionary))
+  :delight '(:eval (concat " FlyS:" (or ispell-local-dictionary
+					ispell-dictionary)))
   :bind
   (("C-c d b" . flyspell-buffer)
    ("C-c d d" . ~flyspell-change-dictionary))
