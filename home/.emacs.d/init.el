@@ -146,8 +146,7 @@
 (setq package-archives
       '(("melpa"        . "https://melpa.org/packages/") ; Assume ssl
 	("melpa-stable" . "https://stable.melpa.org/packages/")
-	("gnu"          . "https://elpa.gnu.org/packages/")
-	("org"          . "https://orgmode.org/elpa/")))
+	("gnu"          . "https://elpa.gnu.org/packages/")))
 (if (not (bound-and-true-p ~package-initialized))
     (package-initialize))
 
@@ -1259,7 +1258,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 
 ;; org mode
 (use-package org
-  :ensure org-plus-contrib
+  :pin gnu
   :after (company)
   :mode ("\\.org$" . org-mode)
   :commands (org-mode orgtbl-mode)
@@ -1309,14 +1308,14 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 ;;       - "<start>+<hours>" (ie: "10:00+1")
 ;; Or use an org-capture template.
 (use-package org-agenda
-  :ensure org-plus-contrib
+  :ensure org
   :defer t
   :config
   (setq org-agenda-files
 	(directory-files "~/Dropbox/org/" t "\\.org$")))
 
 (use-package org-capture
-  :ensure org-plus-contrib
+  :ensure org
   :commands (~org-capture-make-frame)
   :bind
   (("C-c c" . org-capture))
