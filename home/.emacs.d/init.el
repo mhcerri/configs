@@ -503,6 +503,7 @@
 (use-package crux
   :bind
   (([remap move-beginning-of-line] . crux-move-beginning-of-line)
+   ([remap evil-beginning-of-line] . crux-move-beginning-of-line)
    ("C-k"                          . crux-smart-kill-line)))
 
 ;; PCRE regular expression style
