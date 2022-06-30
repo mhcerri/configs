@@ -1186,12 +1186,13 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 
 (use-package ag
   :bind
-  (("C-c a a"   . ag)
-   ("C-c a f"   . ag-files)
-   ("C-c a r"   . ag-regexp)
-   ("C-c a p p" . ag-project)
-   ("C-c a p f" . ag-project-files)
-   ("C-c a p r" . ag-project-regexp))
+  (("C-c A a"   . ag)
+   ("C-c A A"   . ag)
+   ("C-c A f"   . ag-files)
+   ("C-c A r"   . ag-regexp)
+   ("C-c A p p" . ag-project)
+   ("C-c A p f" . ag-project-files)
+   ("C-c A p r" . ag-project-regexp))
   :init
   (which-key-add-key-based-replacements "C-c a" "Ag"))
 
