@@ -1,6 +1,12 @@
 #!/bin/bash -eu
 
+exec &> >(tee ~/.log/mbsync.log)
+
 title="mbsync via mutt"
+
+log() {
+	echo "$(date -Is) $*"
+}
 
 notify() {
 	local type
@@ -12,10 +18,9 @@ notify() {
 		args+=('--urgency=low')
 	fi
 
+	log "$type: $*"
 	if [ -n "$DISPLAY" ]; then
 		notify-send "${args[@]}" -i "$type" "$title" "$*"
-	else
-		echo "$type: $*" >&2
 	fi
 }
 
@@ -28,7 +33,8 @@ if ! command -v mbsync &> /dev/null; then
 	exit 1
 fi
 
-if ! output=$(mbsync "$*" 2>&1); then
+log "Fetching email..."
+if ! output=$(mbsync -V "$*" 3>&2 2>&1 1>&3- | tee >(cat >&2)); then
 	error "Failed to fetch email:"$'\n\n'"$output"
 	exit 1
 fi
