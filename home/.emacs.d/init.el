@@ -1312,9 +1312,14 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 (use-package org-agenda
   :ensure org
   :defer t
-  :config
+  :bind
+  (("C-c a" . org-agenda))
+  :init
   (setq org-agenda-files
-	(directory-files "~/Dropbox/org/" t "\\.org$")))
+	(directory-files "~/Dropbox/org/" t "\\.org$"))
+  (setq org-agenda-window-setup 'current-window)
+  :config
+  (evil-set-initial-state 'org-agenda-mode 'insert))
 
 (use-package org-capture
   :ensure org
