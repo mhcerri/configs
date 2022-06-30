@@ -1236,7 +1236,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
    multi-term-next
    multi-term-prev)
   :bind
-  (("C-c t" . multi-term))
+  (("C-c T" . multi-term))
   :hook
   ((term-mode . ~term-mode))
   :init
