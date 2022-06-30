@@ -10,7 +10,7 @@ else
 			'/usr/share/doc/fzf/examples/key-bindings.bash' \
 			'/usr/share/doc/fzf/examples/completion.bash'; do
 		if [ -f "$_fzf_comp_script" ]; then
-			source "$_fzf_comp_script"
+			source "$_fzf_comp_script" &> /dev/null
 		fi
 	done
 fi
