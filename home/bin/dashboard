@@ -18,7 +18,7 @@ output+=$'\n\n'
 
 # Currency
 usd=$(curl -s brl.rate.sx/1USD)
-output+="BRL = ${usd} USD"
+output+="USD = ${usd} BRL"
 output+=$'\n'
 
 # Calendar
