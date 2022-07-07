@@ -1332,9 +1332,18 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   :bind
   (("C-c a" . org-agenda))
   :init
-  (setq org-agenda-files
-	(directory-files "~/Dropbox/org/" t "\\.org$"))
+  (setq org-agenda-files '("~/Dropbox/org/" "~/Dropbox/org/projects"))
+  (setq org-refile-targets '((nil :maxlevel . 1)
+                             (org-agenda-files :level . 0)
+                             (org-agenda-files :maxlevel . 1)))
+  (setq org-outline-path-complete-in-steps nil) ; Refile in a single go
+  (setq org-refile-use-outline-path t) ; Show full paths for refiling
   (setq org-agenda-window-setup 'current-window)
+  (setq org-agenda-skip-scheduled-if-done t)
+  ; Save after refiling
+  (advice-add 'org-refile :after
+        (lambda (&rest _)
+        (org-save-all-org-buffers)))
   :config
   (evil-set-initial-state 'org-agenda-mode 'insert))
 
