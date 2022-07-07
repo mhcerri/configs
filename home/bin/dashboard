@@ -1,5 +1,26 @@
 #!/bin/bash -eu
 
+#
+# Functions to colorize the output based on regex'es
+#
+colorize() {
+	local color_id="$1";
+	shift;
+	GREP_COLOR="0;$color_id" grep --color=always -E ''"${*:-.*}"'|$'
+}
+
+black()   { colorize 30 "$*"; }
+red()     { colorize 31 "$*"; }
+green()   { colorize 32 "$*"; }
+yellow()  { colorize 33 "$*"; }
+blue()    { colorize 34 "$*"; }
+magenta() { colorize 35 "$*"; }
+cyan()    { colorize 36 "$*"; }
+white()   { colorize 37 "$*"; }
+
+#
+# Prepare the output
+#
 output=
 
 # Weather
@@ -12,16 +33,38 @@ loc_width=$(
 		done
 	done <<< "$locations" |
 	sort -n | tail -n1)
+output+=$(echo 'Weather' | red)
+output+=$'\n'
 output+=$(curl -s wttr.in/"{${locations}}?format=${weather_format}" |
 		  awk -vFS=: -vw="$loc_width" '{ printf("%*s: %s\n", w, $1, $2); }')
 output+=$'\n\n'
 
 # Currency
+output+=$(echo 'Currency' | red)
+output+=$'\n'
 usd=$(curl -s brl.rate.sx/1USD)
 output+="USD = ${usd} BRL"
+
+output+=$'\n'
 output+=$'\n'
 
 # Calendar
-output+=$(day)
+output+=$(echo 'Google Calendar (day)' | red)
+output+=$(day | blue '[0-9]?[0-9]:[0-9][0-9]')
+
+output+=$'\n'
+output+=$'\n'
+
+# Org agenda
+output+=$(echo 'Org Agenda (week)' | red)
+output+=$'\n'
+output+=$(emacs -batch -l ~/.emacs.d/init.el \
+		-eval '(org-batch-agenda "a")' 2> /dev/null |
+		  grep -vE '^Week-agenda' |
+		  grep -vE -- '------$' |
+		  green '^\S.*' |
+		  yellow '^\s+[a-zA-Z]*' |
+		  blue '[0-9]?[0-9]:[0-9][0-9]\S*' |
+		  cyan 'now .*')
 
 echo "${output}"
