@@ -1306,6 +1306,9 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
       (duplicates t)))
   (add-to-list 'company-backends '~org-keyword-backend))
 
+(use-package org-superstar
+  :hook (org-mode . org-superstar-mode))
+
 ;; Replacing orgstruct-mode
 (use-package outshine
   :defer t)
