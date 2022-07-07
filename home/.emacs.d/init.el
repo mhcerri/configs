@@ -1718,11 +1718,9 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (defun ~mu4e-headers-mark-thread-read ()
     "Mark thread under the cursor as read."
     (interactive)
-    (mu4e~mark-in-context
-     (when (not (or (null mu4e~mark-map)
-		    (zerop (hash-table-count mu4e~mark-map))))
+    (if (> (mu4e-mark-marks-num) 0)
        ;(mu4e-mark-unmark-all)
-       (mu4e-warn "ABORTING! Existing marks...")))
+       (mu4e-warn "ABORTING! Existing marks..."))
     (mu4e-headers-mark-thread nil '(read . nil))
     (mu4e-mark-execute-all t))
 
