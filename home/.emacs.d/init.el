@@ -315,28 +315,28 @@
   (load-theme 'zerodark t))
 
 ;; Mode line
-(use-package telephone-line
-  :after (evil)
-  :config
-  ;; Plain separators
-  (setq telephone-line-primary-left-separator 'telephone-line-nil
-	telephone-line-secondary-left-separator 'telephone-line-nil
-	telephone-line-primary-right-separator 'telephone-line-nil
-	telephone-line-secondary-right-separator 'telephone-line-nil)
-  (setq telephone-line-lhs
-	'((evil   . (telephone-line-evil-tag-segment))
-	  (accent . (telephone-line-buffer-segment))
-	  (accent . (telephone-line-position-segment))
-	  (accent . (telephone-line-vc-segment
-		     telephone-line-erc-modified-channels-segment
-		     telephone-line-process-segment))
-	  (nil    . (telephone-line-major-mode-segment
-		     telephone-line-minor-mode-segment))))
-  (setq telephone-line-rhs
-	'((nil    . (telephone-line-flycheck-segment
-		     telephone-line-misc-info-segment))))
-  ;; Enable mode line
-  (telephone-line-mode 1))
+(use-package doom-modeline
+  :ensure t
+  :custom-face
+  (doom-modeline-evil-emacs-state ((t (:background "purple" :bold t))))
+  (doom-modeline-evil-normal-state ((t (:background "red" :bold t))))
+  (doom-modeline-evil-insert-state ((t (:background "darkgreen" :bold t))))
+  (doom-modeline-evil-replace-state ((t (:background "orange" :bold t))))
+  (doom-modeline-evil-visual-state ((t (:background "orange" :bold t))))
+  (doom-modeline-evil-motion-state ((t (:background "blue" :bold t))))
+  (doom-modeline-evil-operator-state ((t (:background "darkblue" :bold t))))
+  :init
+  (setq evil-emacs-state-tag " EMACS "
+	evil-normal-state-tag " NORMAL "
+	evil-insert-state-tag " INSERT "
+	evil-replace-state-tag " REPLACE "
+	evil-visual-state-tag " VISUAL "
+	evil-motion-state-tag " MOTION "
+	evil-operator-state-tag " OPERATOR ")
+  (setq doom-modeline-modal-icon nil)
+  (setq doom-modeline-minor-modes t)
+  (setq doom-modeline-mu4e t)
+  (doom-modeline-mode 1))
 
 ;; Extensible vi layer
 (use-package evil
