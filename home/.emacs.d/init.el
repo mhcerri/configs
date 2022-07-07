@@ -1608,7 +1608,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 
 (use-package mu4e
   ;; Always use custom mu binaries:
-  :load-path "~/Documents/workspace/mu/mu4e/"
+  :load-path "~/Documents/workspace/mu/build/mu4e/"
   :general
   ("C-c @"  'mu4e)
   (:states 'normal :keymaps 'mu4e-headers-mode-map
@@ -1636,7 +1636,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (setq-local mml-secure-openpgp-encrypt-to-self t)
   :config
   ;; Use my custom mu
-  (setq mu4e-mu-binary "~/Documents/workspace/mu/mu/mu")
+  (setq mu4e-mu-binary "~/Documents/workspace/mu/build/mu/mu")
   ;; Use ivy for prompts
   (setq mu4e-completing-read-function 'ivy-completing-read)
 
