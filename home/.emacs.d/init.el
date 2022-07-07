@@ -1384,10 +1384,9 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   ;; closed. So an alternative is to use a terminal instead:
   ;;
   ;;     for_window [instance=org-capture-frame] floating enable
-  ;;     bindsym $mod+c exec --no-startup-id terminator -u \
-  ;;         --name org-capture-frame \
-  ;;         -x /opt/emacs26/bin/emacsclient \
-  ;;         -te '(~org-capture-make-frame)'
+  ;;     bindsym $mod+p Exec --no-startup-id \
+  ;;     	alacritty --class org-capture-frame \
+  ;;     	-e emacsclient -t -c -e '(~org-capture-make-frame)'
 
   ;; Close the frame when a capture is completed.
   (defadvice org-capture-finalize
@@ -1409,12 +1408,12 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
     ;; when necessary.
     (make-frame '((name . "org-capture-frame")))
     (select-frame-by-name "org-capture-frame")
-    (delete-other-windows)
     ;; Replace only for this call the behavior of the function that
     ;; splits and jumps to the other window. That will force the
     ;; org-capture selection screen to use the entire screen.
     (noflet ((org-switch-to-buffer-other-window (buf) (switch-to-buffer buf)))
-	    (org-capture))))
+      (org-capture))
+    (evil-insert-state)))
 
 ;; C and C-like
 (use-package cc-mode
