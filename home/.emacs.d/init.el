@@ -306,10 +306,27 @@
 
 ;; zerodark-theme
 (use-package zerodark-theme
+  :custom-face
+  (org-tag ((t (:background nil :inherit shadow))))
+  (org-special-keyword ((t (:inherit shadow))))
+  (org-block ((t (:background nil :inherit shadow))))
+  (org-block ((t (:background "#20242b"))))
+  (org-block-begin-line ((t (:foreground nil :inherit shadow))))
+  (org-block-end-line ((t (:foreground nil :inherit shadow))))
   :init
   ;; Fix issue in zerodark when using "emacs --daemon" and true color
   (advice-add 'true-color-p :filter-return (lambda (ret) t))
   :config
+  ;; Not sure why it's not possible to set the org block background via
+  ;; :custom-face. Use this dirty workaround in the meantime. Might be
+  ;; worth it trying to remove it when upgrading emacs or org-mode.
+  (add-hook
+   'org-mode-hook
+   (lambda ()
+     (set-face-attribute 'org-block nil :background "#20242b")
+     (set-face-attribute 'org-block-begin-line nil :background "#20242b")
+     (set-face-attribute 'org-block-end-line nil :background "#20242b")))
+  ;; Enable theme
   (setq frame-background-mode 'dark)
   (setq zerodark-use-paddings-in-mode-line nil)
   (load-theme 'zerodark t))
