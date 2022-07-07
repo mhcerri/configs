@@ -945,11 +945,11 @@
     ;; Do not block when opening a file.
     (run-at-time
      "1 sec" nil
-     '(lambda ()
-	(let ((inhibit-message t))
-	  (if (derived-mode-p 'prog-mode)
-	      (flyspell-prog-mode)
-	    (flyspell-mode 1)))))))
+     (lambda ()
+       (let ((inhibit-message t))
+	 (if (derived-mode-p 'prog-mode)
+	     (flyspell-prog-mode)
+	   (flyspell-mode 1)))))))
 
 ;; Show spelling options via ivy.
 (use-package flyspell-correct-ivy
@@ -1885,16 +1885,16 @@ no user-interaction ongoing."
   ;; Configure compose mode
   (add-hook
    'mu4e-compose-mode-hook
-   '(lambda ()
-      ;; "org-mode" minor mode
-      (outshine-mode)
-      (orgtbl-mode)
-      ;; Always GPG sign the messages
-      (mml-secure-message-sign-pgp)
-      ;; Use M-q instead
-      ;;(auto-fill-mode 1)
-      ;; Do not mark trailing spaces as red
-      (whitespace-mode -1)))
+   (lambda ()
+     ;; "org-mode" minor mode
+     (outshine-mode)
+     (orgtbl-mode)
+     ;; Always GPG sign the messages
+     (mml-secure-message-sign-pgp)
+     ;; Use M-q instead
+     ;;(auto-fill-mode 1)
+     ;; Do not mark trailing spaces as red
+     (whitespace-mode -1)))
 
   ;; enable inline images
   (setq mu4e-view-show-images t)
