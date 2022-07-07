@@ -1937,12 +1937,6 @@ no user-interaction ongoing."
 (use-package mu4e-jump-to-list
   :after (mu4e))
 
-(use-package mu4e-maildirs-extension
-  :after (mu4e)
-  :config
-  (setq mu4e-maildirs-extension-maildir-default-prefix " ")
-  (mu4e-maildirs-extension))
-
 ;; TODO: Investigate issues related to byte compiled .elc files. In
 ;; order to make mu4e-column-faces work properly is necessary to
 ;; remove two .elc files:
