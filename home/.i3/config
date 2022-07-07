@@ -222,10 +222,9 @@ for_window [instance="Toolkit" class="firefox"] sticky enable
 for_window [instance="Toolkit" class="firefox"] border 1pixel
 
 for_window [instance=org-capture-frame] floating enable
-bindsym $mod+p Exec --no-startup-id terminator -u \
-	--name org-capture-frame \
-	-x emacsclient \
-	-te '(~org-capture-make-frame)'
+bindsym $mod+p Exec --no-startup-id \
+	alacritty --class org-capture-frame \
+	-e emacsclient -t -c -e '(~org-capture-make-frame)'
 
 for_window [instance="urxvt-launcher"] floating enable
 bindsym $mod+q exec --no-startup-id urxvt \
