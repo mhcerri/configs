@@ -1366,6 +1366,17 @@ exist after each headings's drawers."
 (use-package org-superstar
   :hook (org-mode . org-superstar-mode))
 
+;; Hide and automatically show hidden elements.
+(use-package org-appear
+  :hook (org-mode . org-appear-mode)
+  :init
+  ;; Hide by default:
+  (setq org-hide-emphasis-markers t)
+  ;; Auto unhide the following elements:
+  (setq org-appear-autoentities t)
+  (setq org-appear-autolinks t)
+  (setq org-appear-autokeywords t))
+
 ;; Replacing orgstruct-mode
 (use-package outshine
   :defer t)
