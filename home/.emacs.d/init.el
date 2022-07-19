@@ -268,7 +268,12 @@
    ("C-c p"  . paste-from-clipboard))
   :commands (copy-to-clipboard
 	     paste-from-clipboard
-	     cut-to-clipboard)
+	     cut-to-clipboard
+	     simpleclip-set-contents)
+  :init
+  (setq browse-url-browser-function
+	(lambda (url &rest args)
+	  (simpleclip-set-contents url)))
   :config
   (require 'xclip)
   (defalias 'copy-to-clipboard 'simpleclip-copy)
