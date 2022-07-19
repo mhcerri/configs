@@ -1496,6 +1496,22 @@ exist after each headings's drawers."
       (org-capture))
     (evil-insert-state)))
 
+;; Query org files
+(use-package org-ql
+  :defer t
+  :quelpa (org-ql :fetcher github :repo "alphapapa/org-ql"
+            :files (:defaults (:exclude "helm-org-ql.el")))
+  :config
+  ;; Dirty work around for make it usable with ivy:
+  ;; https://github.com/alphapapa/org-ql/issues/284
+  (advice-add 'org-ql-find :around
+	      (lambda (fn &rest args)
+		(let ((completing-read-function
+		       (if (eq completing-read-function #'ivy-completing-read)
+			   'completing-read-default
+			 completing-read-function)))
+		  (apply fn args)))))
+
 ;; C and C-like
 (use-package cc-mode
   :defer t
