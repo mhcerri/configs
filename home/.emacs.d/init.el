@@ -1411,10 +1411,20 @@ exist after each headings's drawers."
   (setq org-refile-use-outline-path t) ; Show full paths for refiling
   (setq org-agenda-window-setup 'current-window)
   (setq org-agenda-skip-scheduled-if-done t)
-  ; Save after refiling
+  (setq org-complete-tags-always-offer-all-agenda-tags t)
+  ;; Save after refiling
   (advice-add 'org-refile :after
         (lambda (&rest _)
         (org-save-all-org-buffers)))
+  ;; Add special color to common tags. We can customize the list of
+  ;; available tags (wich shortcuts) using org-tag-persistent-alist
+  ;; too:
+  (setq org-tag-faces
+	'(("important" . (:foreground "white" :background "firebrick" :weight bold))
+	  ("request" . (:foreground "green"))
+	  ("bug" . (:foreground "orange"))
+	  ))
+
   :config
   (evil-set-initial-state 'org-agenda-mode 'insert))
 
