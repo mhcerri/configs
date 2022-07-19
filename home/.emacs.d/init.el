@@ -1286,6 +1286,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   :after (company)
   :mode ("\\.org$" . org-mode)
   :commands (org-mode orgtbl-mode)
+  :hook ((org-mode . ~org-format-on-save))
   :config
   ;; Use org indent
   (setq org-startup-indented t)
@@ -1309,7 +1310,58 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 			   (pcomplete-completions))))
       (ignore-case t)
       (duplicates t)))
-  (add-to-list 'company-backends '~org-keyword-backend))
+  (add-to-list 'company-backends '~org-keyword-backend)
+  ;; Fix blank lines
+  (defun unpackaged/org-fix-blank-lines (&optional prefix)
+    "Ensure that blank lines exist between headings and between headings and their contents.
+With prefix, operate on whole buffer. Ensures that blank lines
+exist after each headings's drawers."
+    (interactive "P")
+    (org-map-entries (lambda ()
+                       (org-with-wide-buffer
+			;; `org-map-entries' narrows the buffer, which prevents us from seeing
+			;; newlines before the current heading, so we do this part widened.
+			(while (not (looking-back "\n\n" nil))
+                          ;; Insert blank lines before heading.
+                          (insert "\n")))
+                       (let ((end (org-entry-end-position)))
+			 ;; Insert blank lines before entry content
+			 (forward-line)
+			 (while (and (org-at-planning-p)
+                                     (< (point) (point-max)))
+                           ;; Skip planning lines
+                           (forward-line))
+			 (while (re-search-forward org-drawer-regexp end t)
+                           ;; Skip drawers. You might think that `org-at-drawer-p' would suffice, but
+                           ;; for some reason it doesn't work correctly when operating on hidden text.
+                           ;; This works, taken from `org-agenda-get-some-entry-text'.
+                           (re-search-forward "^[ \t]*:END:.*\n?" end t)
+                           (goto-char (match-end 0)))
+			 (unless (or (= (point) (point-max))
+                                     (org-at-heading-p)
+                                     (looking-at-p "\n"))
+                           (insert "\n"))))
+                     t (if prefix
+                           nil
+			 'tree)))
+  (defun ~org-sort-level-1 ()
+    "Sort entries under each level 1 headings."
+    (interactive)
+    (org-map-entries
+     (lambda ()
+       (org-sort-entries nil ?o))
+     "LEVEL=1" 'file)
+    (delete-trailing-whitespace nil nil))
+  (defun ~org-format ()
+    "Format org buffer."
+    (interactive)
+    (~org-sort-level-1)
+    (unpackaged/org-fix-blank-lines t))
+  (defun ~org-format-on-save ()
+    "Reformat buffer on save."
+    (interactive)
+    (add-hook 'before-save-hook '~org-format 0 t)
+    (add-hook 'edit-server-done-hook '~org-format 0 t)))
 
 (use-package org-superstar
   :hook (org-mode . org-superstar-mode))
