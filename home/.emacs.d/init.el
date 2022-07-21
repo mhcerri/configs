@@ -1362,7 +1362,16 @@ exist after each headings's drawers."
     "Reformat buffer on save."
     (interactive)
     (add-hook 'before-save-hook '~org-format 0 t)
-    (add-hook 'edit-server-done-hook '~org-format 0 t)))
+    (add-hook 'edit-server-done-hook '~org-format 0 t))
+  (defun ~org-archive-all-done ()
+    "Archive all elements marked as done in the file."
+    (interactive)
+    (org-map-entries
+     (lambda ()
+       (org-archive-subtree)
+       (setq org-map-continue-from
+	     (org-element-property :begin (org-element-at-point))))
+     "TODO=\"DONE\"" 'file)))
 
 (use-package org-superstar
   :hook (org-mode . org-superstar-mode))
