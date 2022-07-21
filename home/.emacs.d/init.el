@@ -1355,8 +1355,9 @@ exist after each headings's drawers."
   (defun ~org-format ()
     "Format org buffer."
     (interactive)
-    (~org-sort-level-1)
-    (unpackaged/org-fix-blank-lines t))
+    (when (not (string-match-p "_archive$" buffer-file-name))
+      (~org-sort-level-1)
+      (unpackaged/org-fix-blank-lines t)))
   (defun ~org-format-on-save ()
     "Reformat buffer on save."
     (interactive)
