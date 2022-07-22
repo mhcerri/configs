@@ -1,3 +1,3 @@
 # Shotcuts for mbsync
-macro index <f5> ":unset wait_key<Return>!~/.mutt/bin/mbsync.sh quick &<Return>:set wait_key<Return>" "Quick mbsync update"
-macro index <f6> ":unset wait_key<Return>!~/.mutt/bin/mbsync.sh -a &<Return>:set wait_key<Return>"  "Full mbsync update"
+macro index <f5> ":unset wait_key<Return>!~/bin/mbsync.sh quick &<Return>:set wait_key<Return>" "Quick mbsync update"
+macro index <f6> ":unset wait_key<Return>!~/bin/mbsync.sh -a &<Return>:set wait_key<Return>"  "Full mbsync update"
