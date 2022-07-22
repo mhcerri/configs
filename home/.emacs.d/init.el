@@ -1287,6 +1287,15 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   :mode ("\\.org$" . org-mode)
   :commands (org-mode orgtbl-mode)
   :hook ((org-mode . ~org-format-on-save))
+  :bind
+  (; "C-c !" for inactive timestamps conflicts with flycheck bindings,
+   ; so overload the binding to active timestamps ("C-c ."):
+   (:map org-mode-map
+	 ("C-c ."   . nil)
+	 ("C-c . ." . org-time-stamp)
+	 ("C-c . a" . org-time-stamp)
+	 ("C-c . !" . org-time-stamp-inactive)
+	 ("C-c . i" . org-time-stamp-inactive)))
   :config
   (setq org-modules
 	(append org-modules '(org-tempo)))
