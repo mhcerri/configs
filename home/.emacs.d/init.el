@@ -1288,6 +1288,8 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   :commands (org-mode orgtbl-mode)
   :hook ((org-mode . ~org-format-on-save))
   :config
+  (setq org-modules
+	(append org-modules '(org-tempo)))
   ;; Use org indent
   (setq org-startup-indented t)
   ;; Use regular background for code blocks
@@ -1295,6 +1297,15 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
     (set-face-background f (face-background 'org-default)))
   ;; Add dates when a task is marked as done
   (setq org-log-done 'time)
+  ;; Quick src blocks with <, ie <el for emacs-lisp:
+  (setq org-structure-template-alist
+	(append org-structure-template-alist
+		'(("el"   . "src emacs-lisp")
+		  ("cc"   . "src c")
+		  ("py"   . "src python")
+		  ("sh"   . "src sh")
+		  ("bash" . "src bash")
+		  ("perl" . "src perl"))))
   ;; Auto-complete
   ;; https://emacs.stackexchange.com/questions/21171/company-mode-completion-for-org-keywords
   (defun ~org-keyword-backend (command &optional arg &rest ignored)
