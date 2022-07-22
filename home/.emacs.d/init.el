@@ -2037,7 +2037,7 @@ no user-interaction ongoing."
 
   ;; update every N minutes
   (setq
-   mu4e-get-mail-command "~/.mutt/bin/mbsync.sh -a"
+   mu4e-get-mail-command "~/.mutt/bin/mbsync.sh quick"
    mu4e-update-interval (* 5 60))
   )
 
