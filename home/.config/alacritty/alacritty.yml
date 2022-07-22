@@ -145,3 +145,18 @@ key_bindings:
     key: Down
     mode: Vi
     action: Down
+
+  # Workarounds to make C-RET, S-RET and M-S-RET available to Emacs in
+  # the terminal in the same way that X11/GTK Emacs recognizes them:
+  - mods: Control
+    key: Return
+    chars: "\x1b[13;5u" # That works
+
+  - mods: Shift
+    key: Return
+    #chars: "\x1b[13;2u" # That doesn't work
+    chars: "\x18@S\x0d" # C-c @ S <return> ; for emacs, which should translate to S-RET
+
+  - mods: Shift|Alt
+    key: Return
+    chars: "\x1b\x18@S\x0d" # M-C-c @ S <return> ; for emacs, which should translate to M-S-RET
