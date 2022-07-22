@@ -1873,7 +1873,7 @@ to save a range of URLs."
     "Run mu4e-update-mail-and-index using my mbsync quick profile by default."
     (interactive "P")
     (let* ((arg (if full "-a" "quick"))
-	   (mu4e-get-mail-command (format "~/.mutt/bin/mbsync.sh %s" arg)))
+	   (mu4e-get-mail-command (format "%s %s" ~mu4e-get-mail-executable arg)))
       (mu4e-update-mail-and-index 't)))
 
   (defun ~mu4e-compose-reply-patch-hook()
@@ -2037,9 +2037,9 @@ no user-interaction ongoing."
 
   ;; update every N minutes
   (setq
-   mu4e-get-mail-command "~/.mutt/bin/mbsync.sh quick"
-   mu4e-update-interval (* 5 60))
-  )
+   ~mu4e-get-mail-executable "~/bin/mbsync.sh"
+   mu4e-get-mail-command (format "%s quick" ~mu4e-get-mail-executable)
+   mu4e-update-interval (* 5 60)))
 
 (use-package mu4e-speedbar
   :ensure nil ; Provided by mu4e above
