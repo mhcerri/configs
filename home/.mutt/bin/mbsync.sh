@@ -4,6 +4,14 @@ exec &> >(tee ~/.log/mbsync.log)
 
 title="mbsync via mutt"
 
+# Measure time
+start_time=$(date +%s)
+elapsed_secs() {
+	local now
+	now=$(date +%s)
+	echo "$((now - start_time))"
+}
+
 log() {
 	echo "$(date -Is) $*"
 }
@@ -35,9 +43,9 @@ fi
 
 log "Fetching email..."
 if ! output=$(mbsync -V "$*" 3>&2 2>&1 1>&3- | tee >(cat >&2)); then
-	error "Failed to fetch email:"$'\n\n'"$output"
+	error "Failed to fetch email ($(elapsed_secs) secs):"$'\n\n'"$output"
 	exit 1
 fi
 
-info "Mail synchronization finished!"
+info "Mail synchronization finished! ($(elapsed_secs) secs)"
 exit 0
