@@ -1367,10 +1367,25 @@ exist after each headings's drawers."
   (defun ~org-sort-level-1 ()
     "Sort entries under each level 1 headings."
     (interactive)
-    (org-map-entries
-     (lambda ()
-       (org-sort-entries nil ?o))
-     "LEVEL=1" 'file)
+    ;; Save current position based on the current headline and the
+    ;; cursor position inside it. This is not an ideal solution
+    ;; because it doesn't handle duplicate headlines, but it's still
+    ;; better than nothing:
+    (let* ((headline (nth 4 (org-heading-components)))
+         (headline-pos (marker-position (org-find-exact-headline-in-buffer headline)))
+         (relative-pos (- (point) headline-pos)))
+      ;; Sort the first level entries. That will probably move the
+      ;; cursor to a different position:
+      (org-map-entries
+       (lambda ()
+	 (org-sort-entries nil ?o))
+       "LEVEL=1" 'file)
+      ;; Restore the cursor based on the headline and relative cursor
+      ;; position:
+      (let* ((headline-pos (marker-position (org-find-exact-headline-in-buffer headline)))
+             (pos (+ headline-pos relative-pos)))
+        (goto-char pos)))
+    ;; Clean any trailing whitespace for sanity:
     (delete-trailing-whitespace nil nil))
   (defun ~org-format ()
     "Format org buffer."
