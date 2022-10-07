@@ -1553,16 +1553,17 @@ exist after each headings's drawers."
             :files (:defaults (:exclude "helm-org-ql.el"))))
 
 ;; Notification for org-agenda
-(use-package org-alert
-  :defer 3
-  :init
-  (setq org-alert-interval 300 ; In seconds:
-	org-alert-notify-cutoff 10 ; In Minutes
-	org-alert-notify-after-event-cutoff 10)
+(use-package org-notify
+  :quelpa (org-notify :fetcher github :repo "mhcerri/org-notify")
+  :after (server)
   :config
+  (org-notify-add
+   'default
+   '(:time "5m" :period "30m" :actions -notify))
   ;; Only enable by default for the emacs daemon:
   (when (daemonp)
-    (org-alert-enable)))
+    (require 'org)
+    (org-notify-start)))
 
 ;; C and C-like
 (use-package cc-mode
