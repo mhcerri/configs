@@ -588,7 +588,8 @@
 	 ((org-mode) . (lambda () (whitespace-mode -1))))
   :config
   ;; Use a face that plays nicer with the cursor.
-  (copy-face 'flyspell-incorrect 'whitespace-trailing)
+  (custom-set-faces
+   '(whitespace-line ((t (:foreground nil :underline t)))))
   (setq whitespace-line-column 78)
   (setq whitespace-style
 	'(face         ;
