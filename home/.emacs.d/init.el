@@ -1069,6 +1069,8 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
+  :custom-face
+  (lsp-ui-doc-background ((t (:background "#3a3f4b"))))
   :init
   (setq lsp-ui-sideline-show-hover t
 	lsp-ui-sideline-show-code-actions t))
