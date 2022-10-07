@@ -1643,6 +1643,13 @@ exist after each headings's drawers."
   :hook
   ((go-mode . go-eldoc-setup)))
 
+(use-package rust-mode
+  :mode ("\\.rs\\'" . rust-mode)
+  :defer t)
+
+(use-package flycheck-rust
+  :hook ((rust-mode . flycheck-rust-setup)))
+
 (use-package lua-mode
   :defer t)
 
