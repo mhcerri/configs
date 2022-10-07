@@ -1552,6 +1552,18 @@ exist after each headings's drawers."
   :quelpa (org-ql :fetcher github :repo "alphapapa/org-ql"
             :files (:defaults (:exclude "helm-org-ql.el"))))
 
+;; Notification for org-agenda
+(use-package org-alert
+  :defer 3
+  :init
+  (setq org-alert-interval 300 ; In seconds:
+	org-alert-notify-cutoff 10 ; In Minutes
+	org-alert-notify-after-event-cutoff 10)
+  :config
+  ;; Only enable by default for the emacs daemon:
+  (when (daemonp)
+    (org-alert-enable)))
+
 ;; C and C-like
 (use-package cc-mode
   :defer t
