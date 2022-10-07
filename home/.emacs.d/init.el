@@ -584,7 +584,8 @@
 (use-package whitespace
   :diminish
   :after (flyspell)
-  :hook ((text-mode prog-mode) . whitespace-mode)
+  :hook (((text-mode prog-mode) . whitespace-mode)
+	 ((org-mode) . (lambda () (whitespace-mode -1))))
   :config
   ;; Use a face that plays nicer with the cursor.
   (copy-face 'flyspell-incorrect 'whitespace-trailing)
