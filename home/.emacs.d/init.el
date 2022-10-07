@@ -1931,7 +1931,11 @@ to save a range of URLs."
       ;; Add acked-by tag
       (when (bound-and-true-p body)
 	(save-excursion
-	  (insert (format "%s\n\n" body))))))
+	  ;; Move to the beginning of the body, just after the first
+	  ;; empty line:
+	  (goto-line 0)
+	  (re-search-forward "^$")
+	  (insert (format "\n%s\n" body))))))
 
   (defun ~mu4e-compose-reply-patch()
     "Reply to patches with pre formated messages."
