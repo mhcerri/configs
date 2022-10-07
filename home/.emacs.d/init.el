@@ -2081,7 +2081,8 @@ no user-interaction ongoing."
 (use-package alert
   :defer t
   :init
-  (setq alert-fade-time 0))
+  (setq alert-fade-time 0)
+  (setq alert-default-style 'libnotify))
 
 (use-package mu4e-alert
   :after (mu4e)
