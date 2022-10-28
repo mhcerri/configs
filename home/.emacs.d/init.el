@@ -1065,7 +1065,12 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   :hook ((prog-mode . lsp-mode)
 	 (lsp-mode . lsp-enable-which-key-integration))
   :init
-  (setq lsp-keymap-prefix "C-c l"))
+  (setq lsp-keymap-prefix "C-c l")
+  (setq lsp-rust-analyzer-server-display-inlay-hints t
+	lsp-rust-analyzer-display-lifetime-elision-hints-enable t)
+  (add-hook 'lsp-after-open-hook
+	    (lambda () (when (lsp-find-workspace 'rust-analyzer nil)
+                         (lsp-rust-analyzer-inlay-hints-mode)))))
 
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
@@ -1648,8 +1653,8 @@ exist after each headings's drawers."
   :mode ("\\.rs\\'" . rust-mode)
   :defer t)
 
-(use-package flycheck-rust
-  :hook ((rust-mode . flycheck-rust-setup)))
+(use-package rustic
+  :after (rust-mode))
 
 (use-package lua-mode
   :defer t)
