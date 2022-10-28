@@ -28,7 +28,7 @@ format_result() {
 	echo "$file:$line:$config"
 }
 
-results=$(show-kconfig "$cfg" | sed -r -n -e '/^#[0-9]+\s+"(.*)"\s+\+([0-9]+)$/s//\1:\2/p')
+results=$(kconfig-show "$cfg" | sed -r -n -e '/^#[0-9]+\s+"(.*)"\s+\+([0-9]+)$/s//\1:\2/p')
 case "$(echo "$results" | wc -l)" in
 0|1)
 	if [[ -z "$results" ]]; then
