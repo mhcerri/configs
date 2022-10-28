@@ -1,0 +1,10 @@
+#!/bin/dash
+tui=dashboard
+if ! command -v "$tui" > /dev/null 2>&1; then
+	err="Failed to find dashboard command: $tui"
+	echo "$err" >&2
+	notify-send -u critical "Error" "$err"
+	exit 1
+fi
+name="$(basename "$0")"
+exec alacritty --title "$name" --class "$name" "$@" -e watch -c -n 120 "$tui"
