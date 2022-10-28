@@ -33,13 +33,30 @@ get_timeout() {
 	     }'
 }
 
+set_on() { eval "$ON_COMMAND"; }
+
+set_off() { eval "$OFF_COMMAND"; }
+
+toggle() {
+	if [ "$(get_timeout)" = "$OFF_VALUE" ]; then set_on;
+	else set_off; fi
+}
+
+if [[ "$#" -gt 0 ]]; then
+	case "$1" in
+		on) set_on;;
+		off) set_off;;
+		toggle) toggle;;
+		*)
+			echo "Invalid arguments: $*" >&2
+			exit 1
+	esac
+	exit 0
+fi
+
 # Toggle on click
 if [ -n "$BLOCK_BUTTON" ]; then
-	if [ "$(get_timeout)" = "$OFF_VALUE" ]; then
-		eval "$ON_COMMAND"
-	else
-		eval "$OFF_COMMAND"
-	fi
+	toggle
 fi
 
 # Show status
