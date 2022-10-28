@@ -403,6 +403,10 @@
 #    summary = "*script*"
 #    script = dunst_test.sh
 
+[logging]
+	summary = "*"
+	script = ~/.config/dunst/log.sh
+
 #[ignore]
 #    # This notification will not be displayed
 #    summary = "foobar"
