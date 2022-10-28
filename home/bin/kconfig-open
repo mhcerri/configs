@@ -2,7 +2,13 @@
 
 set -e
 
-EDITOR="${EDITOR:-vim}"
+for e in "${EDITOR}" e emacs vim vi; do
+	if command -v "$e" > /dev/null; then
+		EDITOR="$e"
+		break
+	fi
+done
+
 cfg="$1"
 if [ ! "$cfg" ]; then
 	echo "Usage: $(basename "$0") <config>" >&2
