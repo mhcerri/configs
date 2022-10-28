@@ -594,8 +594,10 @@
   (setq whitespace-style
 	'(face         ;
 	  trailing     ; Trailing blanks
-	  lines-tail)  ; Lines with columns beyond whitespace-line-column
-	))
+	  lines-tail   ; Lines with columns beyond whitespace-line-column
+	  tabs)        ; HIghlight tabs
+	)
+  (modify-face whitespace-tab "#363e4d" nil nil nil nil t))
 
 ;; Remove trailing white spaces
 (use-package ws-butler
