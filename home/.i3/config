@@ -289,6 +289,7 @@ exec --no-startup-id nice -n 5 dropbox start
 exec --no-startup-id nice -n 5 insync start
 exec --no-startup-id cryfs-ask ~/GDrive/USP/.private/ ~/Private/
 exec --no-startup-id sh -c 'pkill dunst; ~/Documents/workspace/dunst/dunst'
+exec --no-startup-id syncthing-gtk
 
 # Dunst
 bindsym $mod+Escape         exec --no-startup-id ~/Documents/workspace/dunst/dunstctl close
