@@ -2153,6 +2153,78 @@ no user-interaction ongoing."
   (setq ldap-default-host "" ; That's necessary to use the host from the ldap conf
 	ldap-ldapsearch-args '("-LL" "-tt" "-x" "-y" "/home/mhcerri/.ldappw")))
 
+;; IRC
+(use-package erc
+  :commands (erc erc-tls)
+  :hook ((erc-mode . ~erc-setup))
+  :bind (:map erc-mode-map
+	      ("C-c L" . ~erc-show-log))
+  :init
+  (setq erc-pcomplete-nick-postfix ", "
+	erc-hide-list '("JOIN" "PART" "QUIT" "NICK")
+	erc-insert-timestamp-function 'erc-insert-timestamp-left
+	erc-timestamp-format "[%H:%M] "
+	erc-log-channels-directory "~/.log/erc/"
+	erc-log-write-after-insert t
+	erc-log-insert-log-on-open nil ; use C-c l instead.
+	erc-query-display 'buffer
+	erc-auto-query 'bury
+	erc-interpret-mirc-color t)
+  :config
+  (defun ~erc-setup ()
+    "Configure ERC."
+    (erc-fill-disable)
+    (erc-spelling-mode 1))
+  ;; Load additional ERC modules:
+  (setq erc-modules (append erc-modules '(log)))
+  (erc-update-modules)
+  ;; Open the corresponding log file:
+  (defun ~erc-show-log ()
+    "Open the corresponding ERC log file."
+    (interactive)
+    (find-file (erc-current-logfile))
+    (end-of-buffer)))
+
+(use-package ercn
+  :after erc
+  :init
+  (setq ercn-notify-rules
+	'((current-nick . all)
+          (query-buffer . all)
+          (keyword . all)
+	  (message . ("#ltc-friends" "#ubuntu-kernel" "##mhcerri"))))
+  (defun ~ercn-notify (nickname message)
+    (alert (format "<b>%s</b>: %s" nickname message)
+	   :icon "internet-chat"
+	   :title (format "ERC: %s@%s" (buffer-name)
+			  (erc-shorten-server-name
+			   (or erc-server-announced-name
+			       erc-session-server)))))
+  (add-hook 'ercn-notify-hook '~ercn-notify))
+
+(use-package erc-hl-nicks
+  :after erc
+  :config
+  ;; Disable for default:
+  (erc-hl-nicks-disable))
+
+(use-package erc-image
+  :after erc)
+
+(use-package erc-view-log
+  :after erc
+  :config
+  ;; Use `erc-log-channels-directory` to set the auto-mode for ERC log
+  ;; files.
+  (when (boundp 'erc-log-channels-directory)
+    (add-to-list 'auto-mode-alist
+		 `(,(format "%s.*\\.txt"
+			    (regexp-quote
+			     (file-name-as-directory
+			      (expand-file-name
+			       erc-log-channels-directory))))
+		   . erc-view-log-mode))))
+
 ;; Load custom el files
 (let* ((dir "~/.emacs.d/custom.d/")
        (dir (file-name-as-directory dir)))
