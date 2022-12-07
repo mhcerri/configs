@@ -1575,6 +1575,10 @@ exist after each headings's drawers."
     (require 'org)
     (org-notify-start)))
 
+;; Make conf-mode more useful
+(use-package conf-mode
+  :mode "/\\.config/")
+
 ;; C and C-like
 (use-package cc-mode
   :defer t
