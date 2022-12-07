@@ -1569,7 +1569,7 @@ exist after each headings's drawers."
   :config
   (org-notify-add
    'default
-   '(:time "5m" :period "30m" :actions -notify))
+   '(:time "5m" :period "1h" :actions -notify))
   ;; Only enable by default for the emacs daemon:
   (when (daemonp)
     (require 'org)
