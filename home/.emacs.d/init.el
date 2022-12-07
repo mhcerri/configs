@@ -1260,9 +1260,26 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   :defer t)
 
 (use-package ibuffer-projectile
-  :after (:all ibuffer projectile)
+  :after ibuffer
   :hook
-  ((ibuffer . ibuffer-projectile-set-filter-groups)))
+  ((ibuffer . ~ibuffer-set-filter-groups))
+  :init
+  ;; Custom groups:
+  (setq ~custom-ibuffer-filter-groups
+	'(("Mail" (name . "\\*mu4e-"))
+	  ("IRC" (mode . erc-mode))))
+  ;; Hook to add projetile and custom groups:
+  (defun ~ibuffer-set-filter-groups()
+    "Set ibuffer for projectile and custom groups."
+    (setq ibuffer-filter-groups
+	  (append ~custom-ibuffer-filter-groups
+		  (ibuffer-projectile-generate-filter-groups)))
+    (message "~ibuffer-set-filter-groups: groups set")
+    (let ((ibuf (get-buffer "*Ibuffer*")))
+      (when ibuf
+	(with-current-buffer ibuf
+          (pop-to-buffer ibuf)
+          (ibuffer-update nil t))))))
 
 ;; Better embedded terminal
 (use-package multi-term
