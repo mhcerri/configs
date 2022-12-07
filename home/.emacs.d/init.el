@@ -2102,7 +2102,7 @@ no user-interaction ongoing."
 (use-package mu4e-alert
   :after (mu4e)
   :init
-  (setq mu4e-alert-interesting-mail-query "(maildir:\"/INBOX\") AND (flag:unread)")
+  (setq mu4e-alert-interesting-mail-query "maildir:/INBOX AND flag:unread")
   :config
   (mu4e-alert-enable-mode-line-display)
   (mu4e-alert-enable-notifications))
