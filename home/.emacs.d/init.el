@@ -2093,6 +2093,16 @@ no user-interaction ongoing."
    mu4e-get-mail-command (format "%s quick" ~mu4e-get-mail-executable)
    mu4e-update-interval (* 5 60)))
 
+(use-package mu4e-thread-folding
+  :quelpa (mu4e-thread-folding :fetcher github :repo "rougier/mu4e-thread-folding")
+  :general
+  (:states 'normal :keymaps 'mu4e-headers-mode-map
+	   "TAB"          'mu4e-headers-toggle-at-point
+           "<left>"       'mu4e-headers-fold-at-point
+           "<S-left>"     'mu4e-headers-fold-all
+           "<right>"      'mu4e-headers-unfold-at-point
+           "<S-right>"    'mu4e-headers-unfold-all))
+
 (use-package mu4e-speedbar
   :ensure nil ; Provided by mu4e above
   :after (mu4e))
