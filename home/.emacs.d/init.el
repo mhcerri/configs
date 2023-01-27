@@ -540,7 +540,6 @@
 ;; Add numbers to lines
 (use-package display-line-numbers
   :demand
-  :if (version<= "26.0.50" emacs-version)
   :hook
   (((text-mode prog-mode conf-mode) . ~enable-line-number))
   :init
@@ -554,35 +553,6 @@
     (if (equal display-line-numbers 'relative)
         (setq display-line-numbers 'absolute)
       (setq display-line-numbers 'relative))))
-
-;; nlinum might be efficient but it doesn't play well with git-gutter.
-(use-package linum
-  :if (not (version<= "26.0.50" emacs-version))
-  :hook
-  (((text-mode prog-mode) . ~linum-hook))
-  :config
-  ;; Avoid performance issues
-  (defun ~is-buffer-too-big ()
-    "Check buffer size"
-    (or (> (buffer-size) (* 10000 80))
-	(> (line-number-at-pos (point-max)) 10000)))
-  (defun ~linum-hook ()
-    "Disable linum if buffer is too big"
-    (if (~is-buffer-too-big)
-	(progn
-	  (message "Buffer is too big! Disabling line numbers...")
-	  (linum-mode -1))
-      (linum-mode 1)
-      ))
-  ;; Use separator
-  (setq linum-format "%4d\u2502")
-  ;; Hide fringe in gui mode for consistency
-  (add-to-list 'default-frame-alist '(left-fringe . 0))
-  (add-to-list 'default-frame-alist '(right-fringe . 0))
-  (setq-default left-fringe-width 0)
-  ;; Compatibility
-  (defun ~enable-line-number () (linum-mode 1))
-  (defun ~disable-line-number () (linum-mode -1)))
 
 ;; Highlight trailing spaces
 (use-package whitespace
