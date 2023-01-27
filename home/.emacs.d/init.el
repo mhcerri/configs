@@ -1558,6 +1558,10 @@ exist after each headings's drawers."
 (use-package org-notify
   :quelpa (org-notify :fetcher github :repo "mhcerri/org-notify")
   :after (server)
+  :init
+  (setq org-notify-icon "~/.emacs.d/org.png"
+	org-notify-max-notifications-per-run nil
+	org-notify-default-notify-urgency 'low)
   :config
   (org-notify-add
    'default
