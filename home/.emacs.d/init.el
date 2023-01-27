@@ -2043,6 +2043,14 @@ no user-interaction ongoing."
      (t contact)))
   (setq mu4e-contact-process-function '~mu4e-contact-processor)
 
+  ;; Compat fixes:
+  ;; Fix evil-collection for mu4e
+  ;(defalias 'mu4e-view-quit 'mu4e~view-quit-buffer)
+  (defun mu4e~view-quit-buffer ()
+    "Fix evil q in mu4e-view."
+    (interactive)
+    (mu4e-view-quit))
+
   ;; Faces
   ;; Make highlighted line better
   (set-face-attribute 'mu4e-header-highlight-face nil :underline nil)
