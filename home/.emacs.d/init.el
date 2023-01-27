@@ -814,11 +814,12 @@
   (popwin-mode 1))
 
 ;; Highlight current line when jumping with the cursor.
-(use-package beacon
-  :diminish
+(use-package pulsar
   :defer 1
+  :init
+  (setq pulsar-face 'pulsar-magenta)
   :config
-  (beacon-mode 1))
+  (pulsar-global-mode 1))
 
 ;; Highlight symbol under the cursor
 (use-package highlight-symbol
