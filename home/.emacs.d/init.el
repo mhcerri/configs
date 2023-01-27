@@ -266,7 +266,10 @@
 (use-package simpleclip
   :bind
   (("C-c y"  . copy-to-clipboard)
-   ("C-c p"  . paste-from-clipboard))
+   ("C-c p"  . paste-from-clipboard)
+   ;; Mimic terminal copy and paste in GUI:
+   ("C-S-c"  . copy-to-clipboard)
+   ("C-S-v"  . paste-from-clipboard))
   :commands (copy-to-clipboard
 	     paste-from-clipboard
 	     cut-to-clipboard
