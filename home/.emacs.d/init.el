@@ -2152,7 +2152,7 @@ no user-interaction ongoing."
 	      ("C-c L" . ~erc-show-log))
   :init
   (setq erc-pcomplete-nick-postfix ", "
-	erc-hide-list '("JOIN" "PART" "QUIT" "NICK")
+	erc-hide-list '("JOIN" "PART" "QUIT" "NICK" "MODE")
 	erc-insert-timestamp-function 'erc-insert-timestamp-left
 	erc-timestamp-format "[%H:%M] "
 	erc-log-channels-directory "~/.log/erc/"
