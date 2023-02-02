@@ -439,9 +439,9 @@
     (global-evil-leader-mode)
     (evil-leader/set-key
       ;; Leader twice
-      evil-leader/leader 'ivy-switch-buffer
-      "f"  'counsel-find-file
-      "r"  'counsel-recentf
+      evil-leader/leader 'consult-buffer
+      "f"  'find-file
+      "r"  'recentf
       "p"  'projectile-find-file
       "P"  'projectile-switch-project
       "b"  'list-buffers
@@ -453,8 +453,7 @@
       "//" 'evilnc-comment-or-uncomment-lines
       "/c" 'evilnc-copy-and-comment-lines
       "/p" 'evilnc-comment-or-uncomment-paragraphs
-      "s"  'counsel-rg-at
-      "g"  'counsel-git-grep-at))
+      ))
   ;; When deferring evil (and thus evil-collection), some fixes will fail
   ;; to be applied to special modes that are loaded right after emacs is
   ;; started. One example is git-rebase-mode, that is invoked when emacs is
@@ -625,74 +624,226 @@
   (setq ibuffer-expert t) ; Do not ask to delete buffer
   (setq-default ibuffer-show-empty-filter-groups nil))
 
-;; ivy, swiper and counsel - Better "M-x", "C-s" and "C-x f"
-(use-package ivy
-  :diminish
-  :defer .1
-  :bind
-  ((:map ivy-minibuffer-map
-	 ([escape] . minibuffer-keyboard-quit)))
-  :config
-  ;; Add recent files to buffer switch
-  (setq ivy-use-virtual-buffers t)
-  ;; Do not use ^ as initial input
-  (setq ivy-initial-inputs-alist nil)
-  ;; configure regexp engine.
-  (setq ivy-re-builders-alist
-	;; allow input not in order
-        '((t . ivy--regex-ignore-order)))
-  ;; Enable it
-  (ivy-mode 1))
-
-;;  Add more info to ivy prompts
-(use-package ivy-rich
-  :diminish
-  :after ivy
-  :config
-  (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
-  (ivy-rich-mode 1))
-
-;; Sort Ivy entry by usage
-(use-package prescient
-  :after (ivy))
-
-(use-package ivy-prescient
-  :after (ivy prescient)
-  :config
-  (ivy-prescient-mode))
-
-(use-package swiper
-  :diminish
-  :bind
-  (("C-s"     . swiper)))
-
-(use-package counsel
-  :diminish
-  :after (ivy)
+;; emacs friendly completion ui
+(use-package vertico
+  :bind (:map vertico-map
+	 ;; vertico directory navigation.
+	 ("RET" . #'vertico-directory-enter)
+	 ("DEL" . #'vertico-directory-delete-char)
+	 ("M-DEL" . #'vertico-directory-delete-word))
+  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy)
   :init
-  (defun counsel-gg-at ()
-    "counsel-ag with initial input from the cursor."
-    (interactive)
-    (counsel-ag (ivy-thing-at-point)))
-  (defun counsel-rg-at ()
-    "counsel-rg with initial input from the cursor."
-    (interactive)
-    (counsel-rg (ivy-thing-at-point)))
-  (defun counsel-git-grep-at ()
-    "counsel-git-grep with initial input from the cursor."
-    (interactive)
-    (counsel-git-grep (ivy-thing-at-point)))
+
+  ;; Add prompt indicator to `completing-read-multiple'.
+  ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
+  (defun crm-indicator (args)
+    (cons (format "[CRM%s] %s"
+                  (replace-regexp-in-string
+                   "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
+                   crm-separator)
+                  (car args))
+          (cdr args)))
+  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+
+  ;; Do not allow the cursor in the minibuffer prompt
+  (setq minibuffer-prompt-properties
+        '(read-only t cursor-intangible t face minibuffer-prompt))
+  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+
+  ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
+  ;; Vertico commands are hidden in normal buffers.
+  ;; (setq read-extended-command-predicate
+  ;;       #'command-completion-default-include-p)
+
+  ;; Enable recursive minibuffers
+  (setq enable-recursive-minibuffers t)
+
+  (vertico-mode))
+
+;; fuzzy search for emacs completion
+(use-package orderless
+  :init
+  ;; Configure a custom style dispatcher (see the Consult wiki)
+  ;; (setq orderless-style-dispatchers '(+orderless-dispatch)
+  ;;       orderless-component-separator #'orderless-escapable-split-on-space)
+  (setq completion-styles '(orderless basic)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles partial-completion)))))
+
+(use-package marginalia
+  :bind (:map minibuffer-local-map
+         ("M-A" . marginalia-cycle))
+  :init
+  (marginalia-mode))
+
+;; Example configuration for Consult
+(use-package consult
+  :bind (
+	 ;; Mimics swiper
+	 ("C-s" . consult-line)
+	 ;; C-c bindings (mode-specific-map)
+         ("C-c M-x" . consult-mode-command)
+         ("C-c h" . consult-history)
+         ("C-c k" . consult-kmacro)
+         ("C-c m" . consult-man)
+         ("C-c i" . consult-info)
+         ([remap Info-search] . consult-info)
+         ;; C-x bindings (ctl-x-map)
+         ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
+         ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+         ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+         ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
+         ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
+         ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
+         ;; Custom M-# bindings for fast register access
+         ("M-#" . consult-register-load)
+         ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
+         ("C-M-#" . consult-register)
+         ;; Other custom bindings
+         ("M-y" . consult-yank-pop)                ;; orig. yank-pop
+         ;; M-g bindings (goto-map)
+         ("M-g e" . consult-compile-error)
+         ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
+         ("M-g g" . consult-goto-line)             ;; orig. goto-line
+         ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+         ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
+         ("M-g m" . consult-mark)
+         ("M-g k" . consult-global-mark)
+         ("M-g i" . consult-imenu)
+         ("M-g I" . consult-imenu-multi)
+         ;; M-s bindings (search-map)
+         ("M-s d" . consult-find)
+         ("M-s D" . consult-locate)
+         ("M-s g" . consult-grep)
+         ("M-s G" . consult-git-grep)
+         ("M-s r" . consult-ripgrep)
+         ("M-s l" . consult-line)
+         ("M-s L" . consult-line-multi)
+         ("M-s k" . consult-keep-lines)
+         ("M-s u" . consult-focus-lines)
+         ;; Isearch integration
+         ("M-s e" . consult-isearch-history)
+         :map isearch-mode-map
+         ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
+         ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
+         ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
+         ("M-s L" . consult-line-multi)            ;; needed by consult-line to detect isearch
+         ;; Minibuffer history
+         :map minibuffer-local-map
+         ("M-s" . consult-history)                 ;; orig. next-matching-history-element
+         ("M-r" . consult-history))                ;; orig. previous-matching-history-element
+
+  ;; Enable automatic preview at point in the *Completions* buffer. This is
+  ;; relevant when you use the default completion UI.
+  :hook (completion-list-mode . consult-preview-at-point-mode)
+  ;; The :init configuration is always executed (Not lazy)
+  :init
+  ;; Optionally configure the register formatting. This improves the register
+  ;; preview for `consult-register', `consult-register-load',
+  ;; `consult-register-store' and the Emacs built-ins.
+  (setq register-preview-delay 0.5
+        register-preview-function #'consult-register-format)
+  ;; Optionally tweak the register preview window.
+  ;; This adds thin lines, sorting and hides the mode line of the window.
+  (advice-add #'register-preview :override #'consult-register-window)
+  ;; Use Consult to select xref locations with preview
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref)
+  ;; Configure other variables and modes in the :config section,
+  ;; after lazily loading the package.
+  :config
+  ;; Optionally configure preview. The default value
+  ;; is 'any, such that any key triggers the preview.
+  ;; (setq consult-preview-key 'any)
+  ;; (setq consult-preview-key (kbd "M-."))
+  ;; (setq consult-preview-key (list (kbd "<S-down>") (kbd "<S-up>")))
+  ;; For some commands and buffer sources it is useful to configure the
+  ;; :preview-key on a per-command basis using the `consult-customize' macro.
+  (consult-customize
+   consult-theme :preview-key '(:debounce 0.2 any)
+   consult-ripgrep consult-git-grep consult-grep
+   consult-bookmark consult-recent-file consult-xref
+   consult--source-bookmark consult--source-file-register
+   consult--source-recent-file consult--source-project-recent-file
+   ;; :preview-key (kbd "M-.")
+   :preview-key '(:debounce 0.4 any))
+  ;; Optionally configure the narrowing key.
+  ;; Both < and C-+ work reasonably well.
+  (setq consult-narrow-key "<") ;; (kbd "C-+")
+  ;; Optionally make narrowing help available in the minibuffer.
+  ;; You may want to use `embark-prefix-help-command' or which-key instead.
+  ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
+  ;; By default `consult-project-function' uses `project-root' from project.el.
+  ;; Optionally configure a different project root function.
+  ;; There are multiple reasonable alternatives to chose from.
+  ;;;; 1. project.el (the default)
+  ;; (setq consult-project-function #'consult--default-project--function)
+  ;;;; 2. projectile.el (projectile-project-root)
+  ;; (autoload 'projectile-project-root "projectile")
+  ;; (setq consult-project-function (lambda (_) (projectile-project-root)))
+  ;;;; 3. vc.el (vc-root-dir)
+  ;; (setq consult-project-function (lambda (_) (vc-root-dir)))
+  ;;;; 4. locate-dominating-file
+  ;; (setq consult-project-function (lambda (_) (locate-dominating-file "." ".git")))
+)
+
+(use-package embark
   :bind
-  (("M-x"     . counsel-M-x)
-   ("C-x C-f" . counsel-find-file)
-   ("C-c o"   . counsel-find-file-extern)
-   ("C-c l"   . counsel-locate)
-   ("C-h B"   . counsel-descbinds)
-   ("C-c g f" . counsel-git)
-   ("C-c g G" . counsel-git-grep-at)
-   ("C-c /"   . counsel-ag-at)
-   ("C-S-s"   . counsel-ag-at)
-   ("M-y"     . counsel-yank-pop)))
+  (("M-E" . embark-act)         ;; pick some comfortable binding
+   ("M-D" . embark-dwim)        ;; good alternative: M-.
+   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+  :init
+  ;; Optionally replace the key help with a completing-read interface
+  (setq prefix-help-command #'embark-prefix-help-command)
+  :config
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none))))
+
+  ;; Use which-key to show the options instead:
+  (defun embark-which-key-indicator ()
+    "An embark indicator that displays keymaps using which-key.
+The which-key help message will show the type and value of the
+current target followed by an ellipsis if there are further
+targets."
+    (lambda (&optional keymap targets prefix)
+      (if (null keymap)
+          (which-key--hide-popup-ignore-command)
+	(which-key--show-keymap
+	 (if (eq (plist-get (car targets) :type) 'embark-become)
+             "Become"
+           (format "Act on %s '%s'%s"
+                   (plist-get (car targets) :type)
+                   (embark--truncate-target (plist-get (car targets) :target))
+                   (if (cdr targets) "…" "")))
+	 (if prefix
+             (pcase (lookup-key keymap prefix 'accept-default)
+               ((and (pred keymapp) km) km)
+               (_ (key-binding prefix 'accept-default)))
+           keymap)
+	 nil nil t (lambda (binding)
+                     (not (string-suffix-p "-argument" (cdr binding))))))))
+
+  (setq embark-indicators
+	'(embark-which-key-indicator
+	  embark-highlight-indicator
+	  embark-isearch-highlight-indicator))
+
+  (defun embark-hide-which-key-indicator (fn &rest args)
+    "Hide the which-key indicator immediately when using the completing-read prompter."
+    (which-key--hide-popup-ignore-command)
+    (let ((embark-indicators
+           (remq #'embark-which-key-indicator embark-indicators)))
+      (apply fn args)))
+
+  (advice-add #'embark-completing-read-prompter
+              :around #'embark-hide-which-key-indicator))
+
+;; Consult users will also want the embark-consult package.
+(use-package embark-consult
+  :hook (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package rg
   :bind (
@@ -765,12 +916,6 @@
     ("C-c p" evil-mc-skip-and-goto-prev-match "previous")
     ("C-n" evil-mc-make-cursor-move-next-line "next line" :column "Make cursor and move to")
     ("C-p" evil-mc-make-cursor-move-prev-line "prev line")))
-
-(use-package ivy-hydra
-  :after (ivy hydra)
-  :bind
-  ((:map ivy-minibuffer-map
-	 ("C-o" . hydra-ivy/body))))
 
 (use-package warnings
   ;; builtin
@@ -938,14 +1083,6 @@
 	 (if (derived-mode-p 'prog-mode)
 	     (flyspell-prog-mode)
 	   (flyspell-mode 1)))))))
-
-;; Show spelling options via ivy.
-(use-package flyspell-correct-ivy
-  :after flyspell
-  :bind
-  (:map flyspell-mode-map
-        ("C-c $" . flyspell-correct-at-point)
-        ("C-c d c" . flyspell-correct-at-point)))
 
 ;; Syntax check
 (use-package flycheck
@@ -1140,40 +1277,6 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   ;; Don't warn when TAGS files are large
   (setq large-file-warning-threshold nil))
 
-(use-package counsel-etags
-  :after (:all counsel etags))
-
-;; counsel-gtags completely replaces ggtags.el and offers better
-;; support for creating and updating tags files.
-(use-package counsel-gtags
-  :diminish "Gtags"
-  :after (:all evil counsel bpr)
-  :hook
-  ((prog-mode . counsel-gtags-mode))
-  :bind
-  (
-   ;; Emulate etags/ctags jump
-   ("C-]" . counsel-gtags-dwim)
-   (:map evil-normal-state-map ("C-]" . counsel-gtags-dwim))
-   (:map evil-insert-state-map ("C-]" . counsel-gtags-dwim))
-   ;; Emulate etags/ctags return to previous location
-   ("C-t" . counsel-gtags-go-backward)
-   (:map evil-normal-state-map ("C-t" . counsel-gtags-go-backward))
-   (:map evil-insert-state-map ("C-t" . counsel-gtags-go-backward)))
-  :config
-  ;; Replace the internals to not block when generating the tag file
-  (defun counsel-gtags--generate-tags ()
-    "Generate tags in background."
-    (if (not (yes-or-no-p "File GTAGS not found. Run 'gtags'? "))
-   	(error "Abort generating tag files")
-      (let* ((root (read-directory-name "Root Directory: "))
-             (label (counsel-gtags--select-gtags-label))
-             (bpr-process-directory root)
-	     (bpr-show-progress nil)
-   	     (bpr-close-after-success t))
-   	(bpr-spawn (concat "gtags -q --gtagslabel=" label))
-   	(error "Gtags is generating tags")))))
-
 ;; Tag-like jump without any support
 (use-package dumb-jump
   :init
@@ -1189,8 +1292,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (require 'cl)
   (delete "Makefile" dumb-jump-project-denoters)
   (setq dumb-jump-force-searcher 'git-grep-plus-ag)
-  (setq dumb-jump-max-find-time 20)
-  (setq dumb-jump-selector 'ivy))
+  (setq dumb-jump-max-find-time 20))
 
 (use-package avy
   :bind
@@ -1211,7 +1313,6 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
 
 ;; Code and project navigation
 (use-package projectile
-  :after (:all counsel-etags)
   :commands (projectile-mode)
   :hook
   ((prog-mode . projectile-mode))
@@ -1231,11 +1332,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (setq projectile-project-name-function '~projectile-get-project-name)
   (setq projectile-mode-line
 	'(:eval (format " Proj[%s]" (projectile-project-name))))
-  (setq projectile-completion-system 'ivy)
   (projectile-mode))
-
-(use-package counsel-projectile
-  :defer t)
 
 (use-package ibuffer-projectile
   :after ibuffer
@@ -1805,7 +1902,7 @@ exist after each headings's drawers."
   ;; Use my custom mu
   (setq mu4e-mu-binary "~/Documents/workspace/mu/build/mu/mu")
   ;; Use ivy for prompts
-  (setq mu4e-completing-read-function 'ivy-completing-read)
+  (setq mu4e-completing-read-function 'completing-read-default)
 
   ;; Path to Maildir directory
   (setq mu4e-root-maildir "~/.mail/work/")
