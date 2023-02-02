@@ -340,7 +340,8 @@
   ;; Enable theme
   (setq frame-background-mode 'dark)
   (setq zerodark-use-paddings-in-mode-line nil)
-  (load-theme 'zerodark t))
+  (load-theme 'zerodark t)
+  (set-face-attribute 'mode-line-inactive nil :height 1.0))
 
 ;; Mode line
 (use-package doom-modeline
