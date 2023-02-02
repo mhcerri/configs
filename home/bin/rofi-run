@@ -9,7 +9,7 @@ rofi-helper() { exec rofi -dpi "$(xrdb -query | sed -n 's/^Xft\.dpi:\s*//p')" "$
 if [ $# -eq 0 ]; then
 	# By default run my custom rofi
 	rofi-helper -show combi -combi-modi "fav:$0 -fav,run" \
-		-modi "combi,dir:$0 -dir,fav:$0 -fav,run,window,ssh" \
+		-modi "combi,run,dir:$0 -dir,fav:$0 -fav,window,ssh" \
 		-run-command "$0 -run '{cmd}'"
 elif [ "$1" = '-run' ]; then
 	# Run command replicating -run-command
