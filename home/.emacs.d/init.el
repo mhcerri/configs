@@ -1357,30 +1357,17 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
           (ibuffer-update nil t))))))
 
 ;; Better embedded terminal
-(use-package multi-term
+
+(use-package vterm
+  :commands (vterm))
+
+(use-package multi-vterm
   :commands
-  (multi-term
-   multi-term-next
-   multi-term-prev)
+  (multi-vterm
+   multi-vterm-next
+   multi-vterm-prev)
   :bind
-  (("C-c T" . multi-term))
-  :hook
-  ((term-mode . ~term-mode))
-  :init
-  (defun ~term-mode ()
-    ;; Disable line numbers (whatever it's using)
-    (~disable-line-number)
-    ;; Scroll up to the end of the screen
-    (setq scroll-margin 0)
-    ;; Disable line highlighting
-    (hl-line-mode -1)
-    ;; Override term bindings
-    (dolist (key '("M-o"))
-      (define-key term-raw-map (kbd key)
-	(lookup-key (current-global-map) (kbd key)))))
-  :config
-  (setq multi-term-program (getenv "SHELL"))
-  (setq multi-term-switch-after-close 'PREVIOUS))
+  (("C-c T" . multi-vterm)))
 
 (use-package eterm-256color
   :hook (term-mode . eterm-256color-mode))
