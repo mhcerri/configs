@@ -1,0 +1,39 @@
+#!/bin/bash
+
+title="$(basename "$0")"
+regex_file=~/.config/dmesg-notify.re
+
+notify() {
+	local type
+	type="$1"; shift
+
+	args=()
+	case "$type" in
+		info) args+=('--urgency=low');;
+		error) args+=('--urgency=critical');;
+		*)
+	esac
+	echo "$(date -Is) $type: $*"
+	notify-send "${args[@]}" -i "$type" "$title" "$*"
+}
+
+error() { notify error "$@"; }
+
+info() { notify info "$@"; }
+
+if [ ! -e "$regex_file" ]; then
+	error "Regex configuration file is missing: $regex_file"
+	exit 1
+fi
+
+i=0; n=$(dmesg | wc -l)
+info "Skipping $n lines!"
+while read -r line; do
+      if [[ "$i" -lt "$n" ]]; then
+	      i=$(( i + 1 ))
+	      continue
+      fi
+      if echo "$line" | grep -Ei -f "$regex_file" &> /dev/null; then
+	      info "$line"
+      fi
+done < <(dmesg -Tw)
