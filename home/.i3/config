@@ -222,7 +222,9 @@ for_window [instance="Toolkit" class="firefox"] sticky enable
 for_window [instance="Toolkit" class="firefox"] border 1pixel
 
 for_window [instance=org-capture-frame] floating enable
-bindsym $mod+p Exec --no-startup-id \
+for_window [instance=org-capture-frame] resize set 35 ppt 50 ppt
+for_window [instance=org-capture-frame] move position center
+bindsym $mod+p exec --no-startup-id \
 	alacritty --class org-capture-frame \
 	-e emacsclient -t -c -e '(~org-capture-make-frame)'
 
