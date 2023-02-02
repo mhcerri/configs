@@ -1798,7 +1798,7 @@ exist after each headings's drawers."
   (add-to-list 'irony-lang-compile-option-alist '(arduino-mode . "c++")))
 
 ;; Mail
-(use-package mail
+(use-package sendmail
   :ensure nil ; builtin
   :defer t
   :mode ("mutt-.*$" . mail-mode)
