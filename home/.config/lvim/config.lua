@@ -10,19 +10,19 @@ lvim.lint_on_save = true
 -- Key bindings
 -- Delete word with Ctrl-Backspace
 lvim.keys.insert_mode["<A-BS>"] = "<C-w>"
-lvim.keys.command_mode["<A-BS>"] = { "<C-w>", { silent=false, } }
+lvim.keys.command_mode["<A-BS>"] = { "<C-w>", { silent = false, } }
 -- Wrap paragraph with Alt-Q
-lvim.keys.normal_mode["<A-q>"] = { "{gq}", { silent=true, } }
-lvim.keys.insert_mode["<A-q>"] = { "<Esc>{gq}a", { silent=true, } }
+lvim.keys.normal_mode["<A-q>"] = { "{gq}", { silent = true, } }
+lvim.keys.insert_mode["<A-q>"] = { "<Esc>{gq}a", { silent = true, } }
 
-lvim.keys.insert_mode["<C-h>B"] = { "<cmd>Telescope keymaps<cr>", { noremap=false, } }
-lvim.keys.normal_mode["<C-h>B"] = { "<cmd>Telescope keymaps<cr>", { noremap=false, } }
+lvim.keys.insert_mode["<C-h>B"] = { "<cmd>Telescope keymaps<cr>", { noremap = false, } }
+lvim.keys.normal_mode["<C-h>B"] = { "<cmd>Telescope keymaps<cr>", { noremap = false, } }
 
 -- "Emacs mode"
-lvim.keys.insert_mode["<C-x><C-c>"] = { "<Esc><cmd>qa<cr>", { silent=true, noremap=false, } }
-lvim.keys.normal_mode["<C-x><C-c>"] = { "<cmd>qa<cr>", { silent=true, noremap=false } }
-lvim.keys.insert_mode["<C-x><C-s>"] = { "<Esc><cmd>w<cr>a", { silent=true, } }
-lvim.keys.normal_mode["<C-x><C-s>"] = { "<cmd>w<cr>", { silent=true, } }
+lvim.keys.insert_mode["<C-x><C-c>"] = { "<Esc><cmd>qa<cr>", { silent = true, noremap = false, } }
+lvim.keys.normal_mode["<C-x><C-c>"] = { "<cmd>qa<cr>", { silent = true, noremap = false } }
+lvim.keys.insert_mode["<C-x><C-s>"] = { "<Esc><cmd>w<cr>a", { silent = true, } }
+lvim.keys.normal_mode["<C-x><C-s>"] = { "<cmd>w<cr>", { silent = true, } }
 
 -- Leader binding via which-ke
 lvim.leader = "space"
@@ -33,14 +33,14 @@ lvim.builtin.which_key.mappings["b"]["b"] = { "<cmd>Telescope buffers<cr>", "Fin
 lvim.builtin.which_key.mappings["<Space>"] = { "<cmd>Telescope buffers<cr>", "Find buffer" }
 lvim.builtin.which_key.mappings["H"] = {
   name = "+Help",
-  h = { "<cmd>Telescope help_tags<cr>", "Help"},
-  o = { "<cmd>Telescope vim_options<cr>", "Vim Options"},
-  b = { "<cmd>Telescope keymaps<cr>", "Bindings"},
-  m = { "<cmd>Telescope man_pages<cr>", "System Manual Pages"},
+  h = { "<cmd>Telescope help_tags<cr>", "Help" },
+  o = { "<cmd>Telescope vim_options<cr>", "Vim Options" },
+  b = { "<cmd>Telescope keymaps<cr>", "Bindings" },
+  m = { "<cmd>Telescope man_pages<cr>", "System Manual Pages" },
 }
 
 -- Move lines (using the existing key binding in lunarvim)
-for _, mode in ipairs({ 'normal_mode', 'visual_mode', 'visual_block_mode'}) do
+for _, mode in ipairs({ 'normal_mode', 'visual_mode', 'visual_block_mode' }) do
   for key, target in pairs({ ["<A-Up>"] = "<A-k>", ["<A-Down>"] = "<A-j>" }) do
     lvim.keys[mode][key] = lvim.keys[mode][target]
   end
@@ -48,7 +48,7 @@ end
 
 -- Remap arrow keys to "fix" the command mode
 -- lunarvim does not support "icommand_mode"
-local cmd_opts = { noremap=true, expr=true, silent=false }
+local cmd_opts                    = { noremap = true, expr = true, silent = false }
 lvim.keys.command_mode["<Up>"]    = { [[pumvisible() ? "\<Left>"  : "\<Up>"   ]], cmd_opts }
 lvim.keys.command_mode["<Down>"]  = { [[pumvisible() ? "\<Right>" : "\<Down>" ]], cmd_opts }
 lvim.keys.command_mode["<Left>"]  = { [[pumvisible() ? "\<Up>"    : "\<Left>" ]], cmd_opts }
@@ -56,15 +56,14 @@ lvim.keys.command_mode["<Right>"] = { [[pumvisible() ? "\<Down>"  : "\<Right>"]]
 
 -- User Config for predefined plugins
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
-lvim.builtin.dashboard.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.side = "left"
-lvim.builtin.nvimtree.show_icons.git = 1
-lvim.builtin.galaxyline.show_mode = true
+--lvim.builtin.nvimtree.show_icons.git = 1
+--lvim.builtin.galaxyline.show_mode = true
 lvim.builtin.terminal.direction = "horizontal"
 
 -- if you don't want all the parsers change this to a table of the ones you want
-lvim.builtin.treesitter.ensure_installed = "maintained"
+--lvim.builtin.treesitter.ensure_installed = "maintained"
 lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enabled = true
 
@@ -98,7 +97,7 @@ lvim.plugins = {
   {
     "vim-scripts/Smart-Home-Key",
     config = function()
-      local smart_home_opts = { silent=true, }
+      local smart_home_opts = { silent = true, }
       vim.api.nvim_set_keymap("", "<Home>",
         ":SmartHomeKey<cr>", smart_home_opts)
       vim.api.nvim_set_keymap("i", "<Home>",
@@ -122,13 +121,21 @@ lvim.plugins = {
 }
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
-lvim.autocommands.custom_groups = {
-  -- Sane defaults for C similar to the kernel format rules
-  { "BufWinEnter", "*.c", "setlocal ts=8 sw=8 noet" },
-  { "BufWinEnter", "*.h", "setlocal ts=8 sw=8 noet" },
-  -- Persist last cursor position
-  {
-    "BufReadPost", "*",
-    [[if line("'\"") >= 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif]]
-  },
-}
+-- Sane defaults for C similar to the kernel format rules
+vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
+  pattern = { "*.c" },
+  command = "setlocal ts=8 sw=8 noet",
+})
+vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
+  pattern = { "*.c" },
+  command = "setlocal ts=8 sw=8 noet",
+})
+vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
+  pattern = { "*.h" },
+  command = "setlocal ts=8 sw=8 noet",
+})
+-- Persist last cursor position
+vim.api.nvim_create_autocmd({ "BufReadPost" }, {
+  pattern = "*",
+  command = [[if line("'\"") >= 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif]],
+})
