@@ -158,6 +158,8 @@
 (eval-when-compile
   (require 'use-package))
 
+(setq native-comp-async-report-warnings-errors nil)
+
 ;; Install package by default
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
