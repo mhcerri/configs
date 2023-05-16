@@ -2,6 +2,7 @@
 ;;; Commentary:
 
 ;;; Code:
+(setq inhibit-default-init t)
 (setq gc-cons-threshold most-positive-fixnum)
 (package-initialize)
 (setq-default ~package-initialized t)
