@@ -966,9 +966,12 @@ targets."
 	   ;; possible to dismiss them hitting ESC.
 	   (help-mode :stick t)
 	   (godoc-mode :stick t)
+	   (eudc-mode :stick t)
 	   ("*Apropos*" :stick t)
 	   ("*Flycheck errors*" :stick t)
 	   ("*rg*" :stick t)
+	   ("^\\*cargo-.*\\*$" :regexp t :stick t)
+	   ("^\\*rust.*\\*$" :regexp t :stick t)
 	   ;; Information buffers shouldn't be selected by default:
 	   ("*Warnings*" :noselect t)
 	   ("*Backtrace*" :noselect t)
