@@ -1584,7 +1584,7 @@ exist after each headings's drawers."
   :bind
   (("C-c a" . org-agenda))
   :init
-  (setq org-agenda-files '("~/Dropbox/org/" "~/Dropbox/org/projects"))
+  (setq org-agenda-files '("~/Dropbox/org/" "~/Dropbox/org/projects" "~/Dropbox/org/1on1"))
   (setq org-refile-targets '((nil :maxlevel . 1)
                              (org-agenda-files :level . 0)
                              (org-agenda-files :maxlevel . 1)))
