@@ -656,9 +656,11 @@
 (use-package vertico
   :bind (:map vertico-map
 	 ;; vertico directory navigation.
-	 ("RET" . #'vertico-directory-enter)
-	 ("DEL" . #'vertico-directory-delete-char)
-	 ("M-DEL" . #'vertico-directory-delete-word))
+	 ("RET" . vertico-directory-enter)
+	 ("DEL" . vertico-directory-delete-char)
+	 ("M-DEL" . vertico-directory-delete-word)
+	 ("<next>" . vertico-scroll-up)
+	 ("<prior>" . vertico-scroll-down))
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy)
   :init
 
