@@ -31,3 +31,6 @@ complete -o bashdefault -o default -o nospace -F __git_wrap__git_main g
 if command -v bat &> /dev/null; then
 	alias cat=bat
 fi
+
+# fdfind
+alias fd=fdfind
