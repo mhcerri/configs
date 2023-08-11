@@ -1613,7 +1613,12 @@ exist after each headings's drawers."
 	   ((agenda #1="")
 	    (tags-todo "-SCHEDULED={.+}")))))
   :config
-  (evil-set-initial-state 'org-agenda-mode 'insert))
+  ;; Update agenda view after saving it
+  (advice-add 'org-save-all-org-buffers :filter-return
+	      (lambda (ret)
+		(when (equal major-mode 'org-agenda-mode)
+		  (org-agenda-redo-all))
+		ret)))
 
 (use-package org-capture
   :ensure org
