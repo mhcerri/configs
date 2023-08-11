@@ -1605,7 +1605,13 @@ exist after each headings's drawers."
 	  ("request" . (:foreground "green"))
 	  ("bug" . (:foreground "orange"))
 	  ))
-
+  ;; Better org-agenda view
+  (setq org-agenda-block-separator
+	(char-from-name "OVERLINE"))
+  (setq org-agenda-custom-commands
+	'(("a" "Agenda and all TODOs"
+	   ((agenda #1="")
+	    (tags-todo "-SCHEDULED={.+}")))))
   :config
   (evil-set-initial-state 'org-agenda-mode 'insert))
 
