@@ -1878,11 +1878,6 @@ exist after each headings's drawers."
   (setq message-citation-line-format "On %a, %b %d %Y, %N wrote:")
 
   (defun ~message-mode()
-    (font-lock-add-keywords nil
-			    '(("^[ \t]*>[ \t]*>[ \t]*>.*$"
-			       (0 'message-multiply-quoted-text-face))
-			      ("^[ \t]*>[ \t]*>.*$"
-			       (0 'message-double-quoted-text-face))))
     ;; Arrange paragraphs and ignore white space issues
     ;;(auto-fill-mode 1) ; Use M-q instead
     (whitespace-mode -1)
