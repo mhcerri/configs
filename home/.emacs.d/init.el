@@ -1613,6 +1613,8 @@ exist after each headings's drawers."
 	   ((agenda #1="")
 	    (tags-todo "-SCHEDULED={.+}")))))
   :config
+  ;; Open the agenda in insert mode
+  (evil-set-initial-state 'org-agenda-mode 'insert)
   ;; Update agenda view after saving it
   (advice-add 'org-save-all-org-buffers :filter-return
 	      (lambda (ret)
