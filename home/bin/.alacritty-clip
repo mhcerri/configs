@@ -3,4 +3,5 @@ text=$(echo -n "$*" |
 	       sed -r -e 's,^(lp|LP):?\s?#?([0-9]+),https://bugs.launchpad.net/bugs/\2,' \
 		   -e 's,^ppa:([^/]+)/(.*),https://launchpad.net/~\1/+archive/\2,')
 echo -n "$text" | xsel -b
+echo -n "$text" | wl-copy
 #notify-send -u low "Copied to clipboard:" "$text"
