@@ -43,7 +43,7 @@ if [[ -p /dev/stdin ]]; then
 fi
 
 # If running from within emacs, just open a new buffer
-if [[ $TERM == eterm* ]]; then
+if [[ $TERM == eterm* ]] || [[ "${INSIDE_EMACS:-}" = vterm ]]; then
 	if [[ ${#args[@]} -eq 0 ]]; then
 		echo "No file given from eshell. Aborting..." >&2
 		exit 1
