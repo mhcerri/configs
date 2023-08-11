@@ -1366,6 +1366,9 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (setq projectile-project-name-function '~projectile-get-project-name)
   (setq projectile-mode-line
 	'(:eval (format " Proj[%s]" (projectile-project-name))))
+  ;; fd in Ubuntu 20.04 is missing the option --strip-cwd-prefix, for
+  ;; force find by default:
+  (setq projectile-generic-command "find . -type f | cut -c3- | tr '\\n' '\\0'")
   (projectile-mode))
 
 (use-package ibuffer-projectile
