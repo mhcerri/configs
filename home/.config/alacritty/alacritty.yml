@@ -57,6 +57,8 @@ hints:
 mouse:
   hide_when_typing: true
 
+# Use: alacritty --print-events | grep "WindowEvent.*KeyboardInput"
+# To find more info about the keys.
 key_bindings:
   # Key binding to emulate my current plugins for rxvt:
 
@@ -120,6 +122,11 @@ key_bindings:
     mode: Vi
     action: First
 
+  - mods: Shift
+    key: 7 # 6/^ has scancode 7
+    mode: Vi
+    action: First
+
   - key: End
     mode: Vi
     action: First
@@ -133,6 +140,15 @@ key_bindings:
     action: First
   - mods: Control
     key: E
+    mode: Vi
+    action: Last
+
+  - mods: Shift
+    key: 5 # 4/$ has scancode 5
+    mode: Vi
+    action: First
+  - mods: Shift
+    key: 5 # 4/$ has scancode 5
     mode: Vi
     action: Last
 
