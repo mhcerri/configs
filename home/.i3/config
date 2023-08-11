@@ -238,6 +238,12 @@ bindsym $mod+q exec --no-startup-id urxvt \
 for_window [instance="popup-terminal"] move scratchpad
 bindsym $mod+t [instance="popup-terminal"] scratchpad show
 
+for_window [title="popup-emacs"] floating enable
+for_window [title="popup-emacs"] resize set 50 ppt 75 ppt
+for_window [title="popup-emacs"] move position center
+for_window [title="popup-emacs"] move scratchpad
+bindsym $mod+Shift+t [title="popup-emacs"] scratchpad show
+
 # Background
 exec_always --no-startup-id xsetroot -solid '#555555'
 
@@ -247,9 +253,11 @@ exec_always --no-startup-id xsetroot -solid '#555555'
 exec --no-startup-id xfsettingsd
 exec --no-startup-id sh -c 'sleep 1; ~/.screenlayout/default.sh'
 exec --no-startup-id screen-monitor.sh ~/.screenlayout/default.sh
-exec --no-startup-id dunst
+#exec --no-startup-id dunst
+exec --no-startup-id /home/mhcerri/.local/bin/deadd-notification-center
 exec --no-startup-id compton
 exec --no-startup-id xfce4-power-manager
+exec --no-startup-id psensor
 #exec --no-startup-id /usr/lib/x86_64-linux-gnu/xfce4/notifyd/xfce4-notifyd
 
 ## Gnome - Might need to launch systray apps with dbus-launch
@@ -290,12 +298,15 @@ exec --no-startup-id autokey-gtk
 exec --no-startup-id nice -n 5 dropbox start
 exec --no-startup-id nice -n 5 insync start
 exec --no-startup-id cryfs-ask ~/GDrive/USP/.private/ ~/Private/
-exec --no-startup-id sh -c 'pkill dunst; ~/Documents/workspace/dunst/dunst'
+#exec --no-startup-id sh -c 'pkill dunst; ~/Documents/workspace/dunst/dunst'
 exec --no-startup-id syncthing-gtk
 exec --no-startup-id dmesg-notify
 
 # Dunst
-bindsym $mod+Escape         exec --no-startup-id ~/Documents/workspace/dunst/dunstctl close
-bindsym Control+$mod+Escape exec --no-startup-id ~/Documents/workspace/dunst/dunstctl close-all
-bindsym $mod+dead_grave     exec --no-startup-id ~/Documents/workspace/dunst/dunstctl history-pop
-bindsym $mod+F1             exec --no-startup-id ~/Documents/workspace/dunst/dunstctl context
+#bindsym $mod+Escape         exec --no-startup-id ~/Documents/workspace/dunst/dunstctl close
+#bindsym Control+$mod+Escape exec --no-startup-id ~/Documents/workspace/dunst/dunstctl close-all
+#bindsym $mod+dead_grave     exec --no-startup-id ~/Documents/workspace/dunst/dunstctl history-pop
+#bindsym $mod+F1             exec --no-startup-id ~/Documents/workspace/dunst/dunstctl context
+
+#Deadd
+bindsym $mod+Escape         exec --no-startup-id deadd-toggle-notification-center
