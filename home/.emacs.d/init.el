@@ -282,6 +282,34 @@
 	  (simpleclip-set-contents url)))
   :config
   (require 'xclip)
+  ;; Add support for Wayland
+  (when (string= (getenv "XDG_SESSION_TYPE") "wayland")
+    ;; credit: yorickvP on Github
+    (setq wl-copy-process nil)
+    (defun wl-copy (text)
+      "Copy TEXT to the wayland clipboard."
+      (setq wl-copy-process (make-process :name "wl-copy"
+					  :buffer nil
+					  :command '("wl-copy" "-f" "-n")
+					  :connection-type 'pipe))
+      (process-send-string wl-copy-process text)
+      (process-send-eof wl-copy-process))
+
+    (defun wl-paste ()
+      "Get text from wayland clipboard."
+      (if (and wl-copy-process (process-live-p wl-copy-process))
+	  nil ; should return nil if we're the current paste owner
+	(shell-command-to-string "wl-paste -n | tr -d \r")))
+    (setq interprogram-cut-function 'wl-copy)
+    (setq interprogram-paste-function 'wl-paste)
+
+    (defun simpleclip-set-contents (str-val)
+      "Set the contents of the system clipboard to STR-VAL."
+      (wl-copy str-val))
+
+    (defun simpleclip-get-contents ()
+      "Return the contents of the system clipboard as a string."
+      (wl-paste)))
   (defalias 'copy-to-clipboard 'simpleclip-copy)
   (defalias 'paste-from-clipboard 'simpleclip-paste)
   (defalias 'cut-to-clipboard 'simpleclip-cut)
