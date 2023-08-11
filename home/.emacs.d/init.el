@@ -1440,6 +1440,8 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (setq org-image-actual-width nil)
   ;; Default LaTeX packages when exporting
   (setq org-latex-packages-alist '(("" "parskip" t)))
+  ;; Add new items to the top
+  (setq org-reverse-note-order t)
   ;; Quick src blocks with <, ie <el for emacs-lisp:
   (setq org-structure-template-alist
 	(append org-structure-template-alist
