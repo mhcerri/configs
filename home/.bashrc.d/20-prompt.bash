@@ -102,7 +102,7 @@ dumb|eterm*)
 	# Do not set title for emacs terminals
 	;;
 *)
-	export PROMPT_COMMAND='echo -ne "\033]0;${USER}${HOSTNAME} ${PWD}\007"; '"$PROMPT_COMMAND"
+	export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME} ${PWD}\007"; '"$PROMPT_COMMAND"
 esac
 
 # Bell the terminal when the prompt is shown
