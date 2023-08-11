@@ -1981,6 +1981,13 @@ exist after each headings's drawers."
 	  (:name "/INBOX (unread & flagged)"
                  :key ?I
 	         :query "(maildir:\"/INBOX\") AND (flag:unread OR flag:flagged)")
+	  ;; Temporary query for FIPS
+	  (:name "FIPS"
+		 :key ?f
+		 :query "(maildir:\"/INBOX\") AND (list:ubuntu-fips.lists.canonical.com)")
+	  (:name "FIPS 140-3 Kernel"
+		 :key ?F
+		 :query "(maildir:\"/INBOX\") AND (s:\"22.04 kernel review\")")
 	  (:name ,mu4e-drafts-folder
                  :key ?d
 	         :query ,(format "maildir:\"%s\"" mu4e-drafts-folder))
