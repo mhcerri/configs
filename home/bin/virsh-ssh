@@ -10,6 +10,8 @@ my %args = (
     verbose => 1,
 );
 
+my @additional_args = ();
+
 sub debug($) {
 	if ($args{verbose}) {
 		print $_[0];
@@ -42,8 +44,7 @@ while (@ARGV) {
         $args{verbose} = 1;
     }
     elsif ($arg =~ /^-/) {
-        print "Invalid argument: $arg.\n";
-        exit(1);
+        push @additional_args, $arg;
     }
     else {
 	if (defined $args{domain}) {
@@ -111,7 +112,7 @@ my $user = "";
 if (defined $args{user}) {
 	$user = "$args{user}@"
 }
-my $cmd="$args{cmd} -p \"$args{port}\" \"$user$ipv4\"";
-debug("Running: $cmd\n");
-exec($cmd);
-
+my @cmd=("$args{cmd}", "-p", "$args{port}", "$user$ipv4");
+@cmd = (@cmd, @additional_args);
+debug("Running: @cmd\n");
+exec(@cmd);
