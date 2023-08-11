@@ -1219,6 +1219,7 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   (setq lsp-rust-analyzer-server-display-inlay-hints t
 	lsp-rust-analyzer-display-lifetime-elision-hints-enable t)
   (setq lsp-warn-no-matched-clients nil)
+  (setq lsp-auto-guess-root t)
   (add-hook 'lsp-after-open-hook
 	    (lambda () (when (lsp-find-workspace 'rust-analyzer nil)
                          (lsp-rust-analyzer-inlay-hints-mode)))))
