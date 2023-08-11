@@ -13,7 +13,7 @@ colors:
     foreground: "#AAAAAA"
 
   normal:
-    black:      "#2E3436"
+    black:      "#000000"
     red:        "#CC0000"
     green:      "#4E9A06"
     yellow:     "#C4A000"
