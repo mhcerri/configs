@@ -1,3 +1,4 @@
 #!/bin/bash
-echo "$*" | xsel -b
-notify-send "Copied to clipboard:" "$*"
+echo "$*" | /usr/bin/wl-copy
+echo "$*" | /usr/bin/xsel -b
+/usr/bin/notify-send "Copied to clipboard:" "$*"
