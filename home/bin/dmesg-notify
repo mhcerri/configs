@@ -2,6 +2,7 @@
 
 title="$(basename "$0")"
 regex_file=~/.config/dmesg-notify.re
+limit_per_second=50
 
 notify() {
 	local type
@@ -14,7 +15,7 @@ notify() {
 		*)
 	esac
 	echo "$(date -Is) $type: $*"
-	notify-send "${args[@]}" -i "$type" "$title" "$*"
+	notify-send "${args[@]}" -i "$type" "$title" "$*" &
 }
 
 error() { notify error "$@"; }
@@ -26,6 +27,8 @@ if [ ! -e "$regex_file" ]; then
 	exit 1
 fi
 
+count_per_sec=0
+last_time=$(date +%s)
 i=0; n=$(dmesg | wc -l)
 info "Skipping $n lines!"
 while read -r line; do
@@ -33,6 +36,15 @@ while read -r line; do
 	      i=$(( i + 1 ))
 	      continue
       fi
+      count_per_sec=$(( count_per_sec + 1))
+      now=$(date +%s)
+      if [[ "$now" != "$last_time" ]]; then
+	      if [[ "$count_per_sec" -ge "$limit_per_second" ]]; then
+		      info "Flooding: $count_per_sec messages per second."
+	      fi
+	      count_per_sec=0
+      fi
+      last_time="$now"
       if echo "$line" | grep -Ei -f "$regex_file" &> /dev/null; then
 	      info "$line"
       fi
