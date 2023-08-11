@@ -1378,7 +1378,8 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
   :init
   ;; Custom groups:
   (setq ~custom-ibuffer-filter-groups
-	'(("Mail" (name . "\\*mu4e-"))
+	'(("Mail" (or (mode . mu4e-compose-mode)
+		      (name . "\\*mu4e-")))
 	  ("IRC" (mode . erc-mode))))
   ;; Hook to add projetile and custom groups:
   (defun ~ibuffer-set-filter-groups()
