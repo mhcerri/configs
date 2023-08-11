@@ -1436,6 +1436,8 @@ MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'" . git-commit-mode)
     (set-face-background f (face-background 'org-default)))
   ;; Add dates when a task is marked as done
   (setq org-log-done 'time)
+  ;; Use #+ATTR_ORG: :width N
+  (setq org-image-actual-width nil)
   ;; Default LaTeX packages when exporting
   (setq org-latex-packages-alist '(("" "parskip" t)))
   ;; Quick src blocks with <, ie <el for emacs-lisp:
