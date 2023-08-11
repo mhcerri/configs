@@ -1,4 +1,6 @@
-image/*; xdg-open %s
-video/*; xdg-open %s
-application/*; xdg-open %s
-*/*; xdg-open %s
+application/pdf; evince %s
+inode/directory; nautilus %s
+image/*; ~/bin/xdg-open-wrapper %s
+video/*; ~/bin/xdg-open-wrapper %s
+application/*; ~/bin/xdg-open-wrapper %s
+*/*; ~/bin/xdg-open-wrapper %s

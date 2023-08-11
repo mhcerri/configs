@@ -1,0 +1,28 @@
+#!/bin/bash -eu
+
+list_parents() {
+	local out ppid comm
+
+	if [ -n "$1" ]; then
+		if out=$(ps -o ppid:1=,comm:1= --pid "$1" 2> /dev/null); then
+			ppid="${out%% *}"
+			comm="${out#* }"
+			if [ "$ppid" != 0 ]; then
+				echo "$comm"
+				list_parents "$ppid"
+			fi
+		fi
+	fi
+}
+
+while read -r comm; do
+	if [ "$comm" = xdg-open ]; then
+		self=$(basename "$(readlink -f "$0")")
+		error="xdg-open is being called recursively! Aborting..."
+		echo "$error" >&2
+		notify-send -u critical "$self" "$error" || true
+		exit 1
+	fi
+done < <(list_parents "$$")
+
+exec xdg-open "$@"
