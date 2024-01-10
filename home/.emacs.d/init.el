@@ -1528,7 +1528,12 @@ exist after each headings's drawers."
     (interactive)
     (when (not (string-match-p "_archive$" buffer-file-name))
       (~org-sort-level-1)
-      (unpackaged/org-fix-blank-lines t)))
+      ;; Remove duplicate blank lines
+      (save-excursion
+	(goto-char (point-min))
+	(while (re-search-forward "\\(^\\s-*$\\)\n" nil t)
+	  (replace-match "\n")
+	  (forward-char 1)))))
   (defun ~org-format-on-save ()
     "Reformat buffer on save."
     (interactive)
