@@ -1,0 +1,1 @@
+../../vendor/github.com/brettlangdon/git-vendor/etc/bash_completion.sh
