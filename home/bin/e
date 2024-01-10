@@ -1,38 +1,18 @@
 #!/bin/bash
 
+#
+# Dirty workaround for emacs crashing when closing a webkit frame. Related to
+# https://bugs.webkit.org/show_bug.cgi?id=239429
+#
+export WEBKIT_DISABLE_COMPOSITING_MODE=1
+
 args=("$@")
-
-# Check if emacs server is running
-is_server_running() {
-	emacsclient -a false -e 't' &> /dev/null
-}
-
-# emacsclient wrapper
-_emacsclient() {
-	if ! is_server_running; then
-		echo "Waiting for emacs server (use C-c to abort) "
-		while ! is_server_running; do
-			echo -n "."
-			sleep 0.2
-		done
-		echo
-	fi
-	emacsclient "$@"
-}
 
 # Check if emacsclient is installed
 if ! which emacsclient &> /dev/null; then
 	echo "emacsclient is not available in PATH." >&2
 	exit 1
 fi
-
-# Fix urxvt
-case "$TERM" in
-rxvt*)
-	TERM=xterm-256color
-	;;
-esac
-export TERM
 
 # Check if it's necessary to read from stdin
 if [[ -p /dev/stdin ]]; then
@@ -53,15 +33,17 @@ if [[ $TERM == eterm* ]] || [[ "${INSIDE_EMACS:-}" = vterm ]]; then
 		sleep 1
 	fi
 	arg=$(echo "${args[0]}" | sed -e 's/"/\\"/g')
-	_emacsclient --eval '(find-file "'"$arg"'")'
+	exec emacsclient --eval '(find-file "'"$arg"'")'
 	exit
 fi
 
 # Run emacsclient gui only when this is scripts is not called from a terminal
 if [[ -t 1 ]]; then
 	# Terminal
-	_emacsclient -a '' -t "${args[@]}"
+	args+=(-t)
 else
 	# Not-a-terminal
-	_emacsclient -a '' -c "${args[@]}"
+	args+=(-n)
 fi
+
+exec emacsclient -c -a '' "${args[@]}"
